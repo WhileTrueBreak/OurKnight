@@ -1,0 +1,15 @@
+10 = goblin
+11 = snow
+20 = skeleton
+21 = halloween
+22 = knight
+30 = fire
+31 = alien
+
+0 = wall
+1 = floor
+2 = traps
+
+0-9 = id
+
+i.e 1016 (goblin, floor, id=6)
