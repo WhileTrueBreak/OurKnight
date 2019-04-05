@@ -39,12 +39,13 @@ public class Player extends Creature{
 	@Override
 	public void update() {
 		move();
+		handler.getCamera().focusOnEntity(this);
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0));
-		g.fillRect(x, y, 30, 30);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 30, 30);
 	}
 
 }

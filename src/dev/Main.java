@@ -3,6 +3,7 @@ package dev;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import dev.display.Camera;
 import dev.display.Display;
 import dev.input.KeyManager;
 import dev.states.GameState;
@@ -25,6 +26,9 @@ public class Main implements Runnable{
 	//input
 	private KeyManager keyManager;
 	
+	//camera
+	private Camera camera;
+	
 	//handler
 	private Handler handler;
 	
@@ -42,6 +46,8 @@ public class Main implements Runnable{
 	private void init() {
 		display = new Display(title, width, height);
 		handler = new Handler(this);
+		
+		camera = new Camera(handler, 0, 0);
 		
 		keyManager = new KeyManager();
 		display.getJFrame().addKeyListener(keyManager);
@@ -79,32 +85,19 @@ public class Main implements Runnable{
 		return width;
 	}
 
-	public void setWidth(int width) {
-		this.width = width;
-	}
-
 	public int getHeight() {
 		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
 	}
 	
 	public Display getDisplay() {
 		return display;
 	}
-
-	public void setDisplay(Display display) {
-		this.display = display;
-	}
-	
 	public KeyManager getKeyManager() {
 		return keyManager;
 	}
-
-	public void setKeyManager(KeyManager keyManager) {
-		this.keyManager = keyManager;
+	
+	public Camera getCamera() {
+		return camera;
 	}
 	//////////////////////////////////////////////////////
 

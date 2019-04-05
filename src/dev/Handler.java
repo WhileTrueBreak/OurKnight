@@ -1,5 +1,6 @@
 package dev;
 
+import dev.display.Camera;
 import dev.world.World;
 
 public class Handler {
@@ -21,5 +22,9 @@ public class Handler {
 
 	public Main getMain() {
 		return main;
+	}
+	
+	public Camera getCamera() {
+		return main.getCamera();
 	}
 }
