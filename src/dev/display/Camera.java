@@ -15,8 +15,10 @@ public class Camera {
 	}
 	
 	public void focusOnEntity(Entity e) {
-		xoff = e.getX() - handler.getMain().getWidth()/2;
-		yoff = e.getY() - handler.getMain().getHeight()/2;
+		float cameraSpring = 10;
+		float setX = e.getX()-handler.getMain().getWidth()/2;
+		float setY = e.getY() - handler.getMain().getHeight()/2;
+		move((setX-xoff)/cameraSpring, (setY-yoff)/cameraSpring);
 	}
 	
 	public void move(float amtx, float amty) {

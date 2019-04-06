@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import dev.Handler;
+import dev.entity.Entity;
 
 public abstract class Tile {
 	
@@ -22,6 +23,10 @@ public abstract class Tile {
 	
 	public abstract void update();
 	public abstract void render(Graphics g);
+	
+	public void onCollision(Entity e) {
+		
+	}
 	
 	public boolean isSolid() {
 		return false;

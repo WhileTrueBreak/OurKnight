@@ -27,4 +27,12 @@ public class Handler {
 	public Camera getCamera() {
 		return main.getCamera();
 	}
+
+	public int getWidth() {
+		return main.getWidth();
+	}
+
+	public int getHeight() {
+		return main.getHeight();
+	}
 }

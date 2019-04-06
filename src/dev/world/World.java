@@ -4,9 +4,11 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.creature.Enemy;
 import dev.entity.creature.Player;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
+import dev.tiles.Trap;
 import dev.tiles.Wall;
 import dev.utils.Utils;
 
@@ -15,13 +17,15 @@ public class World {
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
 	
 	private Player player;
+	private Enemy enemytest;
 	private Handler handler;
 	
 	public World(Handler handler, String path) {
 		this.handler = handler;
 		handler.setWorld(this);
 		
-		player = new Player(handler, 200, 200);
+		player = new Player(handler, 400, 400);
+		enemytest = new Enemy(handler, 500, 500);
 		loadWorld(path);
 	}
 	
@@ -40,7 +44,7 @@ public class World {
 					tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
 					break;
 				case 2:
-					//tiles.add(new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
+					tiles.add(new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
 					break;
 				}
 			}
@@ -52,6 +56,7 @@ public class World {
 			t.update();
 		}
 		player.update();
+		enemytest.update();
 	}
 	
 	public void render(Graphics g) {
@@ -59,5 +64,14 @@ public class World {
 			t.render(g);
 		}
 		player.render(g);
+		enemytest.render(g);
+	}
+	
+	public int getPlayerX() {
+		return player.getX();
+	}
+	
+	public int getPlayerY() {
+		return player.getY();
 	}
 }
