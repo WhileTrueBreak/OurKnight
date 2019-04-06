@@ -6,6 +6,7 @@ import java.awt.image.BufferStrategy;
 import dev.display.Camera;
 import dev.display.Display;
 import dev.input.KeyManager;
+import dev.input.MouseManager;
 import dev.states.GameState;
 import dev.states.LobbyState;
 import dev.states.MenuState;
@@ -25,6 +26,7 @@ public class Main implements Runnable{
 	
 	//input
 	private KeyManager keyManager;
+	private MouseManager mouseManager;
 	
 	//camera
 	private Camera camera;
@@ -41,17 +43,22 @@ public class Main implements Runnable{
 		this.width = width;
 		this.height = height;
 		this.title = title;
+		
+		keyManager = new KeyManager();
+		mouseManager = new MouseManager();
 	}
 	
 	private void init() {
 		display = new Display(title, width, height);
 		handler = new Handler(this);
 		
-		camera = new Camera(handler, 0, 0);
-		
-		keyManager = new KeyManager();
 		display.getJFrame().addKeyListener(keyManager);
-		display.getCanvas().addKeyListener(keyManager);
+		display.getJFrame().addMouseListener(mouseManager);
+		display.getJFrame().addMouseMotionListener(mouseManager);
+		display.getCanvas().addMouseListener(mouseManager);
+		display.getCanvas().addMouseMotionListener(mouseManager);
+		
+		camera = new Camera(handler, 0, 0);
 		
 		gameState = new GameState(handler);
 		lobbyState = new LobbyState(handler);
@@ -95,7 +102,9 @@ public class Main implements Runnable{
 	public KeyManager getKeyManager() {
 		return keyManager;
 	}
-	
+	public MouseManager getMouseManager() {
+		return mouseManager;
+	}
 	public Camera getCamera() {
 		return camera;
 	}

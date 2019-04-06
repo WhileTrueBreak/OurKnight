@@ -1,3 +1,5 @@
+//TEMPERARY CODE TO TEST ENEMY
+
 package dev.entity.creature.enemy;
 
 import java.awt.Color;

@@ -1,6 +1,8 @@
 package dev;
 
 import dev.display.Camera;
+import dev.input.KeyManager;
+import dev.input.MouseManager;
 import dev.world.World;
 
 public class Handler {
@@ -35,4 +37,13 @@ public class Handler {
 	public int getHeight() {
 		return main.getHeight();
 	}
+	
+	public KeyManager getKeyManager() {
+		return main.getKeyManager();
+	}
+	
+	public MouseManager getMouseManager() {
+		return main.getMouseManager();
+	}
+	
 }
