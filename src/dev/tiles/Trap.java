@@ -9,6 +9,7 @@ public class Trap extends Tile{
 
 	public Trap(Handler handler, int x, int y, int spriteid) {
 		super(handler, x, y, spriteid);
+		this.spriteID=spriteid;
 	}
 
 	@Override

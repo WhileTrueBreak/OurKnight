@@ -36,7 +36,7 @@ public class BasicEnemy extends Enemy{
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 255, 0));
-		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 30, 30);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 32, 32);
 	}
 
 }

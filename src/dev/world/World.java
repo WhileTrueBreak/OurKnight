@@ -7,6 +7,7 @@ import dev.Handler;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.Enemy;
+import dev.entity.creature.enemy.EnemyManager;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
 import dev.tiles.Trap;
@@ -15,18 +16,25 @@ import dev.utils.Utils;
 
 public class World {
 	
+	//managers
+	EnemyManager enemyManager;
+	
+	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
 	
+	//player
 	private Player player;
-	private Enemy enemytest;
+	
+	//handler
 	private Handler handler;
 	
 	public World(Handler handler, String path) {
 		this.handler = handler;
 		handler.setWorld(this);
+		enemyManager = new EnemyManager();
 		
 		player = new Player(handler, 400, 400);
-		enemytest = new BasicEnemy(handler, 500, 500);
+		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
 		loadWorld(path);
 	}
 	
@@ -57,7 +65,7 @@ public class World {
 			t.update();
 		}
 		player.update();
-		enemytest.update();
+		enemyManager.update();
 	}
 	
 	public void render(Graphics g) {
@@ -65,7 +73,7 @@ public class World {
 			t.render(g);
 		}
 		player.render(g);
-		enemytest.render(g);
+		enemyManager.render(g);
 	}
 	
 	public int getPlayerX() {

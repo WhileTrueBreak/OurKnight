@@ -7,18 +7,14 @@ import java.awt.Rectangle;
 import dev.Handler;
 
 public class Wall extends Tile{
-	
-	private int spriteid;
 
 	public Wall(Handler handler, int x, int y, int spriteid) {
 		super(handler, x, y, spriteid);
-		this.spriteid=spriteid;
-		// TODO Auto-generated constructor stub
+		this.spriteID=spriteid;
 	}
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		
 	}
 

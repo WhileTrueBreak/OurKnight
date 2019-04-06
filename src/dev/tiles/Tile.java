@@ -8,10 +8,10 @@ import dev.entity.Entity;
 
 public abstract class Tile {
 	
-	public static int tile_width = 20, tile_height = 20;
+	public static int tile_width = 32, tile_height = 32;
 	
 	protected Rectangle bounds;
-	protected int x,y;
+	protected int x,y,spriteID;
 	
 	protected Handler handler;
 	

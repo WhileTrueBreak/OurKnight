@@ -1,4 +1,4 @@
-	package dev.entity.creature;
+package dev.entity.creature;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +11,7 @@ public class Player extends Creature{
 	public Player(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 3;//pixels per frame
+		speed = 4;//pixels per frame
 	}
 	
 	private void move() {
@@ -19,7 +19,6 @@ public class Player extends Creature{
 		boolean left = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_A);
 		boolean down = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_S);
 		boolean right = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_D);
-		
 		
 		float dx = 0, dy = 0;
 		
@@ -33,6 +32,7 @@ public class Player extends Creature{
 		if (mag != 0) {
 			x += dx*speed/mag;
 			y += dy*speed/mag;
+//			handler.getCamera().move(dx*speed/mag, dy*speed/mag);
 		}
 	}
 	
@@ -45,7 +45,7 @@ public class Player extends Creature{
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0));
-		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 30, 30);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 32, 32);
 	}
 
 }

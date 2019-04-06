@@ -1,8 +1,5 @@
 package dev.entity.creature.enemy;
 
-import java.awt.Color;
-import java.awt.Graphics;
-
 import dev.Handler;
 import dev.entity.creature.Creature;
 
