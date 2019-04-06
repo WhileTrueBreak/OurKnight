@@ -11,7 +11,7 @@ public class Player extends Creature{
 	public Player(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 10;//pixels per frame
+		speed = 3;//pixels per frame
 	}
 	
 	private void move() {

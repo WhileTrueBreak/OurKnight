@@ -4,8 +4,9 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.creature.Enemy;
 import dev.entity.creature.Player;
+import dev.entity.creature.enemy.BasicEnemy;
+import dev.entity.creature.enemy.Enemy;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
 import dev.tiles.Trap;
@@ -25,7 +26,7 @@ public class World {
 		handler.setWorld(this);
 		
 		player = new Player(handler, 400, 400);
-		enemytest = new Enemy(handler, 500, 500);
+		enemytest = new BasicEnemy(handler, 500, 500);
 		loadWorld(path);
 	}
 	

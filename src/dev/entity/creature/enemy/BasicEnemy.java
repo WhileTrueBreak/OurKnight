@@ -1,14 +1,15 @@
-package dev.entity.creature;
+package dev.entity.creature.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import dev.Handler;
 
-public class Enemy extends Creature{
+public class BasicEnemy extends Enemy{
 
-	public Enemy(Handler handler, int x, int y) {
+	public BasicEnemy(Handler handler, int x, int y) {
 		super(handler, x, y);
+		health = 10;
 		speed = 3;
 	}
 	
@@ -35,6 +36,5 @@ public class Enemy extends Creature{
 		g.setColor(new Color(0, 255, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 30, 30);
 	}
-
 
 }
