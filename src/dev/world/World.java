@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import dev.Handler;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
-import dev.entity.creature.enemy.Enemy;
 import dev.entity.creature.enemy.EnemyManager;
+import dev.entity.staticEntity.StaticEntityManager;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
 import dev.tiles.Trap;
-import dev.tiles.Wall;
+import dev.tiles.WallSpawner;
 import dev.utils.Utils;
 
 public class World {
 	
 	//managers
 	EnemyManager enemyManager;
+	StaticEntityManager staticEntityManager;
 	
 	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
@@ -32,6 +33,7 @@ public class World {
 		this.handler = handler;
 		handler.setWorld(this);
 		enemyManager = new EnemyManager();
+		staticEntityManager = new StaticEntityManager();
 		
 		player = new Player(handler, 400, 400);
 		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
@@ -47,7 +49,7 @@ public class World {
 			for(int x = 0;x < width;x++) {
 				switch(Utils.parseInt(tokens[x+y*width+2])) {
 				case 0:
-					tiles.add(new Wall(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
+					tiles.add(new WallSpawner(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
 					break;
 				case 1:
 					tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
@@ -64,6 +66,7 @@ public class World {
 		for(Tile t:tiles) {
 			t.update();
 		}
+		staticEntityManager.update();
 		player.update();
 		enemyManager.update();
 	}
@@ -72,6 +75,7 @@ public class World {
 		for(Tile t:tiles) {
 			t.render(g);
 		}
+		staticEntityManager.render(g);
 		player.render(g);
 		enemyManager.render(g);
 	}
@@ -83,4 +87,13 @@ public class World {
 	public int getPlayerY() {
 		return player.getY();
 	}
+
+	public EnemyManager getEnemyManager() {
+		return enemyManager;
+	}
+
+	public StaticEntityManager getStaticEntityManager() {
+		return staticEntityManager;
+	}
+	
 }
