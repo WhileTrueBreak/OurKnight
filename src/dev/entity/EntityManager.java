@@ -22,9 +22,32 @@ public class EntityManager {
 	}
 	
 	public void render(Graphics g) {
+		Entity[] all = new Entity[entities.size()];
+		int n_ = 0;
 		for (Entity entity:entities) {
-			entity.render(g);
+			all[n_] = entity;
+			n_++;
+		}
+		int n = all.length;
+		boolean isSorted;
+		
+		for (int i = 0; i < n - 1; i++) {
+			isSorted = true;
+			for (int j = 0; j < n - i - 1; j++) {
+				if (all[j].getY() > all[j + 1].getY()) {
+					Entity temp = all[j];
+					all[j] = all[j + 1];
+					all[j + 1] = temp;
+					isSorted = false;
+				}
+			}
+			if(isSorted) {
+				break;
+			}
+		}
+		for (int i=0;i<all.length;i++) {
+			System.out.println(all[i].getY());
+			all[i].render(g);
 		}
 	}
-
 }

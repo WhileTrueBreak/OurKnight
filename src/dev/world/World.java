@@ -4,6 +4,8 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.Entity;
+import dev.entity.EntityManager;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
@@ -19,6 +21,7 @@ public class World {
 	//managers
 	EnemyManager enemyManager;
 	StaticEntityManager staticEntityManager;
+	EntityManager entities;
 	
 	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
@@ -32,11 +35,15 @@ public class World {
 	public World(Handler handler, String path) {
 		this.handler = handler;
 		handler.setWorld(this);
-		enemyManager = new EnemyManager();
+		enemyManager = new EnemyManager(handler);
 		staticEntityManager = new StaticEntityManager();
+		entities = new EntityManager();
 		
 		player = new Player(handler, 400, 400);
-		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
+		BasicEnemy enemy = new BasicEnemy(handler,500,500);
+		enemyManager.addEnemy(enemy);
+		entities.addEntity(player);
+		
 		loadWorld(path);
 	}
 	
@@ -75,9 +82,10 @@ public class World {
 		for(Tile t:tiles) {
 			t.render(g);
 		}
-		staticEntityManager.render(g);
-		player.render(g);
-		enemyManager.render(g);
+		entities.render(g);
+//		staticEntityManager.render(g);
+//		player.render(g);
+//		enemyManager.render(g);
 	}
 	
 	public int getPlayerX() {
@@ -94,6 +102,11 @@ public class World {
 
 	public StaticEntityManager getStaticEntityManager() {
 		return staticEntityManager;
+	}
+
+	public EntityManager getEntityManager() {
+		// TODO Auto-generated method stub
+		return entities;
 	}
 	
 }

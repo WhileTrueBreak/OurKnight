@@ -9,7 +9,9 @@ public class WallSpawner extends Tile{
 
 	public WallSpawner(Handler handler, int x, int y, int spriteid) {
 		super(handler, x, y, spriteid);
-		handler.getWorld().getStaticEntityManager().addStaticEntity(new Wall(handler, x, y, Tile.tile_width, Tile.tile_height, spriteID));;
+		Wall wall = new Wall(handler, x, y, Tile.tile_width, Tile.tile_height, spriteID);
+		handler.getWorld().getStaticEntityManager().addStaticEntity(wall);
+		handler.getWorld().getEntityManager().addEntity(wall);
 	}
 
 	@Override

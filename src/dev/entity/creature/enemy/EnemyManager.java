@@ -3,12 +3,16 @@ package dev.entity.creature.enemy;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import dev.Handler;
+
 public class EnemyManager {
 	
 	ArrayList<Enemy>enemies;
+	Handler handler;
 	
-	public EnemyManager() {
+	public EnemyManager(Handler handler) {
 		enemies = new ArrayList<Enemy>();
+		this.handler = handler;
 	}
 	
 	public void update() {
@@ -25,6 +29,7 @@ public class EnemyManager {
 	
 	public void addEnemy(Enemy e) {
 		enemies.add(e);
+		handler.getWorld().getEntityManager().addEntity(e);
 	}
 	
 	public void removeEnemy(Enemy e) {
