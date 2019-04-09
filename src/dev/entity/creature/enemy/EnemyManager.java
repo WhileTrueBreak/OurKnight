@@ -34,6 +34,7 @@ public class EnemyManager {
 	
 	public void removeEnemy(Enemy e) {
 		enemies.remove(e);
+		handler.getWorld().getEntityManager().removeEntity(e);
 	}
 	
 	public ArrayList<Enemy> getEnemies(){

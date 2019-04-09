@@ -9,7 +9,9 @@ import dev.entity.EntityManager;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
+import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
+import dev.entity.staticEntity.Wall;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
 import dev.tiles.Trap;
@@ -36,10 +38,11 @@ public class World {
 		this.handler = handler;
 		handler.setWorld(this);
 		enemyManager = new EnemyManager(handler);
-		staticEntityManager = new StaticEntityManager();
+		staticEntityManager = new StaticEntityManager(handler);
 		entities = new EntityManager();
 		
 		player = new Player(handler, 400, 400);
+//		new WallSpawner(handler, 2*Tile.tile_width, 45, 0);
 		BasicEnemy enemy = new BasicEnemy(handler,500,500);
 		enemyManager.addEnemy(enemy);
 		entities.addEntity(player);
@@ -48,26 +51,30 @@ public class World {
 	}
 	
 	private void loadWorld(String path) {
-		String file = Utils.loadFile(path);
-		String[] tokens = file.split("\\s+");
-		int width = Utils.parseInt(tokens[0]);
-		int height = Utils.parseInt(tokens[1]);
-		for(int y = 0;y < height;y++) {
-			for(int x = 0;x < width;x++) {
-				switch(Utils.parseInt(tokens[x+y*width+2])) {
-				case 0:
-					tiles.add(new WallSpawner(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
-					break;
-				case 1:
-					tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
-					break;
-				case 2:
-					tiles.add(new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
-					break;
-				}
-			}
-		}
-	}
+        String file = Utils.loadFile(path);
+        String[] tokens = file.split("\\s+");
+        int width = Utils.parseInt(tokens[0]);
+        int height = Utils.parseInt(tokens[1]);
+        for(int y = 0;y < height;y++) {
+            for(int x = 0;x < width;x++) {
+                switch(Utils.parseInt(tokens[x+y*width+2])) {
+                case 0:
+                    StaticEntity wall = new Wall(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+                    handler.getWorld().getStaticEntityManager().addStaticEntity(wall);
+                    handler.getWorld().getEntityManager().addEntity(wall);
+                    break;
+                case 1:
+                    tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
+                    break;
+                case 2:
+                    StaticEntity trap = new dev.entity.staticEntity.Trap(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+                    handler.getWorld().getStaticEntityManager().addStaticEntity(trap);
+                    handler.getWorld().getEntityManager().addEntity(trap);
+                    break;
+                }
+            }
+        }
+    }
 	
 	public void update() {
 		for(Tile t:tiles) {

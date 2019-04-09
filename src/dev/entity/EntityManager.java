@@ -29,6 +29,7 @@ public class EntityManager {
 			n_++;
 		}
 		int n = all.length;
+		int f = 0;
 		boolean isSorted;
 		
 		for (int i = 0; i < n - 1; i++) {
@@ -46,7 +47,6 @@ public class EntityManager {
 			}
 		}
 		for (int i=0;i<all.length;i++) {
-			System.out.println(all[i].getY());
 			all[i].render(g);
 		}
 	}
