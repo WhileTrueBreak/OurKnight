@@ -11,4 +11,6 @@ public abstract class Creature extends Entity{
 	protected int health = 20;
 	protected int speed = 20;
 	
+	protected int width = 32, height = 32;
+	
 }

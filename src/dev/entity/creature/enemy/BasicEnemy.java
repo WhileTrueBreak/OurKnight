@@ -4,16 +4,22 @@ package dev.entity.creature.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import dev.Handler;
+import dev.entity.Entity;
 
 public class BasicEnemy extends Enemy{
+	
+	public int width = 64, height = 64;
 
 	public BasicEnemy(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
 		speed = 3;
 	}
+	
+	private Rectangle hitbox = new Rectangle(x, y, width, height);
 	
 	private void move() {
 		int destX = handler.getWorld().getPlayerX();
@@ -28,17 +34,23 @@ public class BasicEnemy extends Enemy{
 		y += dy;
 	}
 	
-	///sfhiakushfikhasiluef
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
 	
 	@Override
 	public void update() {
 		move();
+		hitbox.x = x;
+		hitbox.y = y;
+		hitbox.width = width;
+		hitbox.height = height;
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 255, 0));
-		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 32, 32);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
 	}
 
 }

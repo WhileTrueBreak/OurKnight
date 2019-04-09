@@ -10,7 +10,7 @@ public class Wall extends StaticEntity{
     public Wall(Handler handler, int x, int y, int width, int height, int spriteID) {
         super(handler, x, y, width, height, spriteID);
     }
-
+    
     @Override
     public void update() {
         

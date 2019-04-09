@@ -2,9 +2,11 @@ package dev.entity.creature;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import dev.Handler;
+import dev.entity.Entity;
 
 public class Player extends Creature{
 
@@ -13,6 +15,8 @@ public class Player extends Creature{
 		health = 10;
 		speed = 4;//pixels per frame
 	}
+	
+	private Rectangle hitbox = new Rectangle(x,y,width,height);
 	
 	private void move() {
 		boolean up = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_W);
@@ -38,14 +42,23 @@ public class Player extends Creature{
 	
 	@Override
 	public void update() {
+		for (Entity e:handler.getWorld().getEnemyManager().getEnemies()) {
+			if (hitbox.intersects(e.getHitbox())) {
+				System.out.println("intersect");
+			}
+		}
 		move();
+		hitbox.x = x;
+		hitbox.y = y;
+		hitbox.width = width;
+		hitbox.height = height;
 		handler.getCamera().focusOnEntity(this);
 	}
 
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0));
-		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), 32, 32);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
 	}
 
 }

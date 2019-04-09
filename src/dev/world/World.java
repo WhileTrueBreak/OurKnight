@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.Entity;
 import dev.entity.EntityManager;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
@@ -57,7 +58,7 @@ public class World {
             for(int x = 0;x < width;x++) {
                 switch(Utils.parseInt(tokens[x+y*width+2])) {
                 case 0:
-                    StaticEntity wall = new Wall(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+                    StaticEntity wall = new Wall(handler, x*Entity.width, y*Entity.height, Entity.width, Entity.height, 0);
                     handler.getWorld().getStaticEntityManager().addStaticEntity(wall);
                     handler.getWorld().getEntityManager().addEntity(wall);
                     break;
@@ -65,7 +66,7 @@ public class World {
                     tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
                     break;
                 case 2:
-                    StaticEntity trap = new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+                    StaticEntity trap = new Trap(handler, x*Entity.width, y*Entity.height, Entity.width, Entity.height, 0);
                     handler.getWorld().getStaticEntityManager().addStaticEntity(trap);
                     handler.getWorld().getEntityManager().addEntity(trap);
                     break;
