@@ -19,7 +19,7 @@ public class BasicEnemy extends Enemy{
 		speed = 3;
 	}
 	
-	private Rectangle hitbox = new Rectangle(x, y, width, height);
+//	private Rectangle hitbox = new Rectangle(x, y, width, height);
 	
 	private void move() {
 		int destX = handler.getWorld().getPlayerX();
@@ -34,17 +34,14 @@ public class BasicEnemy extends Enemy{
 		y += dy;
 	}
 	
-	public Rectangle getHitbox() {
-		return hitbox;
-	}
+//	public Rectangle getHitbox() {
+//		return hitbox;
+//	}
 	
 	@Override
 	public void update() {
 		move();
-		hitbox.x = x;
-		hitbox.y = y;
-		hitbox.width = width;
-		hitbox.height = height;
+		setHitboxAttrb(x,y,width,height);
 	}
 
 	@Override

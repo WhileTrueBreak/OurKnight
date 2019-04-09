@@ -9,8 +9,9 @@ public abstract class Entity {
 	
 	public static int width = 32, height = 32;
 	
-	protected int x, y;
-	protected Rectangle hitbox;
+	public int x;
+
+	protected int y;
 	protected Handler handler;
 	
 	public Entity(Handler handler, int x, int y) {
@@ -18,6 +19,8 @@ public abstract class Entity {
 		this.y = y;
 		this.handler = handler;
 	}
+	
+	private Rectangle hitbox = new Rectangle(x, y, width, height);
 	
 	public abstract void update();
 	
@@ -31,5 +34,13 @@ public abstract class Entity {
 		return y;
 	}
 
-	public abstract Rectangle getHitbox();
+	public Rectangle getHitbox() {
+		return hitbox;
+	}
+	public void setHitboxAttrb(int x, int y, int width, int height) {
+		hitbox.x = x;
+		hitbox.y = y;
+		hitbox.width = width;
+		hitbox.height = height;
+	}
 }
