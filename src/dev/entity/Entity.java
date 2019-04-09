@@ -43,4 +43,14 @@ public abstract class Entity {
 		hitbox.width = width;
 		hitbox.height = height;
 	}
+	
+	public abstract void onCollision();
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
 }

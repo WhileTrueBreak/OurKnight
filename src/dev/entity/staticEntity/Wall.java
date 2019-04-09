@@ -24,4 +24,10 @@ public class Wall extends StaticEntity{
         g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
     }
 
+	@Override
+	public void onCollision() {
+		// TODO Auto-generated method stub
+		System.out.println("wall");
+	}
+
 }

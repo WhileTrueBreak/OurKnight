@@ -22,4 +22,10 @@ public class Trap extends StaticEntity{
         g.setColor(new Color(0,255,255));
         g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
     }
+
+	@Override
+	public void onCollision() {
+		// TODO Auto-generated method stub
+		
+	}
 }

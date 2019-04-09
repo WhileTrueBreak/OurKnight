@@ -22,8 +22,8 @@ public class BasicEnemy extends Enemy{
 //	private Rectangle hitbox = new Rectangle(x, y, width, height);
 	
 	private void move() {
-		int destX = handler.getWorld().getPlayerX();
-		int destY = handler.getWorld().getPlayerY();
+		int destX = handler.getWorld().getPlayer().getX();
+		int destY = handler.getWorld().getPlayer().getY();
 		float dx = destX - x, dy = destY - y;
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		if(mag > speed) {
@@ -48,6 +48,12 @@ public class BasicEnemy extends Enemy{
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 255, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
+	}
+
+	@Override
+	public void onCollision() {
+		// TODO Auto-generated method stub
+		System.out.println("enemy");
 	}
 
 }

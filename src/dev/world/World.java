@@ -42,8 +42,7 @@ public class World {
 		
 		player = new Player(handler, 400, 400);
 //		new WallSpawner(handler, 2*Tile.tile_width, 45, 0);
-		BasicEnemy enemy = new BasicEnemy(handler,500,500);
-		enemyManager.addEnemy(enemy);
+//		enemyManager.addEnemy(new BasicEnemy(handler,500,500));
 		entities.addEntity(player);
 		
 		loadWorld(path);
@@ -94,12 +93,8 @@ public class World {
 //		enemyManager.render(g);
 	}
 	
-	public int getPlayerX() {
-		return player.getX();
-	}
-	
-	public int getPlayerY() {
-		return player.getY();
+	public Player getPlayer() {
+		return player;
 	}
 
 	public EnemyManager getEnemyManager() {
