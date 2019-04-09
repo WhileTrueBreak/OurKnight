@@ -11,10 +11,10 @@ import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
+import dev.entity.staticEntity.Trap;
 import dev.entity.staticEntity.Wall;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
-import dev.tiles.Trap;
 import dev.tiles.WallSpawner;
 import dev.utils.Utils;
 
@@ -67,7 +67,7 @@ public class World {
                     tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
                     break;
                 case 2:
-                    StaticEntity trap = new dev.entity.staticEntity.Trap(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+                    StaticEntity trap = new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
                     handler.getWorld().getStaticEntityManager().addStaticEntity(trap);
                     handler.getWorld().getEntityManager().addEntity(trap);
                     break;
