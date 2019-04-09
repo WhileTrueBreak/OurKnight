@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.Entity;
 import dev.entity.EntityManager;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
@@ -15,7 +14,6 @@ import dev.entity.staticEntity.Trap;
 import dev.entity.staticEntity.Wall;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
-import dev.tiles.WallSpawner;
 import dev.utils.Utils;
 
 public class World {
@@ -112,7 +110,6 @@ public class World {
 	}
 
 	public EntityManager getEntityManager() {
-		// TODO Auto-generated method stub
 		return entities;
 	}
 	
