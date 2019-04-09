@@ -5,9 +5,9 @@ import java.awt.Graphics;
 
 import dev.Handler;
 
-public class Wall extends StaticEntity{
+public class Trap extends StaticEntity{
 
-    public Wall(Handler handler, int x, int y, int width, int height, int spriteID) {
+    public Trap(Handler handler, int x, int y, int width, int height, int spriteID) {
         super(handler, x, y, width, height, spriteID);
     }
 
@@ -18,7 +18,7 @@ public class Wall extends StaticEntity{
 
     @Override
     public void render(Graphics g) {
-        g.setColor(new Color(0,0,200));
+        g.setColor(new Color(0,200,0));
         g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
         g.setColor(new Color(0,255,255));
         g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);

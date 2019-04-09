@@ -4,16 +4,16 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.Entity;
 import dev.entity.EntityManager;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
+import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
+import dev.entity.staticEntity.Trap;
+import dev.entity.staticEntity.Wall;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
-import dev.tiles.Trap;
-import dev.tiles.WallSpawner;
 import dev.utils.Utils;
 
 public class World {
@@ -56,13 +56,17 @@ public class World {
 			for(int x = 0;x < width;x++) {
 				switch(Utils.parseInt(tokens[x+y*width+2])) {
 				case 0:
-					tiles.add(new WallSpawner(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
+					StaticEntity wall = new Wall(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+					handler.getWorld().getStaticEntityManager().addStaticEntity(wall);
+					handler.getWorld().getEntityManager().addEntity(wall);
 					break;
 				case 1:
 					tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
 					break;
 				case 2:
-					tiles.add(new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
+					StaticEntity trap = new Trap(handler, x*Tile.tile_width, y*Tile.tile_height, Tile.tile_width, Tile.tile_height, 0);
+					handler.getWorld().getStaticEntityManager().addStaticEntity(trap);
+					handler.getWorld().getEntityManager().addEntity(trap);
 					break;
 				}
 			}
@@ -105,7 +109,6 @@ public class World {
 	}
 
 	public EntityManager getEntityManager() {
-		// TODO Auto-generated method stub
 		return entities;
 	}
 	

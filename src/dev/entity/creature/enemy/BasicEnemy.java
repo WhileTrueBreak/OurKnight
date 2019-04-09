@@ -28,6 +28,8 @@ public class BasicEnemy extends Enemy{
 		y += dy;
 	}
 	
+	///sfhiakushfikhasiluef
+	
 	@Override
 	public void update() {
 		move();

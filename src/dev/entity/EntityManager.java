@@ -46,7 +46,6 @@ public class EntityManager {
 			}
 		}
 		for (int i=0;i<all.length;i++) {
-			System.out.println(all[i].getY());
 			all[i].render(g);
 		}
 	}
