@@ -48,6 +48,9 @@ public class BasicEnemy extends Enemy{
 	public void render(Graphics g) {
 		g.setColor(new Color(0, 255, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
+		g.setColor(new Color(0, 0, 255));
+		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
+
 	}
 
 	@Override

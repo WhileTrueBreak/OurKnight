@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Area;
 
 import dev.Handler;
 import dev.entity.Entity;
@@ -36,21 +37,24 @@ public class Player extends Creature{
 		if (mag != 0) {
 			x += dx*speed/mag;
 			y += dy*speed/mag;
-			System.out.println(x);
-			System.out.println("t" + tempx);
+			setHitboxAttrb(x,y,width,height);
+			if (checkCollide()) {
+				x = tempx;
+				y = tempy;
+			}
+			
 //			handler.getCamera().move(dx*speed/mag, dy*speed/mag);
-		}
-		if (checkCollide()) {
-			x = tempx;
-			y = tempy;
-		}
+		}else if(checkCollide()) {}
+//		if (checkCollide()) {
+//			x = tempx;
+//			y = tempy;
+//		}
 	}
 	
 	private boolean checkCollide() {
 		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
-			if (getHitbox().intersects(e.getHitbox()) && e != this) {
+			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
 				e.onCollision();
-				System.out.println("intersect");
 				return true;
 			}else {
 				continue;
@@ -62,6 +66,7 @@ public class Player extends Creature{
 	@Override
 	public void update() {
 //		checkCollide();
+		setHitboxAttrb(x,y,width,height);
 		move();
 		setHitboxAttrb(x,y,width,height);
 		handler.getCamera().focusOnEntity(this);
@@ -71,6 +76,8 @@ public class Player extends Creature{
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
+		g.setColor(new Color(0, 0, 255));
+		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
 	}
 
 	@Override

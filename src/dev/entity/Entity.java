@@ -13,15 +13,14 @@ public abstract class Entity {
 
 	protected int y;
 	protected Handler handler;
+	protected Rectangle hitbox;
 	
 	public Entity(Handler handler, int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.handler = handler;
-	}
-	
-	private Rectangle hitbox = new Rectangle(x, y, width, height);
-	
+		hitbox = new Rectangle(x, y, width, height);
+	}	
 	public abstract void update();
 	
 	public abstract void render(Graphics g);
