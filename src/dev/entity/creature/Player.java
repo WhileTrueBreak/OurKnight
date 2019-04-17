@@ -36,13 +36,15 @@ public class Player extends Creature{
 		int tempx = x, tempy = y;
 		if (mag != 0) {
 			x += dx*speed/mag;
-			y += dy*speed/mag;
 			setHitboxAttrb(x,y,width,height);
 			if (checkCollide()) {
 				x = tempx;
+			}
+			y += dy*speed/mag;
+			setHitboxAttrb(x,y,width,height);
+			if (checkCollide()) {
 				y = tempy;
 			}
-			
 //			handler.getCamera().move(dx*speed/mag, dy*speed/mag);
 		}else if(checkCollide()) {}
 //		if (checkCollide()) {
