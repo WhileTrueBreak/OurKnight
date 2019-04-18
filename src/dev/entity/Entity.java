@@ -9,9 +9,8 @@ public abstract class Entity {
 	
 	public static int width = 32, height = 32;
 	
-	public int x;
-
-	protected int y;
+	protected int x,y;
+	protected boolean isSolid;
 	protected Handler handler;
 	protected Rectangle hitbox;
 	
@@ -19,6 +18,7 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		this.handler = handler;
+		isSolid = false;
 		hitbox = new Rectangle(x, y, width, height);
 	}	
 	public abstract void update();
@@ -31,6 +31,10 @@ public abstract class Entity {
 
 	public int getY() {
 		return y;
+	}
+	
+	public boolean isSolid() {
+		return isSolid;
 	}
 
 	public Rectangle getHitbox() {

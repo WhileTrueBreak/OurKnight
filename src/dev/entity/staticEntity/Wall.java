@@ -9,6 +9,7 @@ public class Wall extends StaticEntity{
 
     public Wall(Handler handler, int x, int y, int width, int height, int spriteID) {
         super(handler, x, y, width, height, spriteID);
+        isSolid = true;
     }
     
     @Override
@@ -22,8 +23,8 @@ public class Wall extends StaticEntity{
         g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
         g.setColor(new Color(0,255,255));
         g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
-        g.setColor(new Color(0, 0, 255));
-		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
+//        g.setColor(new Color(0, 0, 255));
+//		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
     }
 
 	@Override

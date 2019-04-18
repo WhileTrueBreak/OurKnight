@@ -57,7 +57,7 @@ public class Player extends Creature{
 		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
 			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
 				e.onCollision();
-				return true;
+				if (e.isSolid()) return true;
 			}else {
 				continue;
 			}
@@ -78,14 +78,23 @@ public class Player extends Creature{
 	public void render(Graphics g) {
 		g.setColor(new Color(255, 0, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
-		g.setColor(new Color(0, 0, 255));
-		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
+//		g.setColor(new Color(0, 0, 255));
+//		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
 	}
 
 	@Override
 	public void onCollision() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public int getHealth() {
+		// TODO Auto-generated method stub
+		return health;
+	}
+	
+	public void remHealth(int a) {
+		health -= a;
 	}
 
 }

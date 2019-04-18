@@ -15,6 +15,8 @@ import dev.entity.staticEntity.Trap;
 import dev.entity.staticEntity.Wall;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
+import dev.ui.Health;
+import dev.ui.UIManager;
 import dev.utils.Utils;
 
 public class World {
@@ -23,6 +25,7 @@ public class World {
 	EnemyManager enemyManager;
 	StaticEntityManager staticEntityManager;
 	EntityManager entities;
+	UIManager ui;
 	
 	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
@@ -39,15 +42,25 @@ public class World {
 		enemyManager = new EnemyManager(handler);
 		staticEntityManager = new StaticEntityManager(handler);
 		entities = new EntityManager();
+		ui = new UIManager(handler);
 		
 		player = new Player(handler, 400, 400);
 //		new WallSpawner(handler, 2*Tile.tile_width, 45, 0);
-//		enemyManager.addEnemy(new BasicEnemy(handler,500,500));
+		enemyManager.addEnemy(new BasicEnemy(handler,500,500));
 		entities.addEntity(player);
+		ui.addUI(new Health(handler, 30, 30));
 		
 		loadWorld(path);
 	}
 	
+	public UIManager getUIManager() {
+		return ui;
+	}
+
+	public void setUIManager(UIManager ui) {
+		this.ui = ui;
+	}
+
 	private void loadWorld(String path) {
         String file = Utils.loadFile(path);
         String[] tokens = file.split("\\s+");
@@ -78,9 +91,11 @@ public class World {
 		for(Tile t:tiles) {
 			t.update();
 		}
-		staticEntityManager.update();
-		player.update();
-		enemyManager.update();
+		entities.update();
+		ui.update();
+//		staticEntityManager.update();
+//		player.update();
+//		enemyManager.update();
 	}
 	
 	public void render(Graphics g) {
@@ -88,6 +103,7 @@ public class World {
 			t.render(g);
 		}
 		entities.render(g);
+		ui.render(g);
 //		staticEntityManager.render(g);
 //		player.render(g);
 //		enemyManager.render(g);
