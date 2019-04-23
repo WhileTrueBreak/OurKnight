@@ -19,7 +19,7 @@ public class BasicEnemy extends Enemy{
 	public BasicEnemy(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 3;
+		speed = 2;
 	}
 	
 //	private Rectangle hitbox = new Rectangle(x, y, width, height);
@@ -33,8 +33,17 @@ public class BasicEnemy extends Enemy{
 			dx = dx*speed/mag;
 			dy = dy*speed/mag;
 		}
+		int tempx = x, tempy = y;
 		x += dx;
+		setHitboxAttrb(x,y,width,height);
+		if (checkCollide()) {
+			x = tempx;
+		}
 		y += dy;
+		setHitboxAttrb(x,y,width,height);
+		if (checkCollide()) {
+			y = tempy;
+		}
 	}
 	
 //	public Rectangle getHitbox() {
@@ -64,7 +73,7 @@ public class BasicEnemy extends Enemy{
 			startTimer(2);
 		}else {
 			System.out.println("hit");
-			handler.getWorld().getPlayer().setHealth(handler.getWorld().getPlayer().getHealth()-1);
+			handler.getPlayer().setHealth(handler.getWorld().getPlayer().getHealth()-1);
 			startTimer(2);
 		}
 	}

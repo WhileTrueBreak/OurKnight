@@ -53,17 +53,17 @@ public class Player extends Creature{
 //		}
 	}
 	
-	private boolean checkCollide() {
-		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
-			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
-				e.onCollision();
-				if (e.isSolid()) return true;
-			}else {
-				continue;
-			}
-		}
-		return false;
-	}
+//	private boolean checkCollide() {
+//		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
+//			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
+//				e.onCollision();
+//				if (e.isSolid()) return true;
+//			}else {
+//				continue;
+//			}
+//		}
+//		return false;
+//	}
 	
 	@Override
 	public void update() {

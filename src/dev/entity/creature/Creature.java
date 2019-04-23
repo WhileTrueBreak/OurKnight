@@ -13,4 +13,16 @@ public abstract class Creature extends Entity{
 	
 	protected int width = 32, height = 32;
 	
+	protected boolean checkCollide() {
+		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
+			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
+				e.onCollision();
+				if (e.isSolid()) return true;
+			}else {
+				continue;
+			}
+		}
+		return false;
+	}
+	
 }

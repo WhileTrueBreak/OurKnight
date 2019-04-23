@@ -11,7 +11,7 @@ public class Health extends UI {
 
 	public Health(Handler handler, int x, int y) {
 		super(handler, x, y);
-		fullhealth = handler.getWorld().getPlayer().getHealth();
+		fullhealth = handler.getPlayer().getHealth();
 		// TODO Auto-generated constructor stub
 	}
 
