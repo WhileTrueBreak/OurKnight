@@ -29,9 +29,4 @@ public class Health extends UI {
 		g.setColor(new Color(0));
 		g.drawRect(x, y, 400, 20);
 	}
-	
-	public void removeHealth(int a) {
-		handler.getWorld().getPlayer().remHealth(a);
-	}
-
 }

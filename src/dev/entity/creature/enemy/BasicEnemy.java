@@ -64,11 +64,7 @@ public class BasicEnemy extends Enemy{
 			startTimer(2);
 		}else {
 			System.out.println("hit");
-			for (UI health:handler.getWorld().getUIManager().getUI()) {
-				if (health instanceof Health) {
-					((Health) health).removeHealth(1);
-				}
-			}
+			handler.getWorld().getPlayer().setHealth(handler.getWorld().getPlayer().getHealth()-1);
 			startTimer(2);
 		}
 	}
