@@ -21,6 +21,8 @@ import dev.utils.Utils;
 
 public class World {
 	
+	public static int WORLD_SECTOR_WIDTH = 100, WORLD_SECTOR_HEIGHT = 100;
+	
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;

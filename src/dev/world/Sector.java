@@ -39,5 +39,13 @@ public class Sector {
 		}
 		staticEntityManager.render(g);
 	}
+
+	public int getSectorX() {
+		return sectorX;
+	}
+
+	public int getSectorY() {
+		return sectorY;
+	}
 	
 }
