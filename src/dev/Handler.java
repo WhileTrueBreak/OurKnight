@@ -35,7 +35,7 @@ public class Handler {
 		return main.getWidth();
 	}
 
-	public int getHeight() {
+	public int getHeight() {//hello
 		return main.getHeight();
 	}
 	
