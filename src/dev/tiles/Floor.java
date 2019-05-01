@@ -20,9 +20,9 @@ public class Floor extends Tile{
 	@Override
 	public void render(Graphics g) {
 		g.setColor(new Color(0,200,200));
-		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), Tile.tile_width, Tile.tile_height);
+		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 		g.setColor(new Color(0,255,255));
-		g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), Tile.tile_width, Tile.tile_height);
+		g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), Tile.TILE_WIDTH, Tile.TILE_HEIGHT);
 	}
 
 }

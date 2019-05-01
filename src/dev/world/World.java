@@ -53,7 +53,19 @@ public class World {
 	}
 
 	private void loadWorld() {
-		
+		int[][] tileMap = new int[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
+		for(int x = 0;x < tileMap.length;x++) {
+			for(int y = 0;y < tileMap[x].length;y++) {
+				tileMap[x][y] = 1;
+			}
+		}
+		for(int x = 0;x < WORLD_SECTOR_WIDTH;x++) {
+			for(int y = 0;y < WORLD_SECTOR_HEIGHT;y++) {
+				Sector sector = new Sector(handler, x, y);
+				sector.loadSectorTiles(tileMap, x*Sector.SECTOR_WIDTH, y*Sector.SECTOR_HEIGHT);
+				sectorManager.addSector(sector);
+			}
+		}
 	}
 	
 	public void update() {
