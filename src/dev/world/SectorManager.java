@@ -4,10 +4,16 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.tiles.Tile;
 
 public class SectorManager {
+	
 	ArrayList<Sector> sectors = new ArrayList<Sector>();
+	
+	private Handler handler;
+	
 	public SectorManager(Handler handler) {
+		this.handler = handler;
 		for(int i = 0;i < World.WORLD_SECTOR_HEIGHT*World.WORLD_SECTOR_WIDTH;i++) {
 			sectors.add(null);
 		}
@@ -23,7 +29,11 @@ public class SectorManager {
 	public void render(Graphics g) {
 		for(Sector s:sectors) {
 			if(s != null)
-				s.render(g);
+				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight() &&
+						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > 0 &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
+					s.render(g);
 		}
 	}
 	
