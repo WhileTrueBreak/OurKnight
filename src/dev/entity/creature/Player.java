@@ -15,6 +15,7 @@ public class Player extends Creature{
 		super(handler, x, y);
 		health = 10;
 		speed = 4;//pixels per frame
+		handler.getCamera().focusOnEntity(this, 0);
 	}
 	
 //	private Rectangle hitbox = new Rectangle(x,y,width,height);
@@ -49,7 +50,7 @@ public class Player extends Creature{
 	@Override
 	public void update() {
 		move();
-		handler.getCamera().focusOnEntity(this);
+		handler.getCamera().focusOnEntity(this, 10);
 	}
 
 	@Override

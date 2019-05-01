@@ -14,11 +14,14 @@ public class Camera {
 		this.yoff = yoff;
 	}
 	
-	public void focusOnEntity(Entity e) {
-		float cameraSpring = 10;
+	public void focusOnEntity(Entity e, int spring) {
+		float cameraSpring = spring;
 		float setX = e.getX()-handler.getMain().getWidth()/2;
 		float setY = e.getY() - handler.getMain().getHeight()/2;
-		move((setX-xoff)/cameraSpring, (setY-yoff)/cameraSpring);
+		if(cameraSpring == 0)
+			move((setX-xoff), (setY-yoff));
+		else
+			move((setX-xoff)/cameraSpring, (setY-yoff)/cameraSpring);
 	}
 	
 	public void move(float amtx, float amty) {
