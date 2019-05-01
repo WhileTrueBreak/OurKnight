@@ -11,7 +11,7 @@ public class GameState extends State{
 	private Handler handler;
 	
 	public GameState(Handler handler) {
-		world = new World(handler, "res/world/game.world");
+		world = new World(handler);
 		this.handler = handler;
 	}
 

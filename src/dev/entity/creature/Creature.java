@@ -1,5 +1,7 @@
 package dev.entity.creature;
 
+import java.awt.Rectangle;
+
 import dev.Handler;
 import dev.entity.Entity;
 
@@ -15,9 +17,15 @@ public abstract class Creature extends Entity{
 	
 	protected boolean checkCollide() {
 		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
-			if (getHitbox().getBounds().intersects(e.getHitbox().getBounds()) && e != this) {
+			Rectangle b1 = getHitbox().getBounds(), b2 = e.getHitbox().getBounds();
+			b1.x = (int) x;
+			b1.y = (int) y;
+			b2.x = (int) e.getX();
+			b2.y = (int) e.getY();
+			if (b1.intersects(b2) && e != this) {
 				e.onCollision();
-				if (e.isSolid()) return true;
+				if (e.isSolid()) 
+					return true;
 			}else {
 				continue;
 			}

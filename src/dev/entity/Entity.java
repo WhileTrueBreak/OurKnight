@@ -9,7 +9,7 @@ public abstract class Entity {
 	
 	public static int width = 32, height = 32;
 	
-	protected int x,y;
+	protected float x,y;
 	protected boolean isSolid;
 	protected Handler handler;
 	protected Rectangle hitbox;
@@ -19,17 +19,17 @@ public abstract class Entity {
 		this.y = y;
 		this.handler = handler;
 		isSolid = false;
-		hitbox = new Rectangle(x, y, width, height);
+		hitbox = new Rectangle(0, 0, width, height);
 	}	
 	public abstract void update();
 	
 	public abstract void render(Graphics g);
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 	

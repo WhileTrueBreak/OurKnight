@@ -23,12 +23,9 @@ public class World {
 	
 	//managers
 	EnemyManager enemyManager;
-	StaticEntityManager staticEntityManager;
+	SectorManager sectorManager;
 	EntityManager entities;
 	UIManager ui;
-	
-	//tiles
-	ArrayList<Tile>tiles = new ArrayList<Tile>();
 	
 	//player
 	private Player player;
@@ -36,61 +33,29 @@ public class World {
 	//handler
 	private Handler handler;
 	
-	public World(Handler handler, String path) {
+	public World(Handler handler) {
 		this.handler = handler;
 		handler.setWorld(this);
+		
+		sectorManager = new SectorManager(handler);
+		
 		enemyManager = new EnemyManager(handler);
-		staticEntityManager = new StaticEntityManager(handler);
 		entities = new EntityManager();
 		ui = new UIManager(handler);
 		
 		player = new Player(handler, 400, 400);
-//		new WallSpawner(handler, 2*Tile.tile_width, 45, 0);
-		enemyManager.addEnemy(new BasicEnemy(handler,500,500));
 		entities.addEntity(player);
-		ui.addUI(new Health(handler, 30, 30));
+		//ui.addUI(new Health(handler, 30, 30));
 		
-		loadWorld(path);
-	}
-	
-	public UIManager getUIManager() {
-		return ui;
+		loadWorld();
 	}
 
-	public void setUIManager(UIManager ui) {
-		this.ui = ui;
+	private void loadWorld() {
+		
 	}
-
-	private void loadWorld(String path) {
-        String file = Utils.loadFile(path);
-        String[] tokens = file.split("\\s+");
-        int width = Utils.parseInt(tokens[0]);
-        int height = Utils.parseInt(tokens[1]);
-        for(int y = 0;y < height;y++) {
-            for(int x = 0;x < width;x++) {
-                switch(Utils.parseInt(tokens[x+y*width+2])) {
-                case 0:
-                    StaticEntity wall = new Wall(handler, x*Entity.width, y*Entity.height, Entity.width, Entity.height, 0);
-                    handler.getWorld().getStaticEntityManager().addStaticEntity(wall);
-                    handler.getWorld().getEntityManager().addEntity(wall);
-                    break;
-                case 1:
-                    tiles.add(new Floor(handler, x*Tile.tile_width, y*Tile.tile_height, 0));
-                    break;
-                case 2:
-                    StaticEntity trap = new Trap(handler, x*Entity.width, y*Entity.height, Entity.width, Entity.height, 0);
-                    handler.getWorld().getStaticEntityManager().addStaticEntity(trap);
-                    handler.getWorld().getEntityManager().addEntity(trap);
-                    break;
-                }
-            }
-        }
-    }
 	
 	public void update() {
-		for(Tile t:tiles) {
-			t.update();
-		}
+		sectorManager.update();
 		entities.update();
 		ui.update();
 //		staticEntityManager.update();
@@ -99,9 +64,7 @@ public class World {
 	}
 	
 	public void render(Graphics g) {
-		for(Tile t:tiles) {
-			t.render(g);
-		}
+		sectorManager.render(g);
 		entities.render(g);
 		ui.render(g);
 //		staticEntityManager.render(g);
@@ -117,12 +80,17 @@ public class World {
 		return enemyManager;
 	}
 
-	public StaticEntityManager getStaticEntityManager() {
-		return staticEntityManager;
-	}
-
 	public EntityManager getEntityManager() {
 		return entities;
+	}
+	
+
+	public UIManager getUIManager() {
+		return ui;
+	}
+
+	public void setUIManager(UIManager ui) {
+		this.ui = ui;
 	}
 	
 }

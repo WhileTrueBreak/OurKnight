@@ -11,7 +11,7 @@ public class LobbyState extends State{
 	private Handler handler;
 	
 	public LobbyState(Handler handler) {
-		world = new World(handler, "res/world/lobby.world");
+		world = new World(handler);
 		this.handler = handler;
 	}
 	
