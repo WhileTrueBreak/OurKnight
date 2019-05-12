@@ -14,24 +14,24 @@ public class Sector {
 
 	public static final int SECTOR_WIDTH = 16, SECTOR_HEIGHT = 16;
 	public static final int SECTOR_PIXEL_WIDTH = 16*Tile.TILE_WIDTH, SECTOR_PIXEL_HEIGHT = 16*Tile.TILE_HEIGHT;
-	
+
 	//managers
 	StaticEntityManager staticEntityManager;
-	
+
 	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
-	
+
 	private Handler handler;
 	private int sectorX, sectorY;
-	
+
 	public Sector(Handler handler, int x, int y) {
 		this.handler = handler;
 		sectorX = x;
 		sectorY = y;
 		staticEntityManager = new StaticEntityManager(handler);
-		
+
 	}
-	
+
 	public void loadSectorTiles(int[][] tileMap, StaticEntity[][] staticMap, int x, int y) {
 		for(int i = x;i < x+SECTOR_WIDTH;i++) {
 			for(int j = y;j < y+SECTOR_HEIGHT;j++) {
@@ -42,14 +42,14 @@ public class Sector {
 			}
 		}
 	}
-	
+
 	public void update() {
 		for(Tile t:tiles) {
 			t.update();
 		}
 		staticEntityManager.update();
 	}
-	
+
 	public void render(Graphics g) {
 		for(Tile t:tiles) {
 			t.render(g);
@@ -62,8 +62,6 @@ public class Sector {
 					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
 		staticEntityManager.render(g);
-		g.setColor(new Color(255, 0, 0));
-		g.drawRect((int)(sectorX*SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff()), (int)(sectorY*SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff()), SECTOR_WIDTH*Tile.TILE_WIDTH, SECTOR_HEIGHT*Tile.TILE_HEIGHT);
 	}
 
 	public int getSectorX() {
@@ -73,5 +71,5 @@ public class Sector {
 	public int getSectorY() {
 		return sectorY;
 	}
-	
+
 }
