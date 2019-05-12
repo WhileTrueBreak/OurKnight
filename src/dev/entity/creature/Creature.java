@@ -15,7 +15,7 @@ public abstract class Creature extends Entity{
 	
 	protected int width = 32, height = 32;
 	
-	protected boolean checkCollide() {
+	protected boolean collided() {
 		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
 			if(Math.hypot(x-e.getX(), y-e.getY()) < Math.hypot(handler.getWidth()/2, handler.getHeight()/2))
 				continue;

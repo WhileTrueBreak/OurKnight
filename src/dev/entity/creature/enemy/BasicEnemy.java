@@ -34,11 +34,11 @@ public class BasicEnemy extends Enemy{
 		
 		float tempx = x, tempy = y;
 		x += dx;
-		if (checkCollide()) {
+		if (collided()) {
 			x = tempx;
 		}
 		y += dy;
-		if (checkCollide()) {
+		if (collided()) {
 			y = tempy;
 		}
 	}
