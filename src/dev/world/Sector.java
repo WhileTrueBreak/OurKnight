@@ -1,5 +1,6 @@
 package dev.world;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import dev.tiles.Tile;
 public class Sector {
 
 	public static final int SECTOR_WIDTH = 16, SECTOR_HEIGHT = 16;
+	public static final int SECTOR_PIXEL_WIDTH = 16*Tile.TILE_WIDTH, SECTOR_PIXEL_HEIGHT = 16*Tile.TILE_HEIGHT;
 	
 	//managers
 	StaticEntityManager staticEntityManager;
@@ -50,6 +52,13 @@ public class Sector {
 	public void render(Graphics g) {
 		for(Tile t:tiles) {
 			t.render(g);
+		}
+		if((int)(handler.getPlayer().getX()/SECTOR_PIXEL_WIDTH) == sectorX && 
+				(int)(handler.getPlayer().getY()/SECTOR_PIXEL_HEIGHT) == sectorY) {
+			g.setColor(new Color(0, 0, 255));
+			g.drawRect((int)(sectorX*SECTOR_PIXEL_WIDTH-handler.getCamera().getXoff()),
+					(int)(sectorY*SECTOR_PIXEL_HEIGHT-handler.getCamera().getYoff()),
+					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
 		staticEntityManager.render(g);
 	}

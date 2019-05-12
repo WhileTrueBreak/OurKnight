@@ -51,7 +51,7 @@ public class World {
 		
 		loadWorld();
 	}
-
+	
 	private void loadWorld() {
 		int[][] tileMap = new int[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
 		for(int x = 0;x < tileMap.length;x++) {
