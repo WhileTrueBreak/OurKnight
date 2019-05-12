@@ -62,8 +62,16 @@ public class World {
 				sectorManager.addSector(sector);
 			}
 		}
-		//load walls
 		ArrayList<StaticEntity>staticEntities = new ArrayList<StaticEntity>();
+		//load borber walls
+		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
+			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
+				if(x == 0 || y== 0 || x == WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH-1 || y == WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT-1) {
+					staticEntities.add(new Wall(handler, x*Tile.TILE_WIDTH, y*Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0));
+				}
+			}
+		}
+		//load walls
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
 				if(Math.random() < 0.1f) {
@@ -75,7 +83,7 @@ public class World {
 		for(StaticEntity e:staticEntities) {
 			int sectorX = (int)(e.getX()/Sector.SECTOR_PIXEL_WIDTH);
 			int sectorY = (int)(e.getY()/Sector.SECTOR_PIXEL_HEIGHT);
-			
+
 			sectorManager.getSector(sectorX, sectorY).getStaticEntityManager().addStaticEntity(e);
 		}
 	}
