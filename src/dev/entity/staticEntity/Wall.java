@@ -30,7 +30,6 @@ public class Wall extends StaticEntity{
 	@Override
 	public void onCollision() {
 		// TODO Auto-generated method stub
-		System.out.println("wall");
 	}
 
 }

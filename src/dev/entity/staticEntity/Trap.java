@@ -26,6 +26,5 @@ public class Trap extends StaticEntity{
 	@Override
 	public void onCollision() {
 		// TODO Auto-generated method stub
-		
 	}
 }

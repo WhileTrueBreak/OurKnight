@@ -14,7 +14,7 @@ import dev.ui.UIManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 4, WORLD_SECTOR_HEIGHT = 4;
+	public static int WORLD_SECTOR_WIDTH = 10, WORLD_SECTOR_HEIGHT = 10;
 
 	//managers
 	EnemyManager enemyManager;
@@ -46,6 +46,7 @@ public class World {
 	}
 
 	private void loadWorld() {
+		long startTime = System.currentTimeMillis();
 		//loading Tiles
 		int[][] tileMap = new int[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
 		for(int x = 0;x < tileMap.length;x++) {
@@ -71,6 +72,8 @@ public class World {
 				}
 			}
 		}
+		save(staticEntities);
+		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
@@ -79,15 +82,22 @@ public class World {
 				}
 			}
 		}
+		save(staticEntities);
+		staticEntities = new ArrayList<StaticEntity>();
+		System.out.println("Time taken: " + (System.currentTimeMillis()-startTime));
+	}
+	
+	//TODO refactor this method
+	private void save (ArrayList<StaticEntity> entities) {
 		//putting  static entities into sectors
-		for(StaticEntity e:staticEntities) {
+		for(StaticEntity e:entities) {
 			int sectorX = (int)(e.getX()/Sector.SECTOR_PIXEL_WIDTH);
 			int sectorY = (int)(e.getY()/Sector.SECTOR_PIXEL_HEIGHT);
 
 			sectorManager.getSector(sectorX, sectorY).getStaticEntityManager().addStaticEntity(e);
 		}
 	}
-
+	
 	public void update() {
 		sectorManager.update();
 		entities.update();
