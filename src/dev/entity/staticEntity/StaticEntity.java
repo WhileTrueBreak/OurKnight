@@ -7,7 +7,7 @@ public abstract class StaticEntity extends Entity{
 
 	protected int width, height;
 	
-	protected boolean destructible = false;
+	protected boolean isDestructible = false;
 	protected int health = 1;
 	
 	protected int spriteID;
