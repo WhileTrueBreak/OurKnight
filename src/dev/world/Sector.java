@@ -32,7 +32,10 @@ public class Sector {
 
 	}
 
-	public void loadSectorTiles(int[][] tileMap, StaticEntity[][] staticMap, int x, int y) {
+	public void loadSectorTiles(int[][] tileMap, ArrayList<StaticEntity> staticEntities, int x, int y) {
+		for(StaticEntity e:staticEntities){
+			staticEntityManager.addStaticEntity(e);
+		}
 		for(int i = x;i < x+SECTOR_WIDTH;i++) {
 			for(int j = y;j < y+SECTOR_HEIGHT;j++) {
 				if(tileMap[i][j] == 1) {
@@ -70,6 +73,10 @@ public class Sector {
 
 	public int getSectorY() {
 		return sectorY;
+	}
+
+	public StaticEntityManager getStaticEntityManager() {
+		return staticEntityManager;
 	}
 
 }

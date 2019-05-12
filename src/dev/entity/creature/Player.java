@@ -13,34 +13,41 @@ public class Player extends Creature{
 		speed = 4;//pixels per frame
 		handler.getCamera().focusOnEntity(this, 0);
 	}
-	
+
 	private void move() {
 		boolean up = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_W);
 		boolean left = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_A);
 		boolean down = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_S);
 		boolean right = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_D);
-		
+
 		float dx = 0, dy = 0;
-		
+
 		if (up) dy --;
 		if (down) dy ++;
 		if (left) dx --;
 		if (right) dx ++;
-		
+
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		float tempx = x, tempy = y;
-		if (mag != 0) {
+		if (mag != 0 && !checkCollide()) {
+			//TODO fix collison so the player can move right next to the wall
 			x += dx*speed/mag;
 			if (checkCollide()) {
 				x = tempx;
+				while(!checkCollide()) {
+					x += 0.01f*Math.signum(dx*speed/mag);
+				}
 			}
 			y += dy*speed/mag;
 			if (checkCollide()) {
 				y = tempy;
+				while(!checkCollide()) {
+					y += 0.01f*Math.signum(dy*speed/mag);
+				}
 			}
-		}else if(checkCollide()) {}
+		}
 	}
-	
+
 	@Override
 	public void update() {
 		move();
@@ -56,14 +63,14 @@ public class Player extends Creature{
 	@Override
 	public void onCollision() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public int getHealth() {
 		// TODO Auto-generated method stub
 		return health;
 	}
-	
+
 	public void setHealth(int a) {
 		health = a;
 	}
