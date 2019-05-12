@@ -29,21 +29,15 @@ public class Player extends Creature{
 
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		float tempx = x, tempy = y;
-		if (mag != 0 && !collided()) {
+		if (mag != 0) {
 			//TODO fix collison so the player can move right next to the wall
 			x += dx*speed/mag;
 			if (collided()) {
 				x = tempx;
-				while(!collided()) {
-					x += 0.01f*Math.signum(dx*speed/mag);
-				}
 			}
 			y += dy*speed/mag;
 			if (collided()) {
 				y = tempy;
-				while(!collided()) {
-					y += 0.01f*Math.signum(dy*speed/mag);
-				}
 			}
 		}
 	}

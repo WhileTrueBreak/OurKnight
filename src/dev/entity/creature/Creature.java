@@ -17,8 +17,9 @@ public abstract class Creature extends Entity{
 	
 	protected boolean collided() {
 		for (Entity e:handler.getWorld().getEntityManager().getEntities()) {
-			if(Math.hypot(x-e.getX(), y-e.getY()) < Math.hypot(handler.getWidth()/2, handler.getHeight()/2))
+			if(Math.hypot(x-e.getX(), y-e.getY()) > 1000) {
 				continue;
+			}
 			Rectangle b1 = getHitbox().getBounds(), b2 = e.getHitbox().getBounds();
 			b1.x = (int) x;
 			b1.y = (int) y;
