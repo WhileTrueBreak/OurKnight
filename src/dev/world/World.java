@@ -128,6 +128,9 @@ public class World {
 		return entities;
 	}
 
+	public SectorManager getSectorManager() {
+		return sectorManager;
+	}
 
 	public UIManager getUIManager() {
 		return ui;
