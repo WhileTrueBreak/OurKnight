@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
 import dev.tiles.Floor;
 import dev.tiles.Tile;
@@ -31,7 +32,7 @@ public class Sector {
 		
 	}
 	
-	public void loadSectorTiles(int[][] tileMap, int x, int y) {
+	public void loadSectorTiles(int[][] tileMap, StaticEntity[][] staticMap, int x, int y) {
 		for(int i = x;i < x+SECTOR_WIDTH;i++) {
 			for(int j = y;j < y+SECTOR_HEIGHT;j++) {
 				if(tileMap[i][j] == 1) {
@@ -61,6 +62,8 @@ public class Sector {
 					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
 		staticEntityManager.render(g);
+		g.setColor(new Color(255, 0, 0));
+		g.drawRect((int)(sectorX*SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff()), (int)(sectorY*SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff()), SECTOR_WIDTH*Tile.TILE_WIDTH, SECTOR_HEIGHT*Tile.TILE_HEIGHT);
 	}
 
 	public int getSectorX() {

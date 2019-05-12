@@ -1,27 +1,17 @@
 package dev.world;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.Entity;
 import dev.entity.EntityManager;
 import dev.entity.creature.Player;
-import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
-import dev.entity.staticEntity.StaticEntityManager;
-import dev.entity.staticEntity.Trap;
-import dev.entity.staticEntity.Wall;
-import dev.tiles.Floor;
-import dev.tiles.Tile;
-import dev.ui.Health;
 import dev.ui.UIManager;
-import dev.utils.Utils;
 
 public class World {
 	
-	public static int WORLD_SECTOR_WIDTH = 100, WORLD_SECTOR_HEIGHT = 100;
+	public static int WORLD_SECTOR_WIDTH = 4, WORLD_SECTOR_HEIGHT = 4;
 	
 	//managers
 	EnemyManager enemyManager;
@@ -53,6 +43,7 @@ public class World {
 	}
 	
 	private void loadWorld() {
+		StaticEntity[][] staticMap = new StaticEntity[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
 		int[][] tileMap = new int[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
 		for(int x = 0;x < tileMap.length;x++) {
 			for(int y = 0;y < tileMap[x].length;y++) {
@@ -62,7 +53,7 @@ public class World {
 		for(int x = 0;x < WORLD_SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT;y++) {
 				Sector sector = new Sector(handler, x, y);
-				sector.loadSectorTiles(tileMap, x*Sector.SECTOR_WIDTH, y*Sector.SECTOR_HEIGHT);
+				sector.loadSectorTiles(tileMap, staticMap, x*Sector.SECTOR_WIDTH, y*Sector.SECTOR_HEIGHT);
 				sectorManager.addSector(sector);
 			}
 		}
@@ -106,5 +97,7 @@ public class World {
 	public void setUIManager(UIManager ui) {
 		this.ui = ui;
 	}
+	
+	
 	
 }

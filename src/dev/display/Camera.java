@@ -2,6 +2,9 @@ package dev.display;
 
 import dev.Handler;
 import dev.entity.Entity;
+import dev.tiles.Tile;
+import dev.world.Sector;
+import dev.world.World;
 
 public class Camera {
 	
@@ -27,6 +30,10 @@ public class Camera {
 	public void move(float amtx, float amty) {
 		xoff += amtx;
 		yoff += amty;
+		if (xoff < 0) xoff=0;
+		if (yoff < 0) yoff=0;
+		if (xoff > World.WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getWidth()) xoff=World.WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getWidth();
+		if (yoff > World.WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getHeight()) yoff=World.WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getHeight();
 	}
 
 	public float getXoff() {

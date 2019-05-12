@@ -2,12 +2,8 @@ package dev.entity.creature;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.awt.geom.Area;
-
 import dev.Handler;
-import dev.entity.Entity;
 
 public class Player extends Creature{
 
@@ -17,8 +13,6 @@ public class Player extends Creature{
 		speed = 4;//pixels per frame
 		handler.getCamera().focusOnEntity(this, 0);
 	}
-	
-//	private Rectangle hitbox = new Rectangle(x,y,width,height);
 	
 	private void move() {
 		boolean up = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_W);
