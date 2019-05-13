@@ -96,22 +96,18 @@ public class World {
 	}
 	
 	public void update() {
-		
 		sectorManager.update();
 		player.update();
 		ui.update();
-		
 		//		staticEntityManager.update();
 		//		player.update();
 		//		enemyManager.update();
 	}
 
 	public void render(Graphics g) {
-		long st = System.currentTimeMillis();
 		sectorManager.render(g);
 		player.render(g);
 		ui.render(g);
-		System.out.println("time: " + (System.currentTimeMillis()-st));
 		//		staticEntityManager.render(g);
 		//		player.render(g);
 		//		enemyManager.render(g);
