@@ -99,18 +99,12 @@ public class World {
 		sectorManager.update();
 		player.update();
 		ui.update();
-		//		staticEntityManager.update();
-		//		player.update();
-		//		enemyManager.update();
 	}
 
 	public void render(Graphics g) {
 		sectorManager.render(g);
 		player.render(g);
 		ui.render(g);
-		//		staticEntityManager.render(g);
-		//		player.render(g);
-		//		enemyManager.render(g);
 	}
 
 	public Player getPlayer() {
