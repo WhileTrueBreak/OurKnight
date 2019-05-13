@@ -20,13 +20,20 @@ public class SectorManager {
 	}
 	
 	public void update() {
+		
 		for(Sector s:sectors) {
 			if(s != null)
-				s.update();
+				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth()*2 &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight()*2 &&
+						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > -handler.getWidth() &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > -handler.getHeight())
+					s.update();
 		}
+		
 	}
 	
 	public void render(Graphics g) {
+		
 		for(Sector s:sectors) {
 			if(s != null)
 				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
@@ -35,6 +42,7 @@ public class SectorManager {
 						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
 					s.render(g);
 		}
+		
 	}
 	
 	public Sector getSector(int x, int y) {

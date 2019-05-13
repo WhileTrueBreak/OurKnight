@@ -17,7 +17,7 @@ public class Sector {
 
 	//managers
 	StaticEntityManager staticEntityManager;
-
+ 
 	//tiles
 	ArrayList<Tile>tiles = new ArrayList<Tile>();
 

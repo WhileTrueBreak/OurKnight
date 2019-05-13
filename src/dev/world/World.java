@@ -19,7 +19,7 @@ public class World {
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
-	EntityManager entities;
+	EntityManager entityManager;
 	UIManager ui;
 
 	//player
@@ -35,11 +35,11 @@ public class World {
 		sectorManager = new SectorManager(handler);
 
 		enemyManager = new EnemyManager(handler);
-		entities = new EntityManager();
+		entityManager = new EntityManager();
 		ui = new UIManager(handler);
 
 		player = new Player(handler, 400, 400);
-		entities.addEntity(player);
+		entityManager.addEntity(player);
 		//ui.addUI(new Health(handler, 30, 30));
 
 		loadWorld();
@@ -99,18 +99,22 @@ public class World {
 	}
 	
 	public void update() {
+		
 		sectorManager.update();
-		entities.update();
+		entityManager.update();
 		ui.update();
+		
 		//		staticEntityManager.update();
 		//		player.update();
 		//		enemyManager.update();
 	}
 
 	public void render(Graphics g) {
+		long st = System.currentTimeMillis();
 		sectorManager.render(g);
-		entities.render(g);
+		entityManager.render(g);
 		ui.render(g);
+		System.out.println("time: " + (System.currentTimeMillis()-st));
 		//		staticEntityManager.render(g);
 		//		player.render(g);
 		//		enemyManager.render(g);
@@ -125,7 +129,7 @@ public class World {
 	}
 
 	public EntityManager getEntityManager() {
-		return entities;
+		return entityManager;
 	}
 
 	public SectorManager getSectorManager() {

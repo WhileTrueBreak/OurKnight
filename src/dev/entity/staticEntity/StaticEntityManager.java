@@ -29,12 +29,12 @@ public class StaticEntityManager {
 	
 	public void addStaticEntity(StaticEntity e) {
 		staticEntities.add(e);
-		handler.getWorld().getEntityManager().addEntity(e);
+		//handler.getWorld().getEntityManager().addEntity(e);
 	}
 	
 	public void removeStaticEntity(StaticEntity e) {
 		staticEntities.remove(e);
-		handler.getWorld().getEntityManager().removeEntity(e);
+		//handler.getWorld().getEntityManager().removeEntity(e);
 	}
 	
 	public ArrayList<StaticEntity> getStaticEntities(){
