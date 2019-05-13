@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.EntityManager;
+
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
@@ -19,7 +19,6 @@ public class World {
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
-	EntityManager entityManager;
 	UIManager ui;
 
 	//player
@@ -35,11 +34,9 @@ public class World {
 		sectorManager = new SectorManager(handler);
 
 		enemyManager = new EnemyManager(handler);
-		entityManager = new EntityManager();
 		ui = new UIManager(handler);
 
 		player = new Player(handler, 400, 400);
-		entityManager.addEntity(player);
 		//ui.addUI(new Health(handler, 30, 30));
 
 		loadWorld();
@@ -101,7 +98,7 @@ public class World {
 	public void update() {
 		
 		sectorManager.update();
-		entityManager.update();
+		player.update();
 		ui.update();
 		
 		//		staticEntityManager.update();
@@ -112,7 +109,7 @@ public class World {
 	public void render(Graphics g) {
 		long st = System.currentTimeMillis();
 		sectorManager.render(g);
-		entityManager.render(g);
+		player.render(g);
 		ui.render(g);
 		System.out.println("time: " + (System.currentTimeMillis()-st));
 		//		staticEntityManager.render(g);
@@ -126,10 +123,6 @@ public class World {
 
 	public EnemyManager getEnemyManager() {
 		return enemyManager;
-	}
-
-	public EntityManager getEntityManager() {
-		return entityManager;
 	}
 
 	public SectorManager getSectorManager() {

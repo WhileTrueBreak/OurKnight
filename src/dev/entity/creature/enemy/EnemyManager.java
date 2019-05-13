@@ -29,12 +29,10 @@ public class EnemyManager {
 	
 	public void addEnemy(Enemy e) {
 		enemies.add(e);
-		handler.getWorld().getEntityManager().addEntity(e);
 	}
 	
 	public void removeEnemy(Enemy e) {
 		enemies.remove(e);
-		handler.getWorld().getEntityManager().removeEntity(e);
 	}
 	
 	public ArrayList<Enemy> getEnemies(){
