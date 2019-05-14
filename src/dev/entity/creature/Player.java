@@ -3,7 +3,9 @@ package dev.entity.creature;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+
 import dev.Handler;
+import dev.entity.Entity;
 
 public class Player extends Creature{
 
@@ -55,7 +57,7 @@ public class Player extends Creature{
 	}
 
 	@Override
-	public void onCollision() {
+	public void onCollision(Entity e) {
 		// TODO Auto-generated method stub
 
 	}

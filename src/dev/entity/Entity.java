@@ -47,7 +47,7 @@ public abstract class Entity {
 		hitbox.height = height;
 	}
 	
-	public abstract void onCollision();
+	public abstract void onCollision(Entity e);
 
 	public void setX(int x) {
 		this.x = x;

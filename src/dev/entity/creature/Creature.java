@@ -33,7 +33,7 @@ public abstract class Creature extends Entity{
 		}
 		
 		for (StaticEntity e:staticEntities) {
-			if(Math.hypot(x-e.getX(), y-e.getY()) > 1000) {
+			if(Math.hypot(x-e.getX(), y-e.getY()) > 1000 || !e.isSolid()) {
 				continue;
 			}
 			Rectangle b1 = getHitbox().getBounds(), b2 = e.getHitbox().getBounds();
@@ -42,9 +42,8 @@ public abstract class Creature extends Entity{
 			b2.x = (int) e.getX();
 			b2.y = (int) e.getY();
 			if (b1.intersects(b2)) {
-				e.onCollision();
-				if (e.isSolid()) 
-					return true;
+				e.onCollision(this);
+				return true;
 			}else {
 				continue;
 			}

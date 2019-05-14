@@ -55,7 +55,7 @@ public class BasicEnemy extends Enemy{
 	}
 
 	@Override
-	public void onCollision() {
+	public void onCollision(Entity e) {
 		if (inTimer) {
 			startTimer(2);
 		}else {
