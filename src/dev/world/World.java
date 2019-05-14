@@ -14,7 +14,7 @@ import dev.ui.UIManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 100, WORLD_SECTOR_HEIGHT = 100;
+	public static int WORLD_SECTOR_WIDTH = 200, WORLD_SECTOR_HEIGHT = 200;
 
 	//managers
 	EnemyManager enemyManager;
@@ -61,7 +61,7 @@ public class World {
 			}
 		}
 		ArrayList<StaticEntity>staticEntities = new ArrayList<StaticEntity>();
-		//load borber walls
+		//load border walls
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
 				if(x == 0 || y== 0 || x == WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH-1 || y == WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT-1) {

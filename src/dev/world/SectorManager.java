@@ -20,7 +20,6 @@ public class SectorManager {
 	}
 	
 	public void update() {
-		
 		for(Sector s:sectors) {
 			if(s != null)
 				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth()*2 &&
