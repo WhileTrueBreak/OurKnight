@@ -22,7 +22,7 @@ public class Wall extends StaticEntity{
         g.setColor(new Color(0,0,200));
         g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
         g.setColor(new Color(0,255,255));
-        g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
+        //g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
 //        g.setColor(new Color(0, 0, 255));
 //		g.drawRect((int)(hitbox.x-handler.getCamera().getXoff()), (int)(hitbox.y-handler.getCamera().getYoff()), hitbox.width, hitbox.height);
     }

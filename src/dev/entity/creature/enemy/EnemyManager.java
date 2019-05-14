@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.staticEntity.StaticEntity;
 
 public class EnemyManager {
 	
@@ -25,6 +26,10 @@ public class EnemyManager {
 		for(Enemy e:enemies) {
 			e.render(g);
 		}
+	}
+	
+	public ArrayList<Enemy> getStaticEntities(){
+		return enemies;
 	}
 	
 	public void addEnemy(Enemy e) {

@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.Entity;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
 import dev.tiles.Floor;
@@ -64,7 +65,10 @@ public class Sector {
 					(int)(sectorY*SECTOR_PIXEL_HEIGHT-handler.getCamera().getYoff()),
 					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
-		staticEntityManager.render(g);
+	}
+	
+	public ArrayList<StaticEntity> getRenderStaticEntities(){
+		return staticEntityManager.getStaticEntities();
 	}
 
 	public int getSectorX() {

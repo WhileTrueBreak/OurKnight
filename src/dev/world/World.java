@@ -4,7 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
-
+import dev.entity.Entity;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
@@ -103,8 +103,22 @@ public class World {
 
 	public void render(Graphics g) {
 		sectorManager.render(g);
-		player.render(g);
+		renderEntities(g);
 		ui.render(g);
+	}
+	
+	private void renderEntities(Graphics g) {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		//adding all entities
+		entities.addAll(sectorManager.getRenderEntities());
+		entities.add(player);
+		//sort
+		
+		//TODO sort entities
+		
+		//render
+		for(Entity e:entities)
+			e.render(g);
 	}
 
 	public Player getPlayer() {

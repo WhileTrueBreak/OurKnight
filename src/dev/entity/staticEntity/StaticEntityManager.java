@@ -27,16 +27,16 @@ public class StaticEntityManager {
 		}
 	}
 	
+	public ArrayList<StaticEntity> getStaticEntities(){
+		return staticEntities;
+	}
+	
 	public void addStaticEntity(StaticEntity e) {
 		staticEntities.add(e);
 	}
 	
 	public void removeStaticEntity(StaticEntity e) {
 		staticEntities.remove(e);
-	}
-	
-	public ArrayList<StaticEntity> getStaticEntities(){
-		return staticEntities;
 	}
 	
 }
