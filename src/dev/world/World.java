@@ -2,6 +2,9 @@ package dev.world;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import dev.Handler;
 import dev.entity.Entity;
@@ -14,12 +17,20 @@ import dev.ui.UIManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 100, WORLD_SECTOR_HEIGHT = 100;
+	public static int WORLD_SECTOR_WIDTH = 200, WORLD_SECTOR_HEIGHT = 200;
 
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
 	UIManager ui;
+	
+	//Comparators
+	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
+		@Override
+		public int compare(Entity e1, Entity e2) {
+			return e1.getY() < e2.getY() ? -1:e1.getY() == e2.getY() ? 0:1;
+		}	
+	};
 
 	//player
 	private Player player;
@@ -114,7 +125,7 @@ public class World {
 		entities.add(player);
 		//sort
 		
-		//TODO sort entities
+		entities.sort(renderOrder);
 		
 		//render
 		for(Entity e:entities)
@@ -123,7 +134,7 @@ public class World {
 
 	public Player getPlayer() {
 		return player;
-	}
+	} 	
 
 	public EnemyManager getEnemyManager() {
 		return enemyManager;

@@ -14,7 +14,7 @@ public class Wall extends StaticEntity{
     
     @Override
     public void update() {
-        setHitboxAttrb((int)x,(int)y,width,height);
+        setHitboxAttrb((int)x,(int)y,width/2,height/2);
     }
 
     @Override
