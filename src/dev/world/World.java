@@ -82,7 +82,9 @@ public class World {
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
-		OpenSimplexNoise noise = new OpenSimplexNoise();
+		long seed = (long)(Math.random()*9223372036854775807l);
+		System.out.println("Seed: " + seed);
+		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
 				if(noise.eval(x*0.1f, y*0.1f) < -0.5) {
