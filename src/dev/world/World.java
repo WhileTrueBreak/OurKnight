@@ -32,9 +32,7 @@ public class World {
 	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
 		@Override
 		public int compare(Entity e1, Entity e2) {
-			System.out.println(e1.getHitbox().y);
-			System.out.println(e2.getHitbox().y);
-			return e1.getY() < e2.getY() ? -1:e1.getY() == e2.getY() ? 0:1;
+			return e1.getY()+e1.getHitbox().y < e2.getY()+e2.getHitbox().y ? -1:e1.getY()+e1.getHitbox().y == e2.getY()+e2.getHitbox().y ? 0:1;
 		}	
 	};
 
