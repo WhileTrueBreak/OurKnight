@@ -4,13 +4,10 @@ package dev.entity.creature.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.util.Date;
 
 import dev.Handler;
 import dev.entity.Entity;
-import dev.ui.Health;
-import dev.ui.UI;
 
 public class BasicEnemy extends Enemy{
 	
@@ -55,7 +52,7 @@ public class BasicEnemy extends Enemy{
 	}
 
 	@Override
-	public void onCollision() {
+	public void onCollision(Entity e) {
 		if (inTimer) {
 			startTimer(2);
 		}else {

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import dev.Handler;
+import dev.entity.Entity;
 public class Trap extends StaticEntity{
 
     public Trap(Handler handler, int x, int y, int width, int height, int spriteID) {
@@ -24,7 +25,7 @@ public class Trap extends StaticEntity{
     }
 
 	@Override
-	public void onCollision() {
+	public void onCollision(Entity e) {
 		// TODO Auto-generated method stub
 	}
 }

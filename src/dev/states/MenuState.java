@@ -3,7 +3,6 @@ package dev.states;
 import java.awt.Graphics;
 
 import dev.Handler;
-import dev.world.World;
 
 public class MenuState extends State{
 	

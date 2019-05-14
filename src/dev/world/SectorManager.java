@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.Entity;
 import dev.tiles.Tile;
 
 public class SectorManager {
@@ -32,7 +33,6 @@ public class SectorManager {
 	}
 	
 	public void render(Graphics g) {
-		
 		for(Sector s:sectors) {
 			if(s != null)
 				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
@@ -41,7 +41,19 @@ public class SectorManager {
 						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
 					s.render(g);
 		}
-		
+	}
+	
+	public ArrayList<Entity> getRenderEntities(){
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		for(Sector s:sectors) {
+			if(s != null)
+				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight() &&
+						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > 0 &&
+						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
+					entities.addAll(s.getRenderStaticEntities());
+		}
+		return entities;
 	}
 	
 	public Sector getSector(int x, int y) {

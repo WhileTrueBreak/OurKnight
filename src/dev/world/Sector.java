@@ -64,7 +64,10 @@ public class Sector {
 					(int)(sectorY*SECTOR_PIXEL_HEIGHT-handler.getCamera().getYoff()),
 					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
-		staticEntityManager.render(g);
+	}
+	
+	public ArrayList<StaticEntity> getRenderStaticEntities(){
+		return staticEntityManager.getStaticEntities();
 	}
 
 	public int getSectorX() {

@@ -27,6 +27,10 @@ public class EnemyManager {
 		}
 	}
 	
+	public ArrayList<Enemy> getStaticEntities(){
+		return enemies;
+	}
+	
 	public void addEnemy(Enemy e) {
 		enemies.add(e);
 	}

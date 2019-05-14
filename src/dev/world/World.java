@@ -2,9 +2,10 @@ package dev.world;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import dev.Handler;
-
+import dev.entity.Entity;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
@@ -26,6 +27,16 @@ public class World {
 
 	//handler
 	private Handler handler;
+
+	//Comparators
+	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
+		@Override
+		public int compare(Entity e1, Entity e2) {
+			System.out.println(e1.getHitbox().y);
+			System.out.println(e2.getHitbox().y);
+			return e1.getY() < e2.getY() ? -1:e1.getY() == e2.getY() ? 0:1;
+		}	
+	};
 
 	public World(Handler handler) {
 		this.handler = handler;
@@ -83,7 +94,7 @@ public class World {
 		staticEntities = new ArrayList<StaticEntity>();
 		System.out.println("Time taken: " + (System.currentTimeMillis()-startTime));
 	}
-	
+
 	//TODO refactor this method
 	private void save (ArrayList<StaticEntity> entities) {
 		//putting  static entities into sectors
@@ -94,7 +105,7 @@ public class World {
 			sectorManager.getSector(sectorX, sectorY).getStaticEntityManager().addStaticEntity(e);
 		}
 	}
-	
+
 	public void update() {
 		sectorManager.update();
 		player.update();
@@ -103,13 +114,27 @@ public class World {
 
 	public void render(Graphics g) {
 		sectorManager.render(g);
-		player.render(g);
+		renderEntities(g);
 		ui.render(g);
+	}
+
+	private void renderEntities(Graphics g) {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		//adding all entities
+		entities.addAll(sectorManager.getRenderEntities());
+		entities.add(player);
+		//sort
+
+		entities.sort(renderOrder);
+
+		//render
+		for(Entity e:entities)
+			e.render(g);
 	}
 
 	public Player getPlayer() {
 		return player;
-	}
+	} 	
 
 	public EnemyManager getEnemyManager() {
 		return enemyManager;

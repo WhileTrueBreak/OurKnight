@@ -35,8 +35,10 @@ public class Main implements Runnable{
 	private Handler handler;
 	
 	//states
+	@SuppressWarnings("unused")
 	private State gameState;
 	private State lobbyState;
+	@SuppressWarnings("unused")
 	private State menuState;
 	
 	public Main(String title, int width, int height) {
