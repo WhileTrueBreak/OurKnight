@@ -12,6 +12,7 @@ import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.Wall;
 import dev.tiles.Tile;
 import dev.ui.UIManager;
+import dev.utils.noise.OpenSimplexNoise;
 
 public class World {
 
@@ -81,9 +82,10 @@ public class World {
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
+		OpenSimplexNoise noise = new OpenSimplexNoise();
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
-				if(Math.random() < 0.1f) {
+				if(noise.eval(x*0.1f, y*0.1f) < -0.5) {
 					staticEntities.add(new Wall(handler, x*Tile.TILE_WIDTH, y*Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0));
 				}
 			}
