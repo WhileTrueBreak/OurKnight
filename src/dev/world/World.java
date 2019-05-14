@@ -14,7 +14,7 @@ import dev.ui.UIManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 10, WORLD_SECTOR_HEIGHT = 10;
+	public static int WORLD_SECTOR_WIDTH = 100, WORLD_SECTOR_HEIGHT = 100;
 
 	//managers
 	EnemyManager enemyManager;
