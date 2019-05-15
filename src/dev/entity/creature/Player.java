@@ -58,7 +58,6 @@ public class Player extends Creature{
 
 	@Override
 	public void onCollision(Entity e) {
-		// TODO Auto-generated method stub
 
 	}
 

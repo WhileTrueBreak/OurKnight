@@ -17,14 +17,12 @@ public class GameState extends State{
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		world.update();
 		
 	}
 
 	@Override
 	public void render(Graphics g) {
-		// TODO Auto-generated method stub
 		world.render(g);
 		
 	}
