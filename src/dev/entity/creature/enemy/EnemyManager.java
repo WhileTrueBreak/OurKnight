@@ -17,6 +17,7 @@ public class EnemyManager {
 	
 	public void update() {
 		for(Enemy e:enemies) {
+			
 			e.update();
 		}
 	}
