@@ -27,6 +27,16 @@ public class Camera {
 			move((setX-xoff)/cameraSpring, (setY-yoff)/cameraSpring);
 	}
 	
+	public void focusOnPoint(int x, int y, int spring) {
+		float cameraSpring = spring;
+		float setX = x - handler.getMain().getWidth()/2;
+		float setY = y - handler.getMain().getHeight()/2;
+		if(cameraSpring == 0)
+			move((setX-xoff), (setY-yoff));
+		else
+			move((setX-xoff)/cameraSpring, (setY-yoff)/cameraSpring);
+	}
+	
 	public void move(float amtx, float amty) {
 		xoff += amtx;
 		yoff += amty;
