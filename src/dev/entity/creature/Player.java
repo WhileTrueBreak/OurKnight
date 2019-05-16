@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 
 import dev.Handler;
 import dev.entity.Entity;
+import dev.tiles.Tile;
 
 public class Player extends Creature{
 	
@@ -35,11 +36,11 @@ public class Player extends Creature{
 			//TODO fix collison so the player can move right next to the wall
 			x += dx*speed/mag;
 			if (collided()) {
-				x = tempx;
+				x = Math.round(tempx/Tile.TILE_WIDTH)*Tile.TILE_WIDTH;
 			}
 			y += dy*speed/mag;
 			if (collided()) {
-				y = tempy;
+				y = Math.round(tempy/Tile.TILE_HEIGHT)*Tile.TILE_HEIGHT;
 			}
 		}
 	}
