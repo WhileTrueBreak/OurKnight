@@ -20,6 +20,7 @@ public abstract class Creature extends Entity{
 	protected int width = 32, height = 32;
 	
 	protected boolean collided() {
+		//TODO fix collision
 		ArrayList<StaticEntity>staticEntities = new ArrayList<StaticEntity>();
 		
 		int secX = (int)(x/Sector.SECTOR_PIXEL_WIDTH), secY = (int)(y/Sector.SECTOR_PIXEL_HEIGHT);
