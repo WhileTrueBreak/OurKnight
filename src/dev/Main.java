@@ -35,10 +35,6 @@ public class Main implements Runnable{
 	private Handler handler;
 	
 	//states
-	@SuppressWarnings("unused")
-	private State gameState;
-	private State lobbyState;
-	@SuppressWarnings("unused")
 	private State menuState;
 	
 	public Main(String title, int width, int height) {
@@ -62,10 +58,8 @@ public class Main implements Runnable{
 		
 		camera = new Camera(handler, 0, 0);
 		
-		gameState = new GameState(handler);
-		lobbyState = new LobbyState(handler);
 		menuState = new MenuState(handler);
-		State.setCurrentState(lobbyState);
+		State.setCurrentState(menuState);
 	}
 
 	private void update() {

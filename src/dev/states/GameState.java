@@ -11,14 +11,13 @@ public class GameState extends State{
 	private Handler handler;
 	
 	public GameState(Handler handler) {
-		//world = new World(handler);
+		world = new World(handler);
 		this.handler = handler;
 	}
 
 	@Override
 	public void update() {
 		world.update();
-		
 	}
 
 	@Override

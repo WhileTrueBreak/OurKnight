@@ -13,7 +13,9 @@ public class MenuState extends State{
 	}
 	@Override
 	public void update() {
-		
+		State gameState;
+		gameState = new GameState(handler);
+		State.setCurrentState(gameState);
 	}
 
 	@Override
