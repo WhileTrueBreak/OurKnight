@@ -8,10 +8,8 @@ public class Launcher {
 	public static void main(String[] args) {
 		System.out.println("Running");
 		ThreadPool pool = new ThreadPool(2);
-		Main game = new Main("Our Craft | A communist alternative to Soul Craft", 1024, 1024);
-		MusicPlayer mplayer = new MusicPlayer("reallygoodsong");
-		pool.runTask(mplayer);
-		pool.runTask(game);
+		pool.runTask(new Main("Our Craft | A communist alternative to Soul Craft", 1024, 1024));
+		pool.runTask(new MusicPlayer("reallygoodsong"));
 		pool.join();
 	}
 	

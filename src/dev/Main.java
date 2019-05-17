@@ -141,14 +141,14 @@ public class Main implements Runnable{
 		stop();
 	}
 		
-//	public synchronized void start() {
-//		if (running) {
-//			return;
-//		}
-//		running = true;
-//		thread = new Thread(this);
-//		thread.start();
-//	}
+	public synchronized void start() {
+		if (running) {
+			return;
+		}
+		running = true;
+		thread = new Thread(this);
+		thread.start();
+	}
 	
 	public synchronized void stop() {
 		if (!running) {
