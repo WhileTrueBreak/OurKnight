@@ -30,4 +30,9 @@ public class Utils {
 		}
 	}
 	
+	public static void delay(long millis) {
+		long start = System.currentTimeMillis();
+		while(System.currentTimeMillis()-start < millis) {}
+	}
+	
 }
