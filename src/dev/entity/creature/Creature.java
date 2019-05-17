@@ -19,8 +19,7 @@ public abstract class Creature extends Entity{
 	
 	protected int width = 32, height = 32;
 	
-	protected boolean collided() {
-		//TODO fix collision
+	protected Rectangle collided() {
 		ArrayList<StaticEntity>staticEntities = new ArrayList<StaticEntity>();
 		
 		int secX = (int)(x/Sector.SECTOR_PIXEL_WIDTH), secY = (int)(y/Sector.SECTOR_PIXEL_HEIGHT);
@@ -44,12 +43,12 @@ public abstract class Creature extends Entity{
 			b2.y = (int) e.getY();
 			if (b1.intersects(b2)) {
 				e.onCollision(this);
-				return true;
+				return b2;
 			}else {
 				continue;
 			}
 		}
-		return false;
+		return null;
 	}
 	
 }

@@ -2,6 +2,7 @@ package dev.entity.creature;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
 import dev.Handler;
@@ -33,14 +34,22 @@ public class Player extends Creature{
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		float tempx = x, tempy = y;
 		if (mag != 0) {
-			//TODO fix collison so the player can move right next to the wall
 			x += dx*speed/mag;
-			if (collided()) {
-				x = Math.round(tempx/Tile.TILE_WIDTH)*Tile.TILE_WIDTH;
+			//TODO change this to work with any collision position
+			Rectangle cHitbox = collided();
+			if (cHitbox != null) {
+				if(Math.signum(dx*speed/mag) == 1)
+					x = cHitbox.x-hitbox.width;
+				else
+					x = cHitbox.x+cHitbox.width;
 			}
 			y += dy*speed/mag;
-			if (collided()) {
-				y = Math.round(tempy/Tile.TILE_HEIGHT)*Tile.TILE_HEIGHT;
+			cHitbox = collided();
+			if (cHitbox != null) {
+				if(Math.signum(dy*speed/mag) == 1)
+					y = cHitbox.y-hitbox.height;
+				else
+					y = cHitbox.y+cHitbox.height;
 			}
 		}
 	}

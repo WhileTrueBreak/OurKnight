@@ -29,15 +29,17 @@ public class BasicEnemy extends Enemy{
 			dy = dy*speed/mag;
 		}
 		
-		float tempx = x, tempy = y;
-		x += dx;
-		if (collided()) {
-			x = tempx;
-		}
-		y += dy;
-		if (collided()) {
-			y = tempy;
-		}
+		//TODO fix enemy collision
+		
+//		float tempx = x, tempy = y;
+//		x += dx;
+//		if (collided()) {
+//			x = tempx;
+//		}
+//		y += dy;
+//		if (collided()) {
+//			y = tempy;
+//		}
 	}
 	
 	@Override
