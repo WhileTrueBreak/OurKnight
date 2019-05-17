@@ -82,7 +82,6 @@ public class Main implements Runnable{
 		// Draw Crap
 		if(State.getCurrentState() != null)
 			State.getCurrentState().render(g);
-		
 		// End Crap
 		bs.show();
 		g.dispose();

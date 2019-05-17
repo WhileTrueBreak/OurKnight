@@ -4,6 +4,7 @@ package dev.entity.creature.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.Date;
 
 import dev.Handler;
@@ -28,18 +29,22 @@ public class BasicEnemy extends Enemy{
 			dx = dx*speed/mag;
 			dy = dy*speed/mag;
 		}
-		
-		//TODO fix enemy collision
-		
-//		float tempx = x, tempy = y;
-//		x += dx;
-//		if (collided()) {
-//			x = tempx;
-//		}
-//		y += dy;
-//		if (collided()) {
-//			y = tempy;
-//		}
+		x += dx*speed/mag;
+		Rectangle cHitbox = collided();
+		if (cHitbox != null) {
+			if(Math.signum(dx*speed/mag) == 1)
+				x = cHitbox.x-hitbox.width;
+			else
+				x = cHitbox.x+cHitbox.width;
+		}
+		y += dy*speed/mag;
+		cHitbox = collided();
+		if (cHitbox != null) {
+			if(Math.signum(dy*speed/mag) == 1)
+				y = cHitbox.y-hitbox.height;
+			else
+				y = cHitbox.y+cHitbox.height;
+		}
 	}
 	
 	@Override

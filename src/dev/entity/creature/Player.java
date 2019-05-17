@@ -32,10 +32,8 @@ public class Player extends Creature{
 		if (right) dx ++;
 
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
-		float tempx = x, tempy = y;
 		if (mag != 0) {
 			x += dx*speed/mag;
-			//TODO change this to work with any collision position
 			Rectangle cHitbox = collided();
 			if (cHitbox != null) {
 				if(Math.signum(dx*speed/mag) == 1)
