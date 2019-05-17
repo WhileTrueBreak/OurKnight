@@ -130,6 +130,8 @@ public class Main implements Runnable{
 				render();
 				ticks++;
 				delta--;
+				if(delta > 1)
+					delta = 0;
 			}
 			if(timer >= 1000000000) {
 				System.out.println(ticks);
