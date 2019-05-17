@@ -87,7 +87,7 @@ public class World {
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
-				if(noise.eval(x*0.1f, y*0.1f) < 0) {
+				if(noise.eval(x*0.1f, y*0.1f) < -0.2f) {
 					staticEntities.add(new Wall(handler, x*Tile.TILE_WIDTH, y*Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0));
 				}
 			}
@@ -126,9 +126,7 @@ public class World {
 		entities.addAll(sectorManager.getRenderEntities());
 		entities.add(player);
 		//sort
-
 		entities.sort(renderOrder);
-
 		//render
 		for(Entity e:entities)
 			e.render(g);

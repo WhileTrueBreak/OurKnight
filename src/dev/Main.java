@@ -3,6 +3,7 @@ package dev;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import dev.audio.MusicPlayer;
 import dev.display.Camera;
 import dev.display.Display;
 import dev.input.KeyManager;
@@ -12,7 +13,6 @@ import dev.states.LobbyState;
 import dev.states.MenuState;
 import dev.states.State;
 import dev.utils.Utils;
-import dev.utils.audio.MusicPlayer;
 
 public class Main implements Runnable{
 	
@@ -62,8 +62,6 @@ public class Main implements Runnable{
 		
 		menuState = new MenuState(handler);
 		State.setCurrentState(menuState);
-		
-		new MusicPlayer("background/reallygoodsong").start();
 	}
 
 	private void update() {

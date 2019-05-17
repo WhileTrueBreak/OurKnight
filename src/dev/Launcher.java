@@ -1,7 +1,7 @@
 package dev;
 
+import dev.audio.MusicPlayer;
 import dev.utils.ThreadPool;
-import dev.utils.audio.MusicPlayer;
 
 public class Launcher {
 	
