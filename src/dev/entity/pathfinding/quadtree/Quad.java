@@ -27,19 +27,7 @@ public class Quad {
 		bound.y = (int) y;
 		bound.height = (int) h;
 		bound.width = (int) w;
-		boolean collided = false;
-		for(int i = (int)x/(Sector.SECTOR_PIXEL_WIDTH);i < Math.ceil((x+w)/(Sector.SECTOR_PIXEL_WIDTH));i++) {
-			for(int j = (int)y/(Sector.SECTOR_PIXEL_HEIGHT);j < Math.ceil((y+h)/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
-				for(StaticEntity e:handler.getWorld().getSectorManager().getSector(i, j).getStaticEntityManager().getStaticEntities()) {
-					if(e.getHitbox().contains(bound)) {
-						collided = true;
-						break;
-					}
-				}
-				if(collided)break;
-			}
-			if(collided)break;
-		}
+		boolean collided = isCollided();
 		if(collided) {
 			contains = true;
 			if(h > minSize && w > minSize) {
@@ -57,21 +45,7 @@ public class Quad {
 		if(childs == null) {
 			if(h/2 < minSize || w/2 < minSize)
 				return;
-			boolean collided = false;
-			for(int i = (int)x/(Sector.SECTOR_PIXEL_WIDTH);i < Math.ceil((x+w)/(Sector.SECTOR_PIXEL_WIDTH))+1;i++) {
-				for(int j = (int)y/(Sector.SECTOR_PIXEL_HEIGHT);j < Math.ceil((y+h)/(Sector.SECTOR_PIXEL_HEIGHT))+1;j++) {
-					Sector sector = handler.getWorld().getSectorManager().getSector(i, j);
-					if(sector == null)continue;
-					for(StaticEntity e:sector.getStaticEntityManager().getStaticEntities()) {
-						if(e.getHitbox().contains(bound)) {
-							collided = true;
-							break;
-						}
-					}
-					if(collided)break;
-				}
-				if(collided)break;
-			}
+			boolean collided = isCollided();
 			if(collided) {
 				contains = true;
 				if(h > minSize && w > minSize) {
@@ -84,6 +58,22 @@ public class Quad {
 				contains = false;
 			}
 		}
+	}
+	
+	private boolean isCollided() {
+		int x = bound.x, y = bound.y, w = bound.width, h = bound.height;
+		for(int i = (int)x/(Sector.SECTOR_PIXEL_WIDTH);i < Math.ceil((x+w)/(Sector.SECTOR_PIXEL_WIDTH))+1;i++) {
+			for(int j = (int)y/(Sector.SECTOR_PIXEL_HEIGHT);j < Math.ceil((y+h)/(Sector.SECTOR_PIXEL_HEIGHT))+1;j++) {
+				Sector sector = handler.getWorld().getSectorManager().getSector(i, j);
+				if(sector == null)continue;
+				for(StaticEntity e:sector.getStaticEntityManager().getStaticEntities()) {
+					if(e.getHitbox().contains(bound)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public void mergeEmpty() {
