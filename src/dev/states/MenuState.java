@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 
 import dev.Handler;
 import dev.audio.MusicPlayer;
-import dev.utils.Utils;
 
 public class MenuState extends State{
 	

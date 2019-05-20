@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 
 import dev.Handler;
 import dev.entity.Entity;
-import dev.tiles.Tile;
 
 public class Player extends Creature{
 	

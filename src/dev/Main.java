@@ -3,16 +3,12 @@ package dev;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
-import dev.audio.MusicPlayer;
 import dev.display.Camera;
 import dev.display.Display;
 import dev.input.KeyManager;
 import dev.input.MouseManager;
-import dev.states.GameState;
-import dev.states.LobbyState;
 import dev.states.MenuState;
 import dev.states.State;
-import dev.utils.Utils;
 
 public class Main implements Runnable{
 	
