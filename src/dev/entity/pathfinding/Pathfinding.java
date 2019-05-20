@@ -19,18 +19,18 @@ public class Pathfinding {
 	public ArrayList<Vector> getPath(float sx, float sy, float dx, float dy) {
 		boolean foundStart = false, foundEnd = false;
 
-		Node startPoint = new Node(new Vector(sx, sy), null);
-		Node endPoint = new Node(new Vector(dx, dy), null);
+		Node startPoint = new Node(sx, sy, null);
+		Node endPoint = new Node(dx, dy, null);
 		
 		for(Node n:nodes) {
 			if(!foundStart) {
-				if(n.getBound().contains(startPoint.getPos().getX(), startPoint.getPos().getY())) {
+				if(n.getBound().contains(startPoint.getX(), startPoint.getY())) {
 					startPoint.addConnection(n);
 					foundStart = true;
 				}
 			}
 			if(!foundEnd) {
-				if(n.getBound().contains(endPoint.getPos().getX(), endPoint.getPos().getY())) {
+				if(n.getBound().contains(endPoint.getX(), endPoint.getY())) {
 					endPoint.addConnection(n);
 					foundEnd = true;
 				}
@@ -42,7 +42,7 @@ public class Pathfinding {
 		//if starting and end points are in the same node return end point
 		if(startPoint.getConnections().get(0)==endPoint.getConnections().get(0)) {
 			ArrayList<Vector>path = new ArrayList<Vector>();
-			path.add(endPoint.getPos());
+			path.add(new Vector(endPoint.getX(), endPoint.getY()));
 			return path;
 		}
 		

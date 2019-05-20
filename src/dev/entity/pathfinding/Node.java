@@ -9,11 +9,12 @@ public class Node {
 	
 	private ArrayList<Node> connections = new ArrayList<Node>();
 	private Rectangle bound;
-	private Vector pos;
+	private float x, y;
 	
-	public Node(Vector pos, Rectangle bound) {
-		this.pos = pos;
+	public Node(float x, float y, Rectangle bound) {
 		this.bound = bound;
+		this.x = x;
+		this.y = y;
 	}
 	
 	public void addConnection(Node node) {
@@ -32,8 +33,12 @@ public class Node {
 		return bound;
 	}
 
-	public Vector getPos() {
-		return pos;
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
 	}
 	
 }
