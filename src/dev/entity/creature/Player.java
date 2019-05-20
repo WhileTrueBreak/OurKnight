@@ -14,10 +14,8 @@ public class Player extends Creature{
 	public Player(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 40;//pixels per frame
+		speed = 4;//pixels per frame
 		handler.getCamera().focusOnEntity(this, 0);
-		hitbox.width = 0;
-		hitbox.height = 0;
 	}
 
 	private void move() {
