@@ -58,6 +58,7 @@ public class SectorManager {
 	
 	public Sector getSector(int x, int y) {
 		int index = x+y*World.WORLD_SECTOR_WIDTH;
+		if(index < 0 || index >= sectors.size()) return null;
 		return sectors.get(index);
 	}
 	

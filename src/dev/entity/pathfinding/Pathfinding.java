@@ -12,16 +12,16 @@ public class Pathfinding {
 
 	}
 
-	public void updateNodes(){	
-		//TODO create node mesh using a quadtree
+	public void updateNodes(){
+		
 	}
 
 	public ArrayList<Vector> getPath(float sx, float sy, float dx, float dy) {
 		boolean foundStart = false, foundEnd = false;
-
+		//defining the  start and end nodes
 		Node startPoint = new Node(sx, sy, null);
 		Node endPoint = new Node(dx, dy, null);
-		
+		//connecting the two node properly
 		for(Node n:nodes) {
 			if(!foundStart) {
 				if(n.getBound().contains(startPoint.getX(), startPoint.getY())) {
