@@ -21,37 +21,38 @@ public class SectorManager {
 	}
 	
 	public void update() {
-		for(Sector s:sectors) {
-			if(s != null)
-				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth()*2 &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight()*2 &&
-						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > -handler.getWidth() &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > -handler.getHeight())
-					s.update();
+		for(int i = (int)(handler.getCamera().getXoff()-handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH);
+				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth()*2)/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)(handler.getCamera().getYoff()-handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT);
+					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight()*2)/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
+				Sector sector = getSector(i, j);
+				if(sector != null) sector.update();
+			}
 		}
-		
 	}
 	
 	public void render(Graphics g) {
-		for(Sector s:sectors) {
-			if(s != null)
-				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight() &&
-						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > 0 &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
-					s.render(g);
+		long start = System.currentTimeMillis();
+		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
+				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
+					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
+				Sector sector = getSector(i, j);
+				if(sector != null) sector.render(g);
+			}
 		}
+		//if(System.currentTimeMillis()-start > -1)System.out.println("Sector Render Takes: " + (System.currentTimeMillis()-start) + " milliseconds");
 	}
 	
 	public ArrayList<Entity> getRenderEntities(){
 		ArrayList<Entity> entities = new ArrayList<Entity>();
-		for(Sector s:sectors) {
-			if(s != null)
-				if(s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() < handler.getWidth() &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() < handler.getHeight() &&
-						s.getSectorX()*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH-handler.getCamera().getXoff() + Sector.SECTOR_WIDTH*Tile.TILE_WIDTH > 0 &&
-						s.getSectorY()*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT-handler.getCamera().getYoff() + Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT > 0)
-					entities.addAll(s.getRenderStaticEntities());
+		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
+				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
+					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
+				Sector sector = getSector(i, j);
+				if(sector != null) entities.addAll(sector.getRenderStaticEntities());
+			}
 		}
 		return entities;
 	}

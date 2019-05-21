@@ -17,16 +17,12 @@ public class GameState extends State{
 
 	@Override
 	public void update() {
-		long start = System.currentTimeMillis();
 		world.update();
-		System.out.println("Update Time: " + (System.currentTimeMillis()-start));
 	}
 
 	@Override
 	public void render(Graphics g) {
-		long start = System.currentTimeMillis();
 		world.render(g);
-		System.out.println("Render Time: " + (System.currentTimeMillis()-start));
 	}
 
 }

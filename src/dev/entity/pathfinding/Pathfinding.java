@@ -2,18 +2,29 @@ package dev.entity.pathfinding;
 
 import java.util.ArrayList;
 
+import dev.Handler;
+import dev.entity.pathfinding.quadtree.Quadtree;
+import dev.tiles.Tile;
 import dev.utils.Vector;
+import dev.world.Sector;
+import dev.world.World;
 
-public class Pathfinding {
-
+public class Pathfinding {	
+	
 	private ArrayList<Node>nodes = new ArrayList<Node>();
-
-	public Pathfinding() {
-
+	private Quadtree root;
+	
+	private Handler handler;
+	
+	public Pathfinding(Handler handler) {
+		this.handler = handler;
+		root = new Quadtree(handler, 0, 0, Sector.SECTOR_PIXEL_WIDTH*World.WORLD_SECTOR_WIDTH, 
+				Sector.SECTOR_PIXEL_HEIGHT*World.WORLD_SECTOR_HEIGHT, Tile.TILE_WIDTH);
 	}
 
 	public void updateNodes(){
-		
+		root.update();
+		nodes = root.getNodes();
 	}
 
 	public ArrayList<Vector> getPath(float sx, float sy, float dx, float dy) {
@@ -39,16 +50,17 @@ public class Pathfinding {
 				break;
 			}
 		}
+		ArrayList<Vector>path = new ArrayList<Vector>();
 		//if starting and end points are in the same node return end point
 		if(startPoint.getConnections().get(0)==endPoint.getConnections().get(0)) {
-			ArrayList<Vector>path = new ArrayList<Vector>();
 			path.add(new Vector(endPoint.getX(), endPoint.getY()));
 			return path;
 		}
 		
 		//TODO pathfinding in node mesh
 		
-		return null;
+		
+		return path;
 	}
 
 }

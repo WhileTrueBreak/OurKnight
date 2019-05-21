@@ -12,7 +12,7 @@ public class Quad {
 	private Handler handler;
 
 	private Rectangle bound;
-	private Quad[] childs;
+	private Quad[] children;
 	private Quad parent;
 
 	//TODO refactor this variable
@@ -31,10 +31,10 @@ public class Quad {
 		if(collided) {
 			contains = true;
 			if(h > minSize && w > minSize) {
-				childs[0] = new Quad(handler, x    , y    , w/2, h/2, minSize, this);
-				childs[1] = new Quad(handler, x+w/2, y    , w/2, h/2, minSize, this);
-				childs[2] = new Quad(handler, x    , y+h/2, w/2, h/2, minSize, this);
-				childs[3] = new Quad(handler, x+w/2, y+h/2, w/2, h/2, minSize, this);
+				children[0] = new Quad(handler, x    , y    , w/2, h/2, minSize, this);
+				children[1] = new Quad(handler, x+w/2, y    , w/2, h/2, minSize, this);
+				children[2] = new Quad(handler, x    , y+h/2, w/2, h/2, minSize, this);
+				children[3] = new Quad(handler, x+w/2, y+h/2, w/2, h/2, minSize, this);
 			}
 		}
 		this.minSize = minSize;
@@ -42,17 +42,17 @@ public class Quad {
 
 	public void checkBranches() {
 		int x = bound.x, y = bound.y, w = bound.width, h = bound.height;
-		if(childs == null) {
+		if(children == null) {
 			if(h/2 < minSize || w/2 < minSize)
 				return;
 			boolean collided = isCollided();
 			if(collided) {
 				contains = true;
 				if(h > minSize && w > minSize) {
-					childs[0] = new Quad(handler, x    , y    , w/2, h/2, minSize, this);
-					childs[1] = new Quad(handler, x+w/2, y    , w/2, h/2, minSize, this);
-					childs[2] = new Quad(handler, x    , y+h/2, w/2, h/2, minSize, this);
-					childs[3] = new Quad(handler, x+w/2, y+h/2, w/2, h/2, minSize, this);
+					children[0] = new Quad(handler, x    , y    , w/2, h/2, minSize, this);
+					children[1] = new Quad(handler, x+w/2, y    , w/2, h/2, minSize, this);
+					children[2] = new Quad(handler, x    , y+h/2, w/2, h/2, minSize, this);
+					children[3] = new Quad(handler, x+w/2, y+h/2, w/2, h/2, minSize, this);
 				}
 			}else {
 				contains = false;
@@ -62,8 +62,8 @@ public class Quad {
 	
 	private boolean isCollided() {
 		int x = bound.x, y = bound.y, w = bound.width, h = bound.height;
-		for(int i = (int)x/(Sector.SECTOR_PIXEL_WIDTH);i < Math.ceil((x+w)/(Sector.SECTOR_PIXEL_WIDTH))+1;i++) {
-			for(int j = (int)y/(Sector.SECTOR_PIXEL_HEIGHT);j < Math.ceil((y+h)/(Sector.SECTOR_PIXEL_HEIGHT))+1;j++) {
+		for(int i = (int)x/(Sector.SECTOR_PIXEL_WIDTH);i < Math.ceil((x+w)/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)y/(Sector.SECTOR_PIXEL_HEIGHT);j < Math.ceil((y+h)/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
 				Sector sector = handler.getWorld().getSectorManager().getSector(i, j);
 				if(sector == null)continue;
 				for(StaticEntity e:sector.getStaticEntityManager().getStaticEntities()) {
@@ -78,15 +78,15 @@ public class Quad {
 
 	public void mergeEmpty() {
 		boolean empty = true;
-		if(childs != null) {
-			for(Quad q:childs) {
+		if(children != null) {
+			for(Quad q:children) {
 				if(q.isContains()) {
 					empty = false;
 					break;
 				}
 			}
 			if(empty) {
-				childs = null;
+				children = null;
 				contains = false;
 			}
 		}
@@ -95,11 +95,11 @@ public class Quad {
 
 	public ArrayList<Quad> getEndQuads(){
 		ArrayList<Quad>quads = new ArrayList<Quad>();
-		if(childs == null) {
+		if(children == null) {
 			quads.add(this);
 			return quads;
 		}
-		for(Quad q:childs) {
+		for(Quad q:children) {
 			quads.addAll(q.getEndQuads());
 		}
 		return quads;
@@ -107,8 +107,8 @@ public class Quad {
 
 	public ArrayList<Rectangle> getBounds(){
 		ArrayList<Rectangle>bounds = new ArrayList<Rectangle>();
-		if(childs != null) {
-			for(Quad q:childs) {
+		if(children != null) {
+			for(Quad q:children) {
 				bounds.addAll(q.getBounds());
 			}
 			return bounds;
@@ -121,4 +121,8 @@ public class Quad {
 		return contains;
 	}
 
+	public Rectangle getBound() {
+		return bound;
+	}
+	
 }

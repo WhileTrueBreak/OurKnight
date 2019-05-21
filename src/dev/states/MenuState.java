@@ -13,7 +13,7 @@ public class MenuState extends State{
 	private Handler handler;
 	
 	private boolean isLoading = false;
-	private int timer = 1;
+	private int timer = 2;
 	
 	public MenuState(Handler handler) {
 		this.handler = handler;
@@ -26,11 +26,8 @@ public class MenuState extends State{
 			State.setCurrentState(gameState);
 			new MusicPlayer("effects/blip").start();
 		}
-		if(handler.getKeyManager().isKeyPressed(KeyEvent.VK_S)) {
-			isLoading = true;
-		}
-		if(isLoading)
-			timer--;
+		if(handler.getKeyManager().isKeyPressed(KeyEvent.VK_S)) isLoading = true;
+		if(isLoading) timer--;
 	}
 
 	@Override

@@ -3,8 +3,6 @@ package dev.entity.pathfinding;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-import dev.utils.Vector;
-
 public class Node {
 	
 	private ArrayList<Node> connections = new ArrayList<Node>();

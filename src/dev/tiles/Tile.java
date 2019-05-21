@@ -1,34 +1,22 @@
 package dev.tiles;
 
 import java.awt.Graphics;
-import java.awt.Rectangle;
-
-import dev.Handler;
-import dev.entity.Entity;
 
 public abstract class Tile {
 	
 	public static int TILE_WIDTH = 32, TILE_HEIGHT = 32;
 	
-	protected Rectangle bounds;
-	protected int x,y,spriteID;
+	public static Tile[] tiles = new Tile[64];
 	
-	protected Handler handler;
 	
-	public Tile(Handler handler, int x, int y, int spriteid) {
-		this.x=x;
-		this.y=y;
-		this.handler=handler;
-	}
-	
-	public abstract void update();
-	public abstract void render(Graphics g);
-	
-	public void onCollision(Entity e) {
+	public Tile() {
 		
 	}
 	
-	public boolean isSolid() {
-		return false;
+	public static void init() {
+		tiles[0] = new Water();
+		tiles[1] = new Floor();
 	}
+	
+	public abstract void render(Graphics g, int x, int y);
 }

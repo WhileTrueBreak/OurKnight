@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import dev.Handler;
+import dev.entity.pathfinding.Node;
 
 public class Quadtree {
 	
@@ -27,6 +28,17 @@ public class Quadtree {
 	
 	public ArrayList<Rectangle> getBounds(){
 		return child.getBounds();
+	}
+	
+	public ArrayList<Node> getNodes(){
+		ArrayList<Node>nodes = new ArrayList<Node>();
+		ArrayList<Quad>quads = getEndQuads();
+		for(Quad q:quads) {
+			if(!q.isContains()) {
+				nodes.add(new Node(q.getBound().x+q.getBound().width/2, q.getBound().y+q.getBound().height, q.getBound()));
+			}
+		}
+		return nodes;
 	}
 	
 }

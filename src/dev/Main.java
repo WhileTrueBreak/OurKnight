@@ -9,6 +9,7 @@ import dev.input.KeyManager;
 import dev.input.MouseManager;
 import dev.states.MenuState;
 import dev.states.State;
+import dev.tiles.Tile;
 
 public class Main implements Runnable{
 	
@@ -55,6 +56,7 @@ public class Main implements Runnable{
 		display.getCanvas().addMouseMotionListener(mouseManager);
 		
 		camera = new Camera(handler, 0, 0);
+		Tile.init();
 		
 		menuState = new MenuState(handler);
 		State.setCurrentState(menuState);
@@ -109,7 +111,7 @@ public class Main implements Runnable{
 		running = true;
 		init();
 		
-		int fps = 60;
+		int fps = 100000;
 		double timeperTick = 1000000000/fps;
 		double delta = 0;
 		long now;
