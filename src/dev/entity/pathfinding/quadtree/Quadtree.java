@@ -1,44 +1,49 @@
 package dev.entity.pathfinding.quadtree;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.pathfinding.Node;
 
 public class Quadtree {
 	
+	ArrayList<Node>nodes = new ArrayList<Node>();
+	
 	private Handler handler;
-	private Quad child;
 	
-	public Quadtree(Handler handler, float x, float y, float w, float h, float minSize) {
+	private int x, y, width, height;
+	private int lowerBound;
+	
+	public Quadtree(Handler handler, int x, int y, int width, int height, int LBound) {
 		this.handler = handler;
-		child = new Quad(handler, x, y, w, h, minSize, null);
+		this.x = x;
+		this.y = y;
+		this.width = width;
+		this.height = height;
+		this.lowerBound = LBound;
+		createTree();
 	}
 	
-	public void update() {
-		child.checkBranches();
-		for(Quad q:getEndQuads())
-			q.mergeEmpty();
-	}
-	
-	private ArrayList<Quad> getEndQuads(){
-		return child.getEndQuads();
-	}
-	
-	public ArrayList<Rectangle> getBounds(){
-		return child.getBounds();
-	}
-	
-	public ArrayList<Node> getNodes(){
-		ArrayList<Node>nodes = new ArrayList<Node>();
-		ArrayList<Quad>quads = getEndQuads();
-		for(Quad q:quads) {
-			if(!q.isContains()) {
-				nodes.add(new Node(q.getBound().x+q.getBound().width/2, q.getBound().y+q.getBound().height, q.getBound()));
+	private void createTree() {
+		nodes.add(new Node(handler, x, y, width, height, 0, null));//create root node
+		boolean allLeafs = false;
+		while(!allLeafs) {
+			allLeafs = true;
+			ArrayList<Node>toAdd = new ArrayList<Node>();
+			ArrayList<Node>toRemove = new ArrayList<Node>();
+			for(Node n:nodes) {
+				if(n.getWidth() <= lowerBound || n.getHeight() <= lowerBound) n.setBranch(false);
+				if(n.needsChildren()) {
+					toAdd.add(new Node(handler, x		 , y		 , width/2, height/2, n.getDepth()+1, n));
+					toAdd.add(new Node(handler, x+width/2, y		 , width/2, height/2, n.getDepth()+1, n));
+					toAdd.add(new Node(handler, x		 , y+height/2, width/2, height/2, n.getDepth()+1, n));
+					toAdd.add(new Node(handler, x+width/2, y+height/2, width/2, height/2, n.getDepth()+1, n));
+					toRemove.add(n);
+					allLeafs = false;
+				}
 			}
+			nodes.addAll(toAdd);
+			nodes.removeAll(toRemove);
 		}
-		return nodes;
 	}
 	
 }
