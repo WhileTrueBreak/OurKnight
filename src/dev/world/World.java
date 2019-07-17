@@ -16,7 +16,7 @@ import dev.utils.noise.OpenSimplexNoise;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 200, WORLD_SECTOR_HEIGHT = 200;
+	public static int WORLD_SECTOR_WIDTH = 300, WORLD_SECTOR_HEIGHT = 300;
 
 	//managers
 	EnemyManager enemyManager;
