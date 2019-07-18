@@ -4,8 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import dev.Handler;
 import dev.entity.Entity;
 
 public class Quadtree{
@@ -13,17 +15,20 @@ public class Quadtree{
 	int MAX_LEVEL = 13;
 	int MIN_SIZE = 8;
 
+	private Handler handler;
+	
 	private Node node;
 	private Quadtree[] nodes;
 	private float x, y, width, height;
 	private boolean blocked, contained;
 	private int level;
 
-	public Quadtree(int w, int h){
-		this(0, 0, 0, w, h);
+	public Quadtree(Handler handler, int w, int h){
+		this(handler, 0, 0, 0, w, h);
 	}
 
-	public Quadtree(int level, float x, float y, float w, float h){
+	public Quadtree(Handler handler, int level, float x, float y, float w, float h){
+		this.handler = handler;
 		node = new Node(x+w/2, y+h/2, w, h);
 		this.blocked = false;
 		this.level = level;
@@ -36,10 +41,10 @@ public class Quadtree{
 	private void split(){
 		//splits the current quadtree in four 
 		nodes = new Quadtree[4];
-		nodes[0] = new Quadtree(level+1, x    , y    , width/2, height/2);
-		nodes[1] = new Quadtree(level+1, x+width/2, y    , width/2, height/2);
-		nodes[2] = new Quadtree(level+1, x    , y+height/2, width/2, height/2);
-		nodes[3] = new Quadtree(level+1, x+width/2, y+height/2, width/2, height/2);
+		nodes[0] = new Quadtree(handler, level+1, x    , y    , width/2, height/2);
+		nodes[1] = new Quadtree(handler, level+1, x+width/2, y    , width/2, height/2);
+		nodes[2] = new Quadtree(handler, level+1, x    , y+height/2, width/2, height/2);
+		nodes[3] = new Quadtree(handler, level+1, x+width/2, y+height/2, width/2, height/2);
 	}
 
 	public void addBlocks(ArrayList<Entity>entities){
@@ -81,13 +86,16 @@ public class Quadtree{
 	public void dfs(Graphics g){
 		//print debug
 		System.out.printf("\nLevel = %d [X=%d Y=%d]", level, (int)x, (int)y);
-		System.out.printf(" [W=%d H=%d]", level, (int)width, (int)height);
+		System.out.printf(" [W=%d H=%d]", (int)width, (int)height);
 		System.out.printf("\n\tBlocked=" + blocked);
 		System.out.printf("\n\tContained=" + contained);
 		if(nodes == null){
 			System.out.print("\n\t[Leaf Node]");
-			g.setColor(new Color(0,255,255));
-			g.drawRect((int)x, (int)y, (int)width, (int)height);
+			Rectangle bound = new Rectangle((int)x, (int)y, (int)width, (int)height);
+			if(handler.getScreenBound().contains(bound)) {
+				g.setColor(new Color(0,255,255));
+				g.drawRect((int)x, (int)y, (int)width, (int)height);
+			}
 		}else{
 			//go deeper
 			System.out.print("\n\t[Branch Node]");
@@ -146,7 +154,8 @@ public class Quadtree{
 		g2.setStroke(new BasicStroke(1));
 		for(Quadtree qt:qtLeaf){
 			for(Node n:qt.node.adjNodes){
-				g.drawLine((int)n.getX(), (int)n.getY(), (int)qt.node.getX(), (int)qt.node.getX());
+				Rectangle bound = new Rectangle((int)n.getX(), (int)n.getY(), (int)(qt.node.getX()-n.getX()), (int)(qt.node.getX()-n.getY()));
+				if(handler.getScreenBound().contains(bound)) g.drawLine((int)n.getX(), (int)n.getY(), (int)qt.node.getX(), (int)qt.node.getX());
 			}
 		}
 	}
