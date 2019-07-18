@@ -1,5 +1,7 @@
 package dev;
 
+import java.awt.Rectangle;
+
 import dev.display.Camera;
 import dev.entity.creature.Player;
 import dev.input.KeyManager;
@@ -49,6 +51,10 @@ public class Handler {
 	
 	public MouseManager getMouseManager() {
 		return main.getMouseManager();
+	}
+	
+	public Rectangle getScreenBound() {
+		return new Rectangle((int)-getCamera().getXoff(), (int)-getCamera().getYoff(), getWidth(), getHeight());
 	}
 	
 }
