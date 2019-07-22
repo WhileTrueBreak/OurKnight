@@ -12,8 +12,8 @@ import dev.entity.Entity;
 
 public class Quadtree{
 
-	int MAX_LEVEL = 13;
-	int MIN_SIZE = 8;
+	public static int MAX_LEVEL = 5;
+	public static int MIN_SIZE = 32;
 
 	private Handler handler;
 	
@@ -41,10 +41,10 @@ public class Quadtree{
 	private void split(){
 		//splits the current quadtree in four 
 		nodes = new Quadtree[4];
-		nodes[0] = new Quadtree(handler, level+1, x    , y    , width/2, height/2);
-		nodes[1] = new Quadtree(handler, level+1, x+width/2, y    , width/2, height/2);
-		nodes[2] = new Quadtree(handler, level+1, x    , y+height/2, width/2, height/2);
-		nodes[3] = new Quadtree(handler, level+1, x+width/2, y+height/2, width/2, height/2);
+		nodes[0] = new Quadtree(handler, level+1, x    		, y   		, width/2, height/2);
+		nodes[1] = new Quadtree(handler, level+1, x+width/2	, y    		, width/2, height/2);
+		nodes[2] = new Quadtree(handler, level+1, x    		, y+height/2, width/2, height/2);
+		nodes[3] = new Quadtree(handler, level+1, x+width/2	, y+height/2, width/2, height/2);
 	}
 
 	public void addBlocks(ArrayList<Entity>entities){
@@ -65,19 +65,31 @@ public class Quadtree{
 
 		blocked = true;
 		//check if block intersects quadrants
-		if(entity.getHitbox().x < nodes[0].x + nodes[0].width && entity.getHitbox().x + entity.getHitbox().width > nodes[0].x && entity.getHitbox().y < nodes[0].y + nodes[0].height && entity.getHitbox().y + entity.getHitbox().height > nodes[0].y){
+		if(entity.getHitbox().x+entity.getX() < nodes[0].x + nodes[0].width && 
+				entity.getHitbox().x+entity.getX() + entity.getHitbox().width > nodes[0].x && 
+				entity.getHitbox().y+entity.getY() < nodes[0].y + nodes[0].height && 
+				entity.getHitbox().y+entity.getY() + entity.getHitbox().height > nodes[0].y){
 			nodes[0].blocked = true;
 			nodes[0].add(entity);
 		}
-		if(entity.getHitbox().x < nodes[1].x + nodes[1].width && entity.getHitbox().x + entity.getHitbox().width > nodes[1].x && entity.getHitbox().y < nodes[1].y + nodes[1].height && entity.getHitbox().y + entity.getHitbox().height > nodes[1].y){
+		if(entity.getHitbox().x+entity.getX() < nodes[1].x + nodes[1].width && 
+				entity.getHitbox().x+entity.getX() + entity.getHitbox().width > nodes[1].x && 
+				entity.getHitbox().y+entity.getY() < nodes[1].y + nodes[1].height && 
+				entity.getHitbox().y+entity.getY() + entity.getHitbox().height > nodes[1].y){
 			nodes[1].blocked = true;
 			nodes[1].add(entity);
 		}
-		if(entity.getHitbox().x < nodes[2].x + nodes[2].width && entity.getHitbox().x + entity.getHitbox().width > nodes[2].x && entity.getHitbox().y < nodes[2].y + nodes[2].height && entity.getHitbox().y + entity.getHitbox().height > nodes[2].y){
+		if(entity.getHitbox().x+entity.getX() < nodes[2].x + nodes[2].width && 
+				entity.getHitbox().x+entity.getX() + entity.getHitbox().width > nodes[2].x && 
+				entity.getHitbox().y+entity.getY() < nodes[2].y + nodes[2].height && 
+				entity.getHitbox().y+entity.getY() + entity.getHitbox().height > nodes[2].y){
 			nodes[2].blocked = true;
 			nodes[2].add(entity);
 		}
-		if(entity.getHitbox().x < nodes[3].x + nodes[3].width && entity.getHitbox().x + entity.getHitbox().width > nodes[3].x && entity.getHitbox().y < nodes[3].y + nodes[3].height && entity.getHitbox().y + entity.getHitbox().height > nodes[3].y){
+		if(entity.getHitbox().x+entity.getX() < nodes[3].x + nodes[3].width && 
+				entity.getHitbox().x+entity.getX() + entity.getHitbox().width > nodes[3].x && 
+				entity.getHitbox().y+entity.getY() < nodes[3].y + nodes[3].height && 
+				entity.getHitbox().y+entity.getY() + entity.getHitbox().height > nodes[3].y){
 			nodes[3].blocked = true;
 			nodes[3].add(entity);
 		}
@@ -91,10 +103,10 @@ public class Quadtree{
 		System.out.printf("\n\tContained=" + contained);
 		if(nodes == null){
 			System.out.print("\n\t[Leaf Node]");
-			Rectangle bound = new Rectangle((int)x, (int)y, (int)width, (int)height);
-			if(handler.getScreenBound().contains(bound)) {
-				g.setColor(new Color(0,255,255));
-				g.drawRect((int)x, (int)y, (int)width, (int)height);
+			Rectangle bound = new Rectangle((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), (int)width, (int)height);
+			if(handler.getScreenBound().contains(bound) && !blocked) {
+				g.setColor(new Color(255, 0, 0));
+				g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), (int)width, (int)height);
 			}
 		}else{
 			//go deeper
@@ -123,19 +135,28 @@ public class Quadtree{
 
 	public void createNavMesh(){
 		ArrayList<Quadtree> qtLeaf = dfsGetLeaf();
-		for(Quadtree qt:qtLeaf){
-			for(Quadtree qts:qtLeaf){
-				if(qt==qts)continue;
+		for(Quadtree quadtreePrimary:qtLeaf){
+			for(Quadtree quadtreeSecondary:qtLeaf){
+				if(quadtreePrimary==quadtreeSecondary)continue;
+				//TODO plz fix
+				//There is some weird and strange behaviour with the code
+				//all the connection that the thing make is valid so it is probably a rounding error somewhere
+				/*
 				//check top adj nodes
-				float lowY = qts.y+qts.height;
-				if(lowY == qt.y && qts.x < qt.x+qt.width && qts.x+qts.width > qt.x)qt.node.addAdjNode(qts.node);
+				float highY = quadtreeSecondary.getY()+quadtreeSecondary.getHeight();
+				if((int)highY == (int)quadtreePrimary.getY() && 
+						quadtreeSecondary.getX() < quadtreePrimary.getX()+quadtreePrimary.getWidth() && quadtreeSecondary.getX()+quadtreeSecondary.getWidth() > quadtreePrimary.getX())quadtreePrimary.getNode().addAdjNode(quadtreeSecondary.getNode());
 				//check left adj nodes
-				float lowX = qts.x+qts.width;
-				if(lowX == qt.x && qts.y < qt.y+qt.height && qts.y+qts.height > qt.y)qt.node.addAdjNode(qts.node);
+				float highX = quadtreeSecondary.getX()+quadtreeSecondary.getWidth();
+				if((int)highX == (int)quadtreePrimary.getX() && 
+						quadtreeSecondary.getY() < quadtreePrimary.getY()+quadtreePrimary.getHeight() && quadtreeSecondary.getY()+quadtreeSecondary.getHeight() > quadtreePrimary.getY())quadtreePrimary.getNode().addAdjNode(quadtreeSecondary.getNode());
 				//check bottom adj nodes
-				if(qts.y == qt.y+qt.height && qts.x < qt.x+qt.width && qts.x+qts.width > qt.x)qt.node.addAdjNode(qts.node);
+				if((int)quadtreeSecondary.getY() == (int)(quadtreePrimary.getY()+quadtreePrimary.getHeight()) && 
+						(int)quadtreeSecondary.getX() < (int)quadtreePrimary.getX()+(int)quadtreePrimary.getWidth() && (int)quadtreeSecondary.getX()+(int)quadtreeSecondary.getWidth() > (int)quadtreePrimary.getX())quadtreePrimary.getNode().addAdjNode(quadtreeSecondary.getNode());
 				//check right adj nodes
-				if(qts.x == qt.x+qt.width && qts.y < qt.y+qt.height && qts.y+qts.height > qt.y)qt.node.addAdjNode(qts.node);
+				if((int)quadtreeSecondary.getX() == (int)(quadtreePrimary.getX()+quadtreePrimary.getWidth()) && 
+						(int)quadtreeSecondary.getY() < (int)quadtreePrimary.getY()+(int)quadtreePrimary.getHeight() && (int)quadtreeSecondary.getY()+(int)quadtreeSecondary.getHeight() > (int)quadtreePrimary.getY())quadtreePrimary.getNode().addAdjNode(quadtreeSecondary.getNode());
+				*/
 			}
 		}
 	}
@@ -154,8 +175,12 @@ public class Quadtree{
 		g2.setStroke(new BasicStroke(1));
 		for(Quadtree qt:qtLeaf){
 			for(Node n:qt.node.adjNodes){
-				Rectangle bound = new Rectangle((int)n.getX(), (int)n.getY(), (int)(qt.node.getX()-n.getX()), (int)(qt.node.getX()-n.getY()));
-				if(handler.getScreenBound().contains(bound)) g.drawLine((int)n.getX(), (int)n.getY(), (int)qt.node.getX(), (int)qt.node.getX());
+				Rectangle bound = new Rectangle((int)n.getX(), (int)n.getY(), (int)(qt.node.getX()-n.getX()), (int)(qt.node.getY()-n.getY()));
+				if(handler.getScreenBound().contains(bound)) g.drawLine(
+						(int)(n.getX()), 
+						(int)(n.getY()), 
+						(int)(qt.node.getX()), 
+						(int)(qt.node.getY()));
 			}
 		}
 	}
@@ -219,4 +244,25 @@ public class Quadtree{
 		nodes = null;
 	}
 
+	//getters and setters
+
+	public float getX() {
+		return x;
+	}
+
+	public float getY() {
+		return y;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+	
+	public Node getNode() {
+		return node;
+	}
 }

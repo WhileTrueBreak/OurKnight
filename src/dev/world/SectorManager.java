@@ -20,11 +20,13 @@ public class SectorManager {
 	}
 	
 	public void update() {
+		//gets all sectors in screen
 		for(int i = (int)(handler.getCamera().getXoff()-handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH);
 				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth()*2)/(Sector.SECTOR_PIXEL_WIDTH));i++) {
 			for(int j = (int)(handler.getCamera().getYoff()-handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT);
 					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight()*2)/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
 				Sector sector = getSector(i, j);
+				//updates those sectors
 				if(sector != null) sector.update();
 			}
 		}
@@ -32,17 +34,20 @@ public class SectorManager {
 	
 	public void render(Graphics g) {
 		//long start = System.currentTimeMillis();
+		//gets all sectors in screen
 		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
 				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
 			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
 					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
 				Sector sector = getSector(i, j);
+				//renders secters in screen
 				if(sector != null) sector.render(g);
 			}
 		}
 		//if(System.currentTimeMillis()-start > -1)System.out.println("Sector Render Takes: " + (System.currentTimeMillis()-start) + " milliseconds");
 	}
 	
+	//prepares the static entities for the world to render
 	public ArrayList<Entity> getRenderEntities(){
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);

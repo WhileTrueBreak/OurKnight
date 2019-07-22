@@ -54,7 +54,7 @@ public class Handler {
 	}
 	
 	public Rectangle getScreenBound() {
-		return new Rectangle((int)-getCamera().getXoff(), (int)-getCamera().getYoff(), getWidth(), getHeight());
+		return new Rectangle((int)getCamera().getXoff(), (int)getCamera().getYoff(), getWidth(), getHeight());
 	}
 	
 }

@@ -13,11 +13,13 @@ import dev.entity.staticEntity.Wall;
 import dev.tiles.Tile;
 import dev.ui.UIManager;
 import dev.utils.noise.OpenSimplexNoise;
+import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 300, WORLD_SECTOR_HEIGHT = 300;
-
+	public static int WORLD_SECTOR_WIDTH = 2, WORLD_SECTOR_HEIGHT = 2;
+	public static boolean RENDER_DEBUG = true;
+	
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
@@ -28,6 +30,9 @@ public class World {
 
 	//handler
 	private Handler handler;
+	
+	//pathfinding and navmesh
+	private Quadtree quadtree;
 
 	//Comparators
 	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
@@ -47,11 +52,69 @@ public class World {
 		ui = new UIManager(handler);
 
 		player = new Player(handler, 400, 400);
-		//ui.addUI(new Health(handler, 30, 30));
-
+		
+		quadtree = new Quadtree(handler, handler.getWidth(), handler.getHeight());
+		
 		loadWorld();
+		updateNavmesh();
+		
+		quadtree.update(getPathfindingEntities());
+	}
+	
+	//main game loop stuff
+
+	public void update() {
+		sectorManager.update();
+		player.update();
+		ui.update();
 	}
 
+	public void render(Graphics g) {
+		sectorManager.render(g);
+		renderEntities(g);
+		ui.render(g);
+		if(RENDER_DEBUG) {
+			quadtree.dfs(g);
+			quadtree.renderNavMesh(g);
+		}
+	}
+	
+	//rendering
+
+	private void renderEntities(Graphics g) {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		//adding all entities
+		entities.addAll(sectorManager.getRenderEntities());
+		entities.add(player);
+		//sort
+		entities.sort(renderOrder);
+		//render
+		for(Entity e:entities)
+			e.render(g);
+	}
+	
+	//pathfinding
+	
+	public void updateNavmesh() {
+		quadtree.update(getPathfindingEntities());
+		quadtree.clearNavMesh();
+		quadtree.updateNavMesh();
+	}
+	
+	private ArrayList<Entity> getPathfindingEntities() {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
+				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
+					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
+				if(sectorManager.getSector(i, j) != null) entities.addAll(sectorManager.getSector(i, j).getStaticEntityManager().getStaticEntities());
+			}
+		}
+		return entities;
+	}
+	
+	//world loading
+	
 	private void loadWorld() {
 		long startTime = System.currentTimeMillis();
 		//loading Tiles
@@ -87,14 +150,14 @@ public class World {
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
-				if(noise.eval(x*0.1f, y*0.1f) < -0.2f) {
+				if(noise.eval(x*0.1f, y*0.1f) < -0.5f) {
 					staticEntities.add(new Wall(handler, x*Tile.TILE_WIDTH, y*Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0));
 				}
 			}
 		}
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
-		System.out.println("Time taken: " + (System.currentTimeMillis()-startTime));
+		System.out.println("Time taken: " + (System.currentTimeMillis()-startTime) + "ms");
 	}
 
 	//TODO refactor this method
@@ -108,29 +171,7 @@ public class World {
 		}
 	}
 
-	public void update() {
-		sectorManager.update();
-		player.update();
-		ui.update();
-	}
-
-	public void render(Graphics g) {
-		sectorManager.render(g);
-		renderEntities(g);
-		ui.render(g);
-	}
-
-	private void renderEntities(Graphics g) {
-		ArrayList<Entity> entities = new ArrayList<Entity>();
-		//adding all entities
-		entities.addAll(sectorManager.getRenderEntities());
-		entities.add(player);
-		//sort
-		entities.sort(renderOrder);
-		//render
-		for(Entity e:entities)
-			e.render(g);
-	}
+	//getters and setters
 
 	public Player getPlayer() {
 		return player;
