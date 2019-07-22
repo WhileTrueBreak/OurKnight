@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import dev.Handler;
 import dev.entity.Entity;
-import dev.tiles.Tile;
 
 public class SectorManager {
 	
@@ -32,7 +31,7 @@ public class SectorManager {
 	}
 	
 	public void render(Graphics g) {
-		long start = System.currentTimeMillis();
+		//long start = System.currentTimeMillis();
 		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
 				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
 			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
@@ -51,7 +50,7 @@ public class SectorManager {
 			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
 					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
 				Sector sector = getSector(i, j);
-				if(sector != null) entities.addAll(sector.getRenderStaticEntities());
+				if(sector != null) entities.addAll(sector.getStaticEntityManager().getStaticEntities());
 			}
 		}
 		return entities;

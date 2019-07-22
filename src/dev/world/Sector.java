@@ -61,10 +61,6 @@ public class Sector {
 					SECTOR_PIXEL_WIDTH-1, SECTOR_PIXEL_HEIGHT-1);
 		}
 	}
-	
-	public ArrayList<StaticEntity> getRenderStaticEntities(){
-		return staticEntityManager.getStaticEntities();
-	}
 
 	public int getSectorX() {
 		return sectorX;
