@@ -11,14 +11,14 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-public class MusicPlayer implements Runnable{
+public class AudioPlayer implements Runnable{
 
 	private Thread thread;
 	private boolean running;
 
 	private String musicFile;
 
-	public MusicPlayer(String file){
+	public AudioPlayer(String file){
 		musicFile = "./res/audio/" + file + ".wav";
 	}
 

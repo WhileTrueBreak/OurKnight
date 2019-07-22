@@ -6,7 +6,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import dev.Handler;
-import dev.audio.MusicPlayer;
+import dev.audio.AudioPlayer;
 
 public class MenuState extends State{
 	
@@ -24,7 +24,7 @@ public class MenuState extends State{
 			State gameState;
 			gameState = new GameState(handler);
 			State.setCurrentState(gameState);
-			new MusicPlayer("effects/blip").start();
+			new AudioPlayer("effects/blip").start();
 		}
 		if(handler.getKeyManager().isKeyPressed(KeyEvent.VK_S)) isLoading = true;
 		if(isLoading) timer--;
