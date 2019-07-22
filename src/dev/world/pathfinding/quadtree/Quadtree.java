@@ -1,4 +1,4 @@
-package dev.entity.pathfinding.quadtree;
+package dev.world.pathfinding.quadtree;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
