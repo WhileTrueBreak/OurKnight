@@ -145,7 +145,7 @@ public class World {
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
-		long seed = (long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
+		long seed = -8519653203755203584l;//(long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
 		System.out.println("Seed: " + seed);
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
