@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import dev.Handler;
 import dev.entity.Entity;
+import dev.world.pathfinding.Node;
 
 public class Quadtree{
 
@@ -20,7 +21,6 @@ public class Quadtree{
 	private Node node;
 	private Quadtree[] nodes;
 	private float x, y, width, height;
-	@SuppressWarnings("unused")
 	private boolean blocked, contained;
 	private int level;
 
@@ -98,12 +98,12 @@ public class Quadtree{
 
 	public void dfs(Graphics g){
 		//print debug
-//		System.out.printf("\nLevel = %d [X=%d Y=%d]", level, (int)x, (int)y);
-//		System.out.printf(" [W=%d H=%d]", (int)width, (int)height);
-//		System.out.printf("\n\tBlocked=" + blocked);
-//		System.out.printf("\n\tContained=" + contained);
+		System.out.printf("\nLevel = %d [X=%d Y=%d]", level, (int)x, (int)y);
+		System.out.printf(" [W=%d H=%d]", (int)width, (int)height);
+		System.out.printf("\n\tBlocked=" + blocked);
+		System.out.printf("\n\tContained=" + contained);
 		if(nodes == null){
-//			System.out.print("\n\t[Leaf Node]");
+			System.out.print("\n\t[Leaf Node]");
 			Rectangle bound = new Rectangle((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), (int)width, (int)height);
 			if(handler.getScreenBound().contains(bound) && !blocked) {
 				g.setColor(new Color(255, 0, 0));
@@ -111,7 +111,7 @@ public class Quadtree{
 			}
 		}else{
 			//go deeper
-//			System.out.print("\n\t[Branch Node]");
+			System.out.print("\n\t[Branch Node]");
 			nodes[0].dfs(g);
 			nodes[1].dfs(g);
 			nodes[2].dfs(g);
@@ -172,7 +172,7 @@ public class Quadtree{
 	public void clearNavMesh(){
 		ArrayList<Quadtree> qtLeaf = dfsGetLeaf();
 		for(Quadtree qt:qtLeaf){
-			qt.node.adjNodes = new ArrayList<Node>();
+			qt.node.setAdjNodes(new ArrayList<Node>());
 		}
 	}
 
@@ -182,7 +182,7 @@ public class Quadtree{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(1));
 		for(Quadtree qt:qtLeaf){
-			for(Node n:qt.node.adjNodes){
+			for(Node n:qt.node.getAdjNodes()){
 				Rectangle bound = new Rectangle((int)Math.min(n.getX(),qt.node.getX()), 
 						(int)Math.min(n.getY(),qt.node.getY()), 
 						(int)Math.abs(qt.node.getX()-n.getX()), 

@@ -1,8 +1,8 @@
-package dev.world.pathfinding.quadtree;
+package dev.world.pathfinding;
 
 import java.util.ArrayList;
 
-class Node{
+public class Node{
 
 	ArrayList<Node> adjNodes = new ArrayList<Node>();
 
@@ -18,6 +18,10 @@ class Node{
 	public void addAdjNode(Node node){
 		if(adjNodes.contains(node))return;
 		adjNodes.add(node);
+	}
+	
+	public void setAdjNodes(ArrayList<Node>nodes) {
+		adjNodes = nodes;
 	}
 
 	public ArrayList<Node> getAdjNodes() {
