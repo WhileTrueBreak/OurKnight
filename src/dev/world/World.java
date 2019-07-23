@@ -17,7 +17,7 @@ import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 2, WORLD_SECTOR_HEIGHT = 2;
+	public static int WORLD_SECTOR_WIDTH = 128, WORLD_SECTOR_HEIGHT = 128;
 	public static boolean RENDER_DEBUG = true;
 	
 	//managers
@@ -53,12 +53,12 @@ public class World {
 
 		player = new Player(handler, 400, 400);
 		
-		quadtree = new Quadtree(handler, handler.getWidth(), handler.getHeight());
+		
+		System.out.printf("[World]\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
+		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
 		
 		loadWorld();
 		updateNavmesh();
-		
-		quadtree.update(getPathfindingEntities());
 	}
 	
 	//main game loop stuff
@@ -67,6 +67,7 @@ public class World {
 		sectorManager.update();
 		player.update();
 		ui.update();
+		updateNavmesh();
 	}
 
 	public void render(Graphics g) {
@@ -74,6 +75,7 @@ public class World {
 		renderEntities(g);
 		ui.render(g);
 		if(RENDER_DEBUG) {
+			//System.out.println("[Navmesh]\trendering");
 			quadtree.dfs(g);
 			quadtree.renderNavMesh(g);
 		}
@@ -85,6 +87,7 @@ public class World {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		//adding all entities
 		entities.addAll(sectorManager.getRenderEntities());
+		//System.out.println("[Render]\tEntities to render: "+entities.size());
 		entities.add(player);
 		//sort
 		entities.sort(renderOrder);
@@ -96,9 +99,8 @@ public class World {
 	//pathfinding
 	
 	public void updateNavmesh() {
+		//System.out.println("[Navmesh]\tupdating");
 		quadtree.update(getPathfindingEntities());
-		quadtree.clearNavMesh();
-		quadtree.updateNavMesh();
 	}
 	
 	private ArrayList<Entity> getPathfindingEntities() {
@@ -145,8 +147,9 @@ public class World {
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
+		//TODO change seed back to random
 		long seed = -8519653203755203584l;//(long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
-		System.out.println("Seed: " + seed);
+		System.out.println("[World]\tSeed: " + seed);
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
@@ -157,7 +160,7 @@ public class World {
 		}
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
-		System.out.println("Time taken: " + (System.currentTimeMillis()-startTime) + "ms");
+		System.out.println("[World]\tLoad world took: " + (System.currentTimeMillis()-startTime) + "ms");
 	}
 
 	//TODO refactor this method
@@ -193,6 +196,16 @@ public class World {
 		this.ui = ui;
 	}
 
-
+	public Quadtree getQuadtree() {
+		return quadtree;
+	}
+	
+	public int getWorldWidth() {
+		return WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH;
+	}
+	
+	public int getWorldHeight() {
+		return WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT;
+	}
 
 }

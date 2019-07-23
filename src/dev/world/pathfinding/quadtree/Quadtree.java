@@ -13,7 +13,7 @@ import dev.world.pathfinding.Node;
 
 public class Quadtree{
 
-	public static int MAX_LEVEL = 5;
+	public static int MAX_LEVEL = 100;
 	public static int MIN_SIZE = 32;
 
 	private Handler handler;
@@ -21,6 +21,7 @@ public class Quadtree{
 	private Node node;
 	private Quadtree[] nodes;
 	private float x, y, width, height;
+	@SuppressWarnings("unused")
 	private boolean blocked, contained;
 	private int level;
 
@@ -98,20 +99,20 @@ public class Quadtree{
 
 	public void dfs(Graphics g){
 		//print debug
-		System.out.printf("\nLevel = %d [X=%d Y=%d]", level, (int)x, (int)y);
-		System.out.printf(" [W=%d H=%d]", (int)width, (int)height);
-		System.out.printf("\n\tBlocked=" + blocked);
-		System.out.printf("\n\tContained=" + contained);
+//		System.out.printf("\nLevel = %d [X=%d Y=%d]", level, (int)x, (int)y);
+//		System.out.printf(" [W=%d H=%d]", (int)width, (int)height);
+//		System.out.printf("\n\tBlocked=" + blocked);
+//		System.out.printf("\n\tContained=" + contained);
 		if(nodes == null){
-			System.out.print("\n\t[Leaf Node]");
-			Rectangle bound = new Rectangle((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), (int)width, (int)height);
-			if(handler.getScreenBound().contains(bound) && !blocked) {
-				g.setColor(new Color(255, 0, 0));
+//			System.out.print("\n\t[Leaf Node]");
+			Rectangle bound = new Rectangle((int)x, (int)y, (int)width, (int)height);
+			if(handler.getScreenBound().intersects(bound) && !blocked) {
+				g.setColor(new Color(255, 255, 0));
 				g.drawRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), (int)width, (int)height);
 			}
 		}else{
 			//go deeper
-			System.out.print("\n\t[Branch Node]");
+//			System.out.print("\n\t[Branch Node]");
 			nodes[0].dfs(g);
 			nodes[1].dfs(g);
 			nodes[2].dfs(g);
@@ -178,7 +179,7 @@ public class Quadtree{
 
 	public void renderNavMesh(Graphics g){
 		ArrayList<Quadtree> qtLeaf = dfsGetLeaf();
-		g.setColor(new Color(0,255,0));
+		g.setColor(new Color(255,0,0));
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(1));
 		for(Quadtree qt:qtLeaf){
@@ -189,16 +190,16 @@ public class Quadtree{
 						(int)Math.abs(qt.node.getY()-n.getY()));
 				if((int)Math.abs(qt.node.getX()-n.getX())==0||(int)Math.abs(qt.node.getY()-n.getY())==0) {
 					g.drawLine(
-							(int)(n.getX()), 
-							(int)(n.getY()), 
-							(int)(qt.node.getX()), 
-							(int)(qt.node.getY()));
+							(int)(n.getX()-handler.getCamera().getXoff()), 
+							(int)(n.getY()-handler.getCamera().getYoff()), 
+							(int)(qt.node.getX()-handler.getCamera().getXoff()), 
+							(int)(qt.node.getY()-handler.getCamera().getYoff()));
 				}
-				if(handler.getScreenBound().contains(bound)) g.drawLine(
-						(int)(n.getX()), 
-						(int)(n.getY()), 
-						(int)(qt.node.getX()), 
-						(int)(qt.node.getY()));
+				if(handler.getScreenBound().intersects(bound)) g.drawLine(
+						(int)(n.getX()-handler.getCamera().getXoff()), 
+						(int)(n.getY()-handler.getCamera().getYoff()), 
+						(int)(qt.node.getX()-handler.getCamera().getXoff()), 
+						(int)(qt.node.getY()-handler.getCamera().getYoff()));
 			}
 		}
 	}
@@ -254,6 +255,7 @@ public class Quadtree{
 	}
 	
 	public void update(ArrayList<Entity>entities) {
+		//System.out.println("[Navmesh]\tEntities added: "+entities.size());
 		updateQuadtree(entities);
 		updateNavMesh();
 	}
