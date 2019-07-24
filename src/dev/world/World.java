@@ -13,18 +13,22 @@ import dev.entity.staticEntity.Wall;
 import dev.tiles.Tile;
 import dev.ui.UIManager;
 import dev.utils.noise.OpenSimplexNoise;
+import dev.world.pathfinding.NavmeshUpdater;
 import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 128, WORLD_SECTOR_HEIGHT = 128;
-	public static boolean RENDER_DEBUG = true;
+	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
+	public static boolean RENDER_DEBUG = false;
 	
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
 	UIManager ui;
 
+	//task flags
+	boolean navmeshUpdateRequired = true;
+	
 	//player
 	private Player player;
 
@@ -33,6 +37,7 @@ public class World {
 	
 	//pathfinding and navmesh
 	private Quadtree quadtree;
+	private NavmeshUpdater nu;
 
 	//Comparators
 	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
@@ -51,14 +56,15 @@ public class World {
 		enemyManager = new EnemyManager(handler);
 		ui = new UIManager(handler);
 
-		player = new Player(handler, 400, 400);
+		player = new Player(handler, 500, 400);
 		
-		
-		System.out.printf("[World]\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
+		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
 		
 		loadWorld();
-		updateNavmesh();
+		
+		nu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
+		nu.start();
 	}
 	
 	//main game loop stuff
@@ -67,7 +73,13 @@ public class World {
 		sectorManager.update();
 		player.update();
 		ui.update();
-		updateNavmesh();
+		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
+			updateNavmesh();
+			navmeshUpdateRequired=false;
+		}
+		if(nu.isDone()) {
+			quadtree = nu.getUpdated();
+		}
 	}
 
 	public void render(Graphics g) {
@@ -98,19 +110,29 @@ public class World {
 	
 	//pathfinding
 	
-	public void updateNavmesh() {
-		//System.out.println("[Navmesh]\tupdating");
-		quadtree.update(getPathfindingEntities());
+	private void updateNavmesh() {
+		nu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
+		nu.start();
+		quadtree = nu.getUpdated();
 	}
 	
-	private ArrayList<Entity> getPathfindingEntities() {
+	private ArrayList<Entity> getPathfindingEntities(float bufferX, float bufferY) {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
-		for(int i = (int)(handler.getCamera().getXoff())/(Sector.SECTOR_PIXEL_WIDTH);
-				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth())/(Sector.SECTOR_PIXEL_WIDTH));i++) {
-			for(int j = (int)(handler.getCamera().getYoff())/(Sector.SECTOR_PIXEL_HEIGHT);
-					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight())/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
+		for(int i = (int)(handler.getCamera().getXoff()-bufferX)/(Sector.SECTOR_PIXEL_WIDTH);
+				i < Math.ceil((handler.getCamera().getXoff()+handler.getWidth()+bufferX)/(Sector.SECTOR_PIXEL_WIDTH));i++) {
+			for(int j = (int)(handler.getCamera().getYoff()-bufferY)/(Sector.SECTOR_PIXEL_HEIGHT);
+					j < Math.ceil((handler.getCamera().getYoff()+handler.getHeight()+bufferY)/(Sector.SECTOR_PIXEL_HEIGHT));j++) {
 				if(sectorManager.getSector(i, j) != null) entities.addAll(sectorManager.getSector(i, j).getStaticEntityManager().getStaticEntities());
 			}
+		}
+		return entities;
+	}
+	
+	@SuppressWarnings("unused")
+	private ArrayList<Entity> getAllStaticEntities() {
+		ArrayList<Entity> entities = new ArrayList<Entity>();
+		for(Sector s:sectorManager.getSectors()) {
+			entities.addAll(s.staticEntityManager.getStaticEntities());
 		}
 		return entities;
 	}
@@ -149,7 +171,7 @@ public class World {
 		//load walls
 		//TODO change seed back to random
 		long seed = -8519653203755203584l;//(long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
-		System.out.println("[World]\tSeed: " + seed);
+		System.out.println("[World]\t\tSeed: " + seed);
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed); 
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT;y++) {
@@ -160,7 +182,7 @@ public class World {
 		}
 		save(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
-		System.out.println("[World]\tLoad world took: " + (System.currentTimeMillis()-startTime) + "ms");
+		System.out.println("[World]\t\tLoad world took: " + (System.currentTimeMillis()-startTime) + "ms");
 	}
 
 	//TODO refactor this method
@@ -206,6 +228,10 @@ public class World {
 	
 	public int getWorldHeight() {
 		return WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT;
+	}
+	
+	public void requireNavmeshUpdate() {
+		navmeshUpdateRequired = true;
 	}
 
 }

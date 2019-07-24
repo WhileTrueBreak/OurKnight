@@ -36,6 +36,9 @@ public class Main implements Runnable{
 	//states
 	private State menuState;
 	
+	//clock
+	private double timer;
+	
 	public Main(String title, int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -61,57 +64,12 @@ public class Main implements Runnable{
 		menuState = new MenuState(handler);
 		State.setCurrentState(menuState);
 	}
-
-	private void update() {
-		if(State.getCurrentState() != null)
-			State.getCurrentState().update();
-	}
 	
-	private void render() {
-		bs = display.getCanvas().getBufferStrategy();
-		if (bs == null) {
-			display.getCanvas().createBufferStrategy(3);
-			return;
-		}
-		g = bs.getDrawGraphics();
-		g.clearRect(0, 0, width, height);
-		// Draw Crap
-		if(State.getCurrentState() != null)
-			State.getCurrentState().render(g);
-		// End Crap
-		bs.show();
-		g.dispose();
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-	
-	public Display getDisplay() {
-		return display;
-	}
-	public KeyManager getKeyManager() {
-		return keyManager;
-	}
-	public MouseManager getMouseManager() {
-		return mouseManager;
-	}
-	public Camera getCamera() {
-		return camera;
-	}
-	//////////////////////////////////////////////////////
-
-	//////////////////////////////////////////////////////
-
 	public void run() {
 		running = true;
 		init();
 		
-		int fps = 6000;
+		int fps = 60000;
 		double timeperTick = 1000000000/fps;
 		double delta = 0;
 		long now;
@@ -124,6 +82,7 @@ public class Main implements Runnable{
 			now = System.nanoTime();
 			delta += (now - lastTime)/timeperTick;
 			timer += now - lastTime;
+			this.timer = timer;
 			lastTime = now;
 			if(delta >= 1) {
 				update();
@@ -136,7 +95,7 @@ public class Main implements Runnable{
 				start_tick_length = System.nanoTime();
 			}
 			if(timer >= 1000000000) {
-				System.out.println(ticks);
+				System.out.println("[Main]\t\t" + ticks + " fps");
 				ticks = 0;
 				timer = 0;
 			}
@@ -166,5 +125,53 @@ public class Main implements Runnable{
 		}
 	}
 	
-}
 
+	private void update() {
+		if(State.getCurrentState() != null)
+			State.getCurrentState().update();
+	}
+	
+	private void render() {
+		bs = display.getCanvas().getBufferStrategy();
+		if (bs == null) {
+			display.getCanvas().createBufferStrategy(3);
+			return;
+		}
+		g = bs.getDrawGraphics();
+		g.clearRect(0, 0, width, height);
+		// Draw Crap
+		if(State.getCurrentState() != null)
+			State.getCurrentState().render(g);
+		// End Crap
+		bs.show();
+		g.dispose();
+	}
+	
+	////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////
+	
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+	
+	public Display getDisplay() {
+		return display;
+	}
+	public KeyManager getKeyManager() {
+		return keyManager;
+	}
+	public MouseManager getMouseManager() {
+		return mouseManager;
+	}
+	public Camera getCamera() {
+		return camera;
+	}
+	public Double getTimer() {
+		return timer;
+	}
+}

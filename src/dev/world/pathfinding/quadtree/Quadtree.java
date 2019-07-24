@@ -11,7 +11,7 @@ import dev.Handler;
 import dev.entity.Entity;
 import dev.world.pathfinding.Node;
 
-public class Quadtree{
+public class Quadtree implements Cloneable{
 
 	public static int MAX_LEVEL = 100;
 	public static int MIN_SIZE = 32;
@@ -141,6 +141,12 @@ public class Quadtree{
 			for(Quadtree quadtreeSecondary:qtLeaf){
 				if(quadtreePrimary==quadtreeSecondary)continue;
 				
+				Rectangle qtboundp = new Rectangle((int)quadtreePrimary.getX()-1, (int)quadtreePrimary.getY()-1, 
+						(int)quadtreePrimary.getWidth()+1, (int)quadtreePrimary.getHeight()+1);
+				Rectangle qtbounds = new Rectangle((int)quadtreeSecondary.getX()-1, (int)quadtreeSecondary.getY()-1, 
+						(int)quadtreeSecondary.getWidth()+1, (int)quadtreeSecondary.getHeight()+1);
+				if(!qtboundp.intersects(qtbounds)) continue;
+				
 				//TODO Add setting to change this pathfinding option
 				//change the < and > signs to <= or >= to allow diagonals(may cause entities to get stuck a places)
 				
@@ -183,7 +189,7 @@ public class Quadtree{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setStroke(new BasicStroke(1));
 		for(Quadtree qt:qtLeaf){
-			for(Node n:qt.node.getAdjNodes()){
+			for(Node n:qt.getNode().getAdjNodes()){
 				Rectangle bound = new Rectangle((int)Math.min(n.getX(),qt.node.getX()), 
 						(int)Math.min(n.getY(),qt.node.getY()), 
 						(int)Math.abs(qt.node.getX()-n.getX()), 
@@ -262,6 +268,15 @@ public class Quadtree{
 
 	public void clear(){
 		nodes = null;
+	}
+	
+	public Object clone() {
+		try {
+			return super.clone();
+		} catch (CloneNotSupportedException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	//getters and setters
