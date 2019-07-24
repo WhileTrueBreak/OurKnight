@@ -66,6 +66,7 @@ public class Handler {
 	public void setFps(double fps) {
 		this.fps = fps;
 	}
+	
 	public double getSpeedMult() {
 		return 60/getFps();
 	}

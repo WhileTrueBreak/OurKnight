@@ -36,6 +36,9 @@ public class Main implements Runnable{
 	//states
 	private State menuState;
 	
+	//clock
+	private double timer;
+	
 	public Main(String title, int width, int height) {
 		this.width = width;
 		this.height = height;
@@ -103,6 +106,9 @@ public class Main implements Runnable{
 	public Camera getCamera() {
 		return camera;
 	}
+	public Double getTimer() {
+		return timer;
+	}
 	//////////////////////////////////////////////////////
 
 	//////////////////////////////////////////////////////
@@ -111,7 +117,7 @@ public class Main implements Runnable{
 		running = true;
 		init();
 		
-		int fps = 6000;
+		int fps = 60000;
 		double timeperTick = 1000000000/fps;
 		double delta = 0;
 		long now;
@@ -124,6 +130,7 @@ public class Main implements Runnable{
 			now = System.nanoTime();
 			delta += (now - lastTime)/timeperTick;
 			timer += now - lastTime;
+			this.timer = timer;
 			lastTime = now;
 			if(delta >= 1) {
 				update();
@@ -136,7 +143,7 @@ public class Main implements Runnable{
 				start_tick_length = System.nanoTime();
 			}
 			if(timer >= 1000000000) {
-				System.out.println(ticks);
+				System.out.println("[Main]\t\t" + ticks + " fps");
 				ticks = 0;
 				timer = 0;
 			}
@@ -167,4 +174,3 @@ public class Main implements Runnable{
 	}
 	
 }
-

@@ -73,7 +73,7 @@ public class World {
 		sectorManager.update();
 		player.update();
 		ui.update();
-		if(navmeshUpdateRequired) {
+		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
 			updateNavmesh();
 			navmeshUpdateRequired=false;
 		}
