@@ -48,7 +48,6 @@ public class NavmeshUpdater implements Runnable{
 	
 	private void update() {
 		long ts = System.currentTimeMillis();
-		System.out.println("[NavUpdater]\tUpdating...");
 		done = false;
 		this.quadtree.update(entities);
 		done = true;
