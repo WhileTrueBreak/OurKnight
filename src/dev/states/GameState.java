@@ -1,5 +1,6 @@
 package dev.states;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import dev.Handler;
@@ -23,6 +24,7 @@ public class GameState extends State{
 	@Override
 	public void render(Graphics g) {
 		world.render(g);
+		System.out.println(handler.getFps());
 	}
 
 }

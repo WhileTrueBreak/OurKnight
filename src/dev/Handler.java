@@ -10,6 +10,8 @@ import dev.world.World;
 
 public class Handler {
 
+	private double fps;
+	
 	private Main main;
 	private World world;
 	
@@ -56,5 +58,15 @@ public class Handler {
 	public Rectangle getScreenBound() {
 		return new Rectangle((int)getCamera().getXoff(), (int)getCamera().getYoff(), getWidth(), getHeight());
 	}
-	
+
+	public double getFps() {
+		return fps;
+	}
+
+	public void setFps(double fps) {
+		this.fps = fps;
+	}
+	public double getSpeedMult() {
+		return 60/fps;
+	}
 }

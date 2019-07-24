@@ -32,18 +32,18 @@ public class Player extends Creature{
 
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		if (mag != 0) {
-			x += dx*speed/mag;
+			x += dx*speed*handler.getSpeedMult()/mag;
 			Rectangle cHitbox = collided();
 			if (cHitbox != null) {
-				if(Math.signum(dx*speed/mag) == 1)
+				if(Math.signum(dx*speed*handler.getSpeedMult()/mag) == 1)
 					x = cHitbox.x-hitbox.width;
 				else
 					x = cHitbox.x+cHitbox.width;
 			}
-			y += dy*speed/mag;
+			y += dy*speed*handler.getSpeedMult()/mag;
 			cHitbox = collided();
 			if (cHitbox != null) {
-				if(Math.signum(dy*speed/mag) == 1)
+				if(Math.signum(dy*speed*handler.getSpeedMult()/mag) == 1)
 					y = cHitbox.y-hitbox.height;
 				else
 					y = cHitbox.y+cHitbox.height;
