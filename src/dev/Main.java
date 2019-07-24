@@ -111,13 +111,14 @@ public class Main implements Runnable{
 		running = true;
 		init();
 		
-		int fps = 100000;
+		int fps = 6000;
 		double timeperTick = 1000000000/fps;
 		double delta = 0;
 		long now;
 		long lastTime = System.nanoTime();
 		long timer = 0;
 		int ticks = 0;
+		long start_tick_length = System.nanoTime();
 		
 		while (running) {
 			now = System.nanoTime();
@@ -130,7 +131,9 @@ public class Main implements Runnable{
 				ticks++;
 				delta--;
 				if(delta > 1)
-					delta = 0;
+					delta--;
+				handler.setFps(1000000000/(System.nanoTime()-start_tick_length));
+				start_tick_length = System.nanoTime();
 			}
 			if(timer >= 1000000000) {
 				System.out.println(ticks);
