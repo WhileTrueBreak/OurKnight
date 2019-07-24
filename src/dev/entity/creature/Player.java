@@ -13,7 +13,7 @@ public class Player extends Creature{
 	public Player(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 4;//pixels per frame
+		speed = 8;//pixels per frame
 		handler.getCamera().focusOnEntity(this, 0);
 	}
 
@@ -32,6 +32,7 @@ public class Player extends Creature{
 
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		if (mag != 0) {
+			handler.getWorld().requireNavmeshUpdate();
 			x += dx*speed*handler.getSpeedMult()/mag;
 			Rectangle cHitbox = collided();
 			if (cHitbox != null) {

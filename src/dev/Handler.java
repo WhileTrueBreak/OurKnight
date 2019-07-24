@@ -9,7 +9,7 @@ import dev.input.MouseManager;
 import dev.world.World;
 
 public class Handler {
-
+	
 	private double fps;
 	
 	private Main main;
@@ -67,6 +67,6 @@ public class Handler {
 		this.fps = fps;
 	}
 	public double getSpeedMult() {
-		return 60/fps;
+		return 60/getFps();
 	}
 }
