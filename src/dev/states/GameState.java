@@ -1,6 +1,7 @@
 package dev.states;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import dev.Handler;
@@ -24,7 +25,10 @@ public class GameState extends State{
 	@Override
 	public void render(Graphics g) {
 		world.render(g);
-		System.out.println(handler.getFps());
+		//render fps info
+		g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+		g.setColor(Color.red);
+	    g.drawString(Double.toString(Math.round(handler.getFps())), handler.getWidth()-40, 20);
 	}
 
 }
