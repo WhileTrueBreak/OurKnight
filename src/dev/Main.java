@@ -64,55 +64,7 @@ public class Main implements Runnable{
 		menuState = new MenuState(handler);
 		State.setCurrentState(menuState);
 	}
-
-	private void update() {
-		if(State.getCurrentState() != null)
-			State.getCurrentState().update();
-	}
 	
-	private void render() {
-		bs = display.getCanvas().getBufferStrategy();
-		if (bs == null) {
-			display.getCanvas().createBufferStrategy(3);
-			return;
-		}
-		g = bs.getDrawGraphics();
-		g.clearRect(0, 0, width, height);
-		// Draw Crap
-		if(State.getCurrentState() != null)
-			State.getCurrentState().render(g);
-		// End Crap
-		bs.show();
-		g.dispose();
-	}
-	
-	public int getWidth() {
-		return width;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-	
-	public Display getDisplay() {
-		return display;
-	}
-	public KeyManager getKeyManager() {
-		return keyManager;
-	}
-	public MouseManager getMouseManager() {
-		return mouseManager;
-	}
-	public Camera getCamera() {
-		return camera;
-	}
-	public Double getTimer() {
-		return timer;
-	}
-	//////////////////////////////////////////////////////
-
-	//////////////////////////////////////////////////////
-
 	public void run() {
 		running = true;
 		init();
@@ -173,4 +125,53 @@ public class Main implements Runnable{
 		}
 	}
 	
+
+	private void update() {
+		if(State.getCurrentState() != null)
+			State.getCurrentState().update();
+	}
+	
+	private void render() {
+		bs = display.getCanvas().getBufferStrategy();
+		if (bs == null) {
+			display.getCanvas().createBufferStrategy(3);
+			return;
+		}
+		g = bs.getDrawGraphics();
+		g.clearRect(0, 0, width, height);
+		// Draw Crap
+		if(State.getCurrentState() != null)
+			State.getCurrentState().render(g);
+		// End Crap
+		bs.show();
+		g.dispose();
+	}
+	
+	////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////
+	
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+	
+	public Display getDisplay() {
+		return display;
+	}
+	public KeyManager getKeyManager() {
+		return keyManager;
+	}
+	public MouseManager getMouseManager() {
+		return mouseManager;
+	}
+	public Camera getCamera() {
+		return camera;
+	}
+	public Double getTimer() {
+		return timer;
+	}
 }
