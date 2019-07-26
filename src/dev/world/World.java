@@ -18,7 +18,7 @@ import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
+	public static int WORLD_SECTOR_WIDTH = 512, WORLD_SECTOR_HEIGHT = 512;
 	public static boolean RENDER_DEBUG = false;
 	
 	//managers

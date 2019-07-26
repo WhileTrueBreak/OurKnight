@@ -7,6 +7,9 @@ public class Node{
 	ArrayList<Node> adjNodes = new ArrayList<Node>();
 
 	private float x, y, width, height;
+	private float f = 0, g = 0, h = 0;
+	
+	private Node parent = null;
 
 	public Node(float x, float y, float w, float h){
 		this.x = x;
@@ -44,4 +47,35 @@ public class Node{
 		return height;
 	}
 
+	public float getF() {
+		return f;
+	}
+
+	public void setF(float f) {
+		this.f = f;
+	}
+
+	public float getG() {
+		return g;
+	}
+
+	public void setG(float g) {
+		this.g = g;
+	}
+
+	public float getH() {
+		return h;
+	}
+
+	public void setH(float h) {
+		this.h = h;
+	}
+
+	public Node getParent() {
+		return parent;
+	}
+
+	public void setParent(Node parent) {
+		this.parent = parent;
+	}
 }
