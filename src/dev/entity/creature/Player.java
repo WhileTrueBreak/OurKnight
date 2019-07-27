@@ -84,5 +84,5 @@ public class Player extends Creature{
 	public void setHealth(int a) {
 		health = a;
 	}
-
+	
 }

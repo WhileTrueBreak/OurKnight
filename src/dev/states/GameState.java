@@ -28,7 +28,7 @@ public class GameState extends State{
 		//render fps info
 		g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
 		g.setColor(Color.red);
-	    g.drawString(Double.toString(Math.round(handler.getFps())), handler.getWidth()-40, 20);
+	    g.drawString(Integer.toString((int) Math.round(handler.getFps())) + "fps", handler.getWidth()-50, 20);
 	}
 
 }
