@@ -6,6 +6,7 @@ import java.util.Collections;
 
 public class Pathfinding {	
 
+	//start and end x and y is the center of the entity
 	public static ArrayList<Node> getPath(float startX, float startY, float endX, float endY, float width, float height, ArrayList<Node>nodes){
 		ArrayList<Node>allNodes = nodes;
 		ArrayList<Node>openSet = new ArrayList<Node>();
@@ -41,6 +42,13 @@ public class Pathfinding {
 		}
 		//if start or end was not in quadtree return empty path
 		if(!startFound || !endFound) return path;
+		//if start and end node is in the same area
+		for(Node n:startNode.getAdjNodes()) {
+			if(endNode.getAdjNodes().contains(n)) {
+				path.add(endNode);
+				return path;
+			}
+		}
 		//set current node
 		Node currentNode = startNode;
 		openSet.add(currentNode);
@@ -49,19 +57,21 @@ public class Pathfinding {
 			openSet.remove(currentNode);
 			closedSet.add(currentNode);
 			//add everything to the open set
+			//System.out.println("[Pathfinding]\tNeightbor count: "+currentNode.getAdjNodes().size());
 			for(Node n:currentNode.getAdjNodes()) {
 				if(closedSet.contains(n)) continue;
-				if(openSet.contains(n) && Math.hypot(endNode.getX()-n.getX(), endNode.getY()-n.getY()) < openSet.get(openSet.indexOf(n)).getG()) {
-					n.setG(currentNode.getF()+(float) Math.hypot(currentNode.getX()-n.getX(), currentNode.getY()-n.getY()));
-					n.setH((float) Math.hypot(endNode.getX()-n.getX(), endNode.getY()-n.getY()));
-					n.setF(n.getG()+n.getH());
-					openSet.add(openSet.indexOf(n), n);
-					continue;
+				if(openSet.contains(n) && Math.hypot(endNode.getX()-n.getX(), endNode.getY()-n.getY()) < openSet.get(openSet.indexOf(n)).getG()) { 
+					n.setG(currentNode.getF()+(float) Math.hypot(currentNode.getX()-n.getX(), currentNode.getY()-n.getY())); 
+					n.setH((float) Math.hypot(endNode.getX()-n.getX(), endNode.getY()-n.getY())); 
+					n.setF(n.getG()+n.getH()); 
+					openSet.add(openSet.indexOf(n), n); 
+					continue; 
 				}
 				n.setG(currentNode.getF()+(float) Math.hypot(currentNode.getX()-n.getX(), currentNode.getY()-n.getY()));
 				n.setH((float) Math.hypot(endNode.getX()-n.getX(), endNode.getY()-n.getY()));
 				n.setF(n.getG()+n.getH());
 				openSet.add(n);
+				n.setParent(currentNode);
 			}
 			//get the one with the lowest f value
 			//find lowest
@@ -75,7 +85,6 @@ public class Pathfinding {
 			}
 			//set lowest to current
 			if(lowestNode==null) break;
-			lowestNode.setParent(currentNode);
 			currentNode = lowestNode;
 			//check if destination is reached
 			if(currentNode == endNode) {
@@ -87,6 +96,7 @@ public class Pathfinding {
 				}
 				//reverse arraylist
 				Collections.reverse(path);
+				path.remove(0);
 				return path;
 			}
 		}

@@ -7,6 +7,7 @@ import java.util.Comparator;
 import dev.Handler;
 import dev.entity.Entity;
 import dev.entity.creature.Player;
+import dev.entity.creature.enemy.BasicEnemy;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.Wall;
@@ -18,8 +19,8 @@ import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 512, WORLD_SECTOR_HEIGHT = 512;
-	public static boolean RENDER_DEBUG = false;
+	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
+	public static boolean RENDER_DEBUG = true;
 	
 	//managers
 	EnemyManager enemyManager;
@@ -50,13 +51,17 @@ public class World {
 	public World(Handler handler) {
 		this.handler = handler;
 		handler.setWorld(this);
-
+		
+		if(RENDER_DEBUG) System.out.println("[World]\t\tRENDER_DEBUG=True");
+		
 		sectorManager = new SectorManager(handler);
 
 		enemyManager = new EnemyManager(handler);
 		ui = new UIManager(handler);
 
 		player = new Player(handler, 500, 400);
+		
+		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
 		
 		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
@@ -71,6 +76,7 @@ public class World {
 
 	public void update() {
 		sectorManager.update();
+		enemyManager.update();
 		player.update();
 		ui.update();
 		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
@@ -99,6 +105,7 @@ public class World {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		//adding all entities
 		entities.addAll(sectorManager.getRenderEntities());
+		entities.addAll(enemyManager.getEntities());
 		//System.out.println("[Render]\tEntities to render: "+entities.size());
 		entities.add(player);
 		//sort

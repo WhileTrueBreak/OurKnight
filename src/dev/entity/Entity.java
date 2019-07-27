@@ -32,6 +32,14 @@ public abstract class Entity {
 	public float getY() {
 		return y;
 	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
 	
 	public boolean isSolid() {
 		return isSolid;
