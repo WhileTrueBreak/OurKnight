@@ -15,12 +15,8 @@ public class Pathfinding {
 		//add start and end node in to all nodes
 		//create start node
 		Node startNode = new Node(startX, startY, width, height);
-		Rectangle startBound = new Rectangle((int)(startNode.getX()+startNode.getWidth()/2), (int)(startNode.getY()+startNode.getHeight()/2), 
-				(int)startNode.getWidth(), (int)startNode.getHeight());
 		//create end node
 		Node endNode = new Node(endX, endY, width, height);
-		Rectangle endBound = new Rectangle((int)(endNode.getX()+endNode.getWidth()/2), (int)(endNode.getY()+endNode.getHeight()/2), 
-				(int)endNode.getWidth(), (int)endNode.getHeight());
 		//add node connections
 		boolean startFound = false;
 		boolean endFound = false;
@@ -28,15 +24,23 @@ public class Pathfinding {
 		for(Node n:allNodes) {
 			Rectangle bound = new Rectangle((int)(n.getX()-n.getWidth()/2), (int)(n.getY()-n.getHeight()/2), (int)n.getWidth(), (int)n.getHeight());
 			//check start node
-			if(bound.intersects(startBound)) {
+			if(bound.intersects(new Rectangle((int)(startX-width/2), (int)(startY-height/2), (int)width, (int)height))) {
 				startNode.addAdjNode(n);
 				n.addAdjNode(startNode);
+				startNode.addAdjNodes(n.getAdjNodes());
+				for(Node node:n.getAdjNodes()) {
+					node.addAdjNode(startNode);
+				}
 				startFound = true;
 			}
 			//check end node
-			if(bound.intersects(endBound)) {
+			if(bound.intersects(new Rectangle((int)(endX-width/2), (int)(endY-height/2), (int)width, (int)height))) {
 				endNode.addAdjNode(n);
 				n.addAdjNode(endNode);
+				endNode.addAdjNodes(n.getAdjNodes());
+				for(Node node:n.getAdjNodes()) {
+					node.addAdjNode(endNode);
+				}
 				endFound = true;
 			}
 		}

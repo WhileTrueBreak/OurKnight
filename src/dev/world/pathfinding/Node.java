@@ -23,6 +23,13 @@ public class Node{
 		adjNodes.add(node);
 	}
 	
+	public void addAdjNodes(ArrayList<Node> nodes){
+		for(Node n:nodes) {
+			if(adjNodes.contains(n))return;
+			adjNodes.add(n);
+		}
+	}
+	
 	public void setAdjNodes(ArrayList<Node>nodes) {
 		adjNodes = nodes;
 	}
