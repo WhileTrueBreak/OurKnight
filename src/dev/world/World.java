@@ -12,7 +12,6 @@ import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.Wall;
 import dev.tiles.Tile;
-import dev.ui.UIManager;
 import dev.utils.noise.OpenSimplexNoise;
 import dev.world.pathfinding.NavmeshUpdater;
 import dev.world.pathfinding.quadtree.Quadtree;
@@ -25,7 +24,6 @@ public class World {
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
-	UIManager ui;
 
 	//task flags
 	boolean navmeshUpdateRequired = true;
@@ -57,7 +55,6 @@ public class World {
 		sectorManager = new SectorManager(handler);
 
 		enemyManager = new EnemyManager(handler);
-		ui = new UIManager(handler);
 
 		player = new Player(handler, 500, 400);
 		
@@ -78,7 +75,6 @@ public class World {
 		sectorManager.update();
 		enemyManager.update();
 		player.update();
-		ui.update();
 		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
 			updateNavmesh();
 			navmeshUpdateRequired=false;
@@ -91,7 +87,6 @@ public class World {
 	public void render(Graphics g) {
 		sectorManager.render(g);
 		renderEntities(g);
-		ui.render(g);
 		if(RENDER_DEBUG) {
 			//System.out.println("[Navmesh]\trendering");
 			quadtree.dfs(g);
@@ -215,14 +210,6 @@ public class World {
 
 	public SectorManager getSectorManager() {
 		return sectorManager;
-	}
-
-	public UIManager getUIManager() {
-		return ui;
-	}
-
-	public void setUIManager(UIManager ui) {
-		this.ui = ui;
 	}
 
 	public Quadtree getQuadtree() {
