@@ -20,7 +20,7 @@ import dev.world.pathfinding.quadtree.Quadtree;
 public class World {
 
 	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
-	public static boolean RENDER_DEBUG = true;
+	public static boolean RENDER_DEBUG = false;
 	
 	//managers
 	EnemyManager enemyManager;
@@ -178,7 +178,7 @@ public class World {
 				}
 			}
 		}
-		save(staticEntities);
+		placeStaticEntities(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		//load walls
 		for(int x = 0;x < WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH;x++) {
@@ -188,13 +188,12 @@ public class World {
 				}
 			}
 		}
-		save(staticEntities);
+		placeStaticEntities(staticEntities);
 		staticEntities = new ArrayList<StaticEntity>();
 		System.out.println("[World]\t\tLoad world took: " + (System.currentTimeMillis()-startTime) + "ms");
 	}
 
-	//TODO refactor this method
-	private void save (ArrayList<StaticEntity> entities) {
+	private void placeStaticEntities (ArrayList<StaticEntity> entities) {
 		//putting  static entities into sectors
 		for(StaticEntity e:entities) {
 			int sectorX = (int)(e.getX()/Sector.SECTOR_PIXEL_WIDTH);

@@ -18,6 +18,8 @@ public class Player extends Creature{
 	}
 
 	private void move() {
+		boolean moved = false;
+		
 		boolean up = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_W);
 		boolean left = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_A);
 		boolean down = handler.getMain().getKeyManager().isKeyPressed(KeyEvent.VK_S);
@@ -32,10 +34,11 @@ public class Player extends Creature{
 
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
 		if (mag != 0) {
-			handler.getWorld().requireNavmeshUpdate();
+			moved = true;
 			x += dx*speed*handler.getSpeedMult()/mag;
 			Rectangle cHitbox = collided();
 			if (cHitbox != null) {
+				moved = false;
 				if(Math.signum(dx*speed*handler.getSpeedMult()/mag) == 1)
 					x = cHitbox.x-hitbox.width;
 				else
@@ -44,12 +47,14 @@ public class Player extends Creature{
 			y += dy*speed*handler.getSpeedMult()/mag;
 			cHitbox = collided();
 			if (cHitbox != null) {
+				moved = false;
 				if(Math.signum(dy*speed*handler.getSpeedMult()/mag) == 1)
 					y = cHitbox.y-hitbox.height;
 				else
 					y = cHitbox.y+cHitbox.height;
 			}
 		}
+		if(moved) handler.getWorld().requireNavmeshUpdate();
 	}
 
 	@Override

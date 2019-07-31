@@ -25,17 +25,24 @@ public abstract class Enemy extends Creature{
 	}
 	
 	protected void move(float destX, float destY, float speed) {
+		boolean moved = true;
+		
 		float dx = destX - x, dy = destY - y;
 		float mag = (float) Math.sqrt(dx*dx+dy*dy);
-		handler.getWorld().requireNavmeshUpdate();
 		if(mag > speed) {
-			dx = (float) (dx*speed/mag)*1.1f;
-			dy = (float) (dy*speed/mag)*1.1f;
+			dx = (float) (dx*speed*handler.getSpeedMult()/mag);
+			dy = (float) (dy*speed*handler.getSpeedMult()/mag);
 		}
+		//TODO find a better solution to this fix
+		//fixes enemies getting stuck on edge of blocks
+		if(Math.abs(dx) < 0.01f) x = destX;
+		if(Math.abs(dy) < 0.01f) y = destY;
+		
 		x += dx;
 		Rectangle cHitbox = collided();
 		if (cHitbox != null) {
-			if(Math.signum(dx*speed/mag) == 1)
+			moved = false;
+			if(Math.signum(dx*speed*handler.getSpeedMult()/mag) == 1)
 				x = cHitbox.x-hitbox.width;
 			else
 				x = cHitbox.x+cHitbox.width;
@@ -43,11 +50,13 @@ public abstract class Enemy extends Creature{
 		y += dy;
 		cHitbox = collided();
 		if (cHitbox != null) {
-			if(Math.signum(dy*speed/mag) == 1)
+			moved = false;
+			if(Math.signum(dy*speed*handler.getSpeedMult()/mag) == 1)
 				y = cHitbox.y-hitbox.height;
 			else
 				y = cHitbox.y+cHitbox.height;
 		}
+		if(moved) handler.getWorld().requireNavmeshUpdate();
 	}
 
 }

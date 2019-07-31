@@ -11,13 +11,16 @@ import java.util.Date;
 
 import dev.Handler;
 import dev.entity.Entity;
-import dev.world.World;
 import dev.world.pathfinding.Node;
 import dev.world.pathfinding.Pathfinding;
 
 public class BasicEnemy extends Enemy{
 
+	private final int recalcPathTime = 5;
+
 	public int width = 32, height = 32;
+	
+	private int recalcPathTimer = 0;
 
 	private ArrayList<Node>path = new ArrayList<Node>();
 	private boolean onRoute = false;
@@ -25,7 +28,7 @@ public class BasicEnemy extends Enemy{
 	public BasicEnemy(Handler handler, int x, int y) {
 		super(handler, x, y);
 		health = 10;
-		speed = 2;
+		speed = 4;
 	}
 
 	@Override
@@ -41,6 +44,7 @@ public class BasicEnemy extends Enemy{
 			float threshold = 0.01f;
 			if(Math.hypot((path.get(0).getX()-width/2)-x, (path.get(0).getY()-width/2)-y)<threshold) {
 				path.remove(0);
+				recalcPathTimer = 0;
 				if(path.size()!=0) System.out.println("[BasicEnemy]\tGoing to: [X:" + (path.get(0).getX()) + " Y:" + (path.get(0).getY()) + "]");
 			}
 		}else {
@@ -48,20 +52,30 @@ public class BasicEnemy extends Enemy{
 			float threshold = 0;
 			if(Math.hypot((x+width/2)-(targetX+target.getWidth()/2),(y+height/2)-(targetY+target.getHeight()/2))>threshold) {
 				onRoute = false;
+			}else {
+				recalcPathTimer = 0;
 			}
 		}
 		//per second clock
 		if(handler.getMain().getTimer()>=1000000000) {
+			recalcPathTimer++;
 			//check if end point is still at target
 			if(path.size() != 0) {
 				float threshold = 0;
 				if(Math.hypot(path.get(path.size()-1).getX()-(targetX+target.getWidth()/2),
 						path.get(path.size()-1).getY()-(targetY+target.getHeight()/2))>threshold) {
 					onRoute = false;
+					recalcPathTimer = 0;
 				}
+			}
+			if(recalcPathTimer >= recalcPathTime) {
+				System.out.println("[BasicEnemy]\tTook too long to reach next waypoint");
+				onRoute = false;
+				recalcPathTimer = 0;
 			}
 			if(!onRoute) {
 				System.out.println("[BasicEnemy]\tRecalculating path");
+				recalcPathTimer = 0;
 				//updates path
 				path = Pathfinding.getPath(x+width/2, y+height/2, 
 						targetX+target.getWidth()/2, 
@@ -103,7 +117,7 @@ public class BasicEnemy extends Enemy{
 		g.setColor(new Color(0, 255, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
 		//render path
-		if(World.RENDER_DEBUG) {
+		//if(World.RENDER_DEBUG) {
 			g.setColor(new Color(255, 0, 255));
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(2));
@@ -119,7 +133,7 @@ public class BasicEnemy extends Enemy{
 							(int)(path.get(i+1).getY()-handler.getCamera().getYoff()));
 				}
 			}
-		}
+		//}
 	}
 
 	@Override
