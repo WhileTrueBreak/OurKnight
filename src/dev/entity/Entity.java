@@ -7,7 +7,7 @@ import dev.Handler;
 
 public abstract class Entity {
 	
-	public static int width = 32, height = 32;
+	protected int width = 32, height = 32;
 	
 	protected float x,y;
 	protected boolean isSolid;

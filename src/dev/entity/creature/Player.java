@@ -60,15 +60,6 @@ public class Player extends Creature{
 	@Override
 	public void update() {
 		move();
-		setCamera();
-	}
-	
-	private void setCamera() {
-		float mouseXoff = handler.getMouseManager().getMouseX()-handler.getWidth()/2;
-		float mouseYoff = handler.getMouseManager().getMouseY()-handler.getHeight()/2;
-		
-		handler.getCamera().focusOnPoint((int)(x+mouseXoff), (int)(y+mouseYoff), 100);
-		handler.getCamera().focusOnEntity(this, 10);
 	}
 
 	@Override

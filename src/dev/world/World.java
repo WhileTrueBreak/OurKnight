@@ -18,8 +18,8 @@ import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
-	public static boolean RENDER_DEBUG = true;
+	public static int WORLD_SECTOR_WIDTH = 512, WORLD_SECTOR_HEIGHT = 512;
+	public static boolean RENDER_DEBUG = false;
 	
 	//managers
 	EnemyManager enemyManager;
@@ -27,6 +27,9 @@ public class World {
 
 	//task flags
 	boolean navmeshUpdateRequired = true;
+	
+	//camera
+	private Entity focusEntity;
 	
 	//player
 	private Player player;
@@ -36,7 +39,7 @@ public class World {
 	
 	//pathfinding and navmesh
 	private Quadtree quadtree;
-	private NavmeshUpdater nu;
+	private NavmeshUpdater nmu;
 
 	//Comparators
 	private Comparator<Entity> renderOrder = new Comparator<Entity>() {
@@ -57,6 +60,7 @@ public class World {
 		enemyManager = new EnemyManager(handler);
 
 		player = new Player(handler, 500, 400);
+		focusEntity = player;
 		
 		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
 		
@@ -65,8 +69,8 @@ public class World {
 		
 		loadWorld();
 		
-		nu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
-		nu.start();
+		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
+		nmu.start();
 	}
 	
 	//main game loop stuff
@@ -75,12 +79,19 @@ public class World {
 		sectorManager.update();
 		enemyManager.update();
 		player.update();
+		
+		//update camera
+		float mouseXoff = handler.getMouseManager().getMouseX()-handler.getWidth()/2;
+		float mouseYoff = handler.getMouseManager().getMouseY()-handler.getHeight()/2;
+		handler.getCamera().focusOnPoint((int)(focusEntity.getX()+mouseXoff), (int)(focusEntity.getY()+mouseYoff), 100);
+		handler.getCamera().focusOnEntity(focusEntity, 10);
+		
 		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
 			updateNavmesh();
 			navmeshUpdateRequired=false;
 		}
-		if(nu.isDone()) {
-			quadtree = nu.getUpdated();
+		if(nmu.isDone()) {
+			quadtree = nmu.getUpdated();
 		}
 	}
 
@@ -113,9 +124,9 @@ public class World {
 	//pathfinding
 	
 	private void updateNavmesh() {
-		nu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
-		nu.start();
-		quadtree = nu.getUpdated();
+		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
+		nmu.start();
+		quadtree = nmu.getUpdated();
 	}
 	
 	private ArrayList<Entity> getPathfindingEntities(float bufferX, float bufferY) {
@@ -148,19 +159,28 @@ public class World {
 		long seed = -8519653203755203584l;//(long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
 		System.out.println("[World]\t\tSeed: " + seed);
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed);
-		//loading Tiles
-		int[][] tileMap = new int[WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH][WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT];
-		for(int x = 0;x < tileMap.length;x++) {
-			for(int y = 0;y < tileMap[x].length;y++) {
-				tileMap[x][y] = 1;
-			}
-		}
 		//loading sectors
 		for(int x = 0;x < WORLD_SECTOR_WIDTH;x++) {
 			for(int y = 0;y < WORLD_SECTOR_HEIGHT;y++) {
 				Sector sector = new Sector(handler, x, y);
-				ArrayList<StaticEntity>e = new ArrayList<StaticEntity>();
-				sector.loadSectorTiles(tileMap, e, x*Sector.SECTOR_WIDTH, y*Sector.SECTOR_HEIGHT);
+				int[][] tileMap = {{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
+						};
+				sector.loadSectorTiles(tileMap);
 				sectorManager.addSector(sector);
 			}
 		}
@@ -181,10 +201,10 @@ public class World {
 				if(noise.eval(x*0.1f, y*0.1f) < -0.5f) {
 					staticEntities.add(new Wall(handler, x*Tile.TILE_WIDTH, y*Tile.TILE_HEIGHT, Tile.TILE_WIDTH, Tile.TILE_HEIGHT, 0));
 				}
+				placeStaticEntities(staticEntities);
+				staticEntities = new ArrayList<StaticEntity>();
 			}
 		}
-		placeStaticEntities(staticEntities);
-		staticEntities = new ArrayList<StaticEntity>();
 		System.out.println("[World]\t\tLoad world took: " + (System.currentTimeMillis()-startTime) + "ms");
 	}
 

@@ -75,7 +75,7 @@ public class BasicEnemy extends Enemy{
 				recalcPathTimer = 0;
 			}
 			if(!onRoute) {
-				System.out.println("[BasicEnemy]\tRecalculating path");
+				System.out.println("[BasicEnemy]\tCalculating path");
 				recalcPathTimer = 0;
 				//updates path
 				path = Pathfinding.getPath(x+width/2, y+height/2, 

@@ -31,15 +31,8 @@ public class Sector {
 
 	}
 
-	public void loadSectorTiles(int[][] tileMap, ArrayList<StaticEntity> staticEntities, int x, int y) {
-		for(StaticEntity e:staticEntities){
-			staticEntityManager.addStaticEntity(e);
-		}
-		for(int i = x;i < x+SECTOR_WIDTH;i++) {
-			for(int j = y;j < y+SECTOR_HEIGHT;j++) {
-				this.tileMap[i-x][j-y] = tileMap[x][y];
-			}
-		}
+	public void loadSectorTiles(int[][] tileMap) {
+		this.tileMap = tileMap;
 	}
 
 	public void update() {
