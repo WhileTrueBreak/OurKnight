@@ -20,7 +20,7 @@ import dev.world.pathfinding.quadtree.Quadtree;
 public class World {
 
 	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
-	public static boolean RENDER_DEBUG = false;
+	public static boolean RENDER_DEBUG = true;
 	
 	//managers
 	EnemyManager enemyManager;

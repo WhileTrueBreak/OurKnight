@@ -11,6 +11,7 @@ import java.util.Date;
 
 import dev.Handler;
 import dev.entity.Entity;
+import dev.world.World;
 import dev.world.pathfinding.Node;
 import dev.world.pathfinding.Pathfinding;
 
@@ -117,7 +118,7 @@ public class BasicEnemy extends Enemy{
 		g.setColor(new Color(0, 255, 0));
 		g.fillRect((int)(x-handler.getCamera().getXoff()), (int)(y-handler.getCamera().getYoff()), width, height);
 		//render path
-		//if(World.RENDER_DEBUG) {
+		if(World.RENDER_DEBUG) {
 			g.setColor(new Color(255, 0, 255));
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setStroke(new BasicStroke(2));
@@ -133,7 +134,7 @@ public class BasicEnemy extends Enemy{
 							(int)(path.get(i+1).getY()-handler.getCamera().getYoff()));
 				}
 			}
-		//}
+		}
 	}
 
 	@Override
