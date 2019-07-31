@@ -1,6 +1,5 @@
 package dev.world.pathfinding;
 
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
