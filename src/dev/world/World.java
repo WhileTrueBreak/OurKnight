@@ -1,8 +1,12 @@
 package dev.world;
 
 import java.awt.Graphics;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
+
+import org.json.simple.JSONObject;
 
 import dev.Handler;
 import dev.entity.Entity;
@@ -48,6 +52,9 @@ public class World {
 			return e1.getY()+e1.getHitbox().y < e2.getY()+e2.getHitbox().y ? -1:e1.getY()+e1.getHitbox().y == e2.getY()+e2.getHitbox().y ? 0:1;
 		}	
 	};
+	
+	//general world info
+	private long worldSeed;
 
 	public World(Handler handler, boolean loadSave) {
 		this.handler = handler;
@@ -74,6 +81,7 @@ public class World {
 		
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
+		saveWorld();
 	}
 	
 	//main game loop stuff
@@ -158,12 +166,31 @@ public class World {
 		
 	}
 	
+	//save world
+	private void saveWorld() {
+		System.out.println("[World]\t\tSaving world");
+		//save basic info
+		JSONObject worldInfo = new JSONObject();
+		worldInfo.put("seed", worldSeed);
+		worldInfo.put("worldWidth", World.WORLD_SECTOR_WIDTH);
+		worldInfo.put("worldHeight", World.WORLD_SECTOR_HEIGHT);
+		JSONObject info = new JSONObject();
+		info.put("world", worldInfo);
+		try (FileWriter file = new FileWriter("res/world/info.json")) {
+            file.write(info.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+	}
+	
 	//world creation
 	private void createWorld() {
 		long startTime = System.currentTimeMillis();
 
 		//TODO change seed back to random
 		long seed = -8519653203755203584l;//(long)(Math.signum(Math.random()-0.5f)*Math.random()*9223372036854775807l);
+		this.worldSeed = seed;
 		System.out.println("[World]\t\tSeed: " + seed);
 		OpenSimplexNoise noise = new OpenSimplexNoise(seed);
 		//loading sectors
@@ -253,6 +280,10 @@ public class World {
 	
 	public void requireNavmeshUpdate() {
 		navmeshUpdateRequired = true;
+	}
+
+	public long getWorldSeed() {
+		return worldSeed;
 	}
 
 }
