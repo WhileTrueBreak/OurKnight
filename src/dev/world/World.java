@@ -49,7 +49,7 @@ public class World {
 		}	
 	};
 
-	public World(Handler handler) {
+	public World(Handler handler, boolean loadSave) {
 		this.handler = handler;
 		handler.setWorld(this);
 		
@@ -67,7 +67,10 @@ public class World {
 		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
 		
-		loadWorld();
+		System.out.println("[World]\t\tLoad new world="+loadSave);
+		
+		if(loadSave) loadWorld();
+		else createWorld();
 		
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
@@ -150,9 +153,13 @@ public class World {
 		return entities;
 	}
 	
-	//world loading
-	
+	//load world from save
 	private void loadWorld() {
+		
+	}
+	
+	//world creation
+	private void createWorld() {
 		long startTime = System.currentTimeMillis();
 
 		//TODO change seed back to random

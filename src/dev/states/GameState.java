@@ -12,9 +12,14 @@ public class GameState extends State{
 	private World world;
 	private Handler handler;
 	
+	private boolean loadSave = false;
+	
 	public GameState(Handler handler) {
-		world = new World(handler);
 		this.handler = handler;
+	}
+	
+	public void init() {
+		world = new World(handler, loadSave);
 	}
 
 	@Override
@@ -31,4 +36,8 @@ public class GameState extends State{
 	    g.drawString(Integer.toString((int) Math.round(handler.getFps())) + "fps", handler.getWidth()-50, 20);
 	}
 
+	public void setLoadSave(boolean loadSave) {
+		this.loadSave = loadSave;
+	}
+	
 }

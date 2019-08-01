@@ -28,7 +28,9 @@ public abstract class Creature extends Entity{
 			for(int y = secY-1;y < secY+2;y++) {
 				if(x < 0 || y < 0 || x >= World.WORLD_SECTOR_WIDTH || y >= World.WORLD_SECTOR_HEIGHT)
 					continue;
-				staticEntities.addAll(handler.getWorld().getSectorManager().getSector(x, y).getStaticEntityManager().getStaticEntities());
+				Sector sector = handler.getWorld().getSectorManager().getSector(x, y);
+				if(sector == null) continue;
+				staticEntities.addAll(sector.getStaticEntityManager().getStaticEntities());
 			}
 		}
 		
