@@ -42,7 +42,6 @@ public class UIButtonImpactAnimation extends UIButton{
 		int c = (int) (strikePercent*255);
 		if(c < 0) c = 0;
 		if(c > 255) c = 255;
-		System.out.println(strikePercent);
 		if(strikePercent > 0) {
 			g.setColor(new Color(c, c, c));
 			g.drawLine((int)(x+width/2-strikePercent*width/2), y, (int)(x+width/2+strikePercent*width/2), y);

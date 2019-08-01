@@ -10,6 +10,7 @@ import dev.Handler;
 import dev.ui.ClickListener;
 import dev.ui.UIManager;
 import dev.ui.button.UIButtonImpactAnimation;
+import dev.utils.Draw;
 
 public class MenuState extends State{
 	
@@ -24,11 +25,24 @@ public class MenuState extends State{
 		this.handler = handler;	
 		uiManager = new UIManager();
 		handler.getMouseManager().setUIManager(uiManager);
-		
+		//add start button
 		uiManager.addUIObject(new UIButtonImpactAnimation(handler, handler.getWidth()/2-100, 400, 200, 50, "Start", 
 				new Rectangle(handler.getWidth()/2-100, 400, 200, 50), new ClickListener() {
 			public void onClick() {
 				isLoading = true;
+			}
+		}));
+		//add some useless buttons
+		uiManager.addUIObject(new UIButtonImpactAnimation(handler, handler.getWidth()/2-100, 470, 200, 50, "Settings", 
+				new Rectangle(handler.getWidth()/2-100, 470, 200, 50), new ClickListener() {
+			public void onClick() {
+			}
+		}));
+		//add quit button
+		uiManager.addUIObject(new UIButtonImpactAnimation(handler, handler.getWidth()/2-100, 540, 200, 50, "Quit", 
+				new Rectangle(handler.getWidth()/2-100, 540, 200, 50), new ClickListener() {
+			public void onClick() {
+				System.exit(0);
 			}
 		}));
 	}
@@ -46,15 +60,14 @@ public class MenuState extends State{
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(new Color(179, 179, 179));
+		g.setColor(new Color(51, 51, 51));
 		g.fillRect(0, 0, handler.getWidth(), handler.getHeight());
 		//Text//
 		if(isLoading) {//loading graphics
-			String text = "Loading...";
-			g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
-			g.setColor(new Color(255, 0, 0));
-			g.drawString(text, handler.getWidth()/2-200, 100);
+			
 		}else {//normal graphics
+			g.setColor(new Color(255, 255, 255));
+			Draw.drawCenteredString(g, "MENU", new Rectangle((int)(handler.getWidth()/2-200), 100, 400, 200), new Font("Arial", Font.PLAIN, 100));
 			uiManager.render(g);
 		}
 	}
