@@ -4,17 +4,23 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import dev.Handler;
+
 public abstract class UIObject {
 
 	protected int x, y, width, height;
+	protected String text;
 	protected boolean hovering = false;
 	protected Rectangle bounds;
+	protected Handler handler;
 
-	public UIObject(int x, int y, int width, int height, Rectangle bounds) {
+	public UIObject(Handler handler, int x, int y, int width, int height, String text, Rectangle bounds) {
+		this.handler = handler;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.text = text;
 		this.bounds = bounds;
 	}
 	
