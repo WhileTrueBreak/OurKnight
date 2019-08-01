@@ -15,7 +15,7 @@ public class MenuState extends State{
 	private int timer = 2;
 	
 	public MenuState(Handler handler) {
-		this.handler = handler;
+		this.handler = handler;	
 	}
 	@Override
 	public void update() {
@@ -31,7 +31,7 @@ public class MenuState extends State{
 
 	@Override
 	public void render(Graphics g) {
-		g.setColor(new Color(0, 255, 255));
+		g.setColor(new Color(179, 179, 179));
 		g.fillRect(0, 0, handler.getWidth(), handler.getHeight());
 		//Text//
 		if(isLoading) {//loading graphics
@@ -42,8 +42,9 @@ public class MenuState extends State{
 		}else {//normal graphics
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 100));
 			g.setColor(new Color(255, 0, 0));
-			g.drawString("Menu", handler.getWidth()/2-100, 100);
-			g.drawString("Press 's' to continue", handler.getWidth()/2-400, 300);
+//			g.drawString("Menu", handler.getWidth()/2-100, 100);
+//			g.drawString("Press 's' to continue", handler.getWidth()/2-400, 300);
+			
 		}
 	}
 }

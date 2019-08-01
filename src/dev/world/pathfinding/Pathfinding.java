@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Pathfinding {	
-
+	
 	//start and end x and y is the center of the entity
 	public static ArrayList<Node> getPath(float startX, float startY, float endX, float endY, float width, float height, ArrayList<Node>nodes){
 		ArrayList<Node>allNodes = nodes;

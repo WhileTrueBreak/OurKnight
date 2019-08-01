@@ -2,10 +2,8 @@ package dev.world;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
 
 import dev.Handler;
-import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.StaticEntityManager;
 import dev.tiles.Tile;
 
