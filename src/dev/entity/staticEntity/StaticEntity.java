@@ -10,6 +10,8 @@ public abstract class StaticEntity extends Entity{
 	protected boolean isDestructible = false;
 	protected int health = 1;
 	
+	protected String entityType;
+	
 	protected int spriteID;
 	
 	public StaticEntity(Handler handler, int x, int y, int width, int height, int spriteID) {
@@ -17,6 +19,10 @@ public abstract class StaticEntity extends Entity{
 		this.spriteID = spriteID;
 		this.width = width;
 		this.height = height;
+	}
+
+	public int getSpriteID() {
+		return spriteID;
 	}
 	
 }

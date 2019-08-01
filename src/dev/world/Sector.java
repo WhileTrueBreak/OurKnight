@@ -13,7 +13,7 @@ public class Sector {
 	public static final int SECTOR_PIXEL_WIDTH = 16*Tile.TILE_WIDTH, SECTOR_PIXEL_HEIGHT = 16*Tile.TILE_HEIGHT;
 
 	//tiles
-	int[][] tileMap = new int[SECTOR_WIDTH][SECTOR_HEIGHT];
+	private int[][] tileMap = new int[SECTOR_WIDTH][SECTOR_HEIGHT];
 	
 	//managers
 	StaticEntityManager staticEntityManager;
@@ -63,6 +63,10 @@ public class Sector {
 
 	public StaticEntityManager getStaticEntityManager() {
 		return staticEntityManager;
+	}
+
+	public int[][] getTileMap() {
+		return tileMap;
 	}
 
 }

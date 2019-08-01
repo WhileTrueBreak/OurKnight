@@ -9,6 +9,7 @@ public class Trap extends StaticEntity{
 
     public Trap(Handler handler, int x, int y, int width, int height, int spriteID) {
         super(handler, x, y, width, height, spriteID);
+        entityType = "trap";
     }
 
     @Override
