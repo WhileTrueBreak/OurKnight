@@ -54,6 +54,7 @@ public class SaveHelper implements Runnable {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("["+name+"]\tTerminated");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -91,6 +92,7 @@ public class SaveHelper implements Runnable {
 			}
 			if(sector == null) done = true;
 		}
+		stop();
 	}
 
 	public boolean isDone() {

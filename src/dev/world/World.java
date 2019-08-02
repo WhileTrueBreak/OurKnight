@@ -24,7 +24,7 @@ import dev.world.save.SaveManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 64, WORLD_SECTOR_HEIGHT = 64;
+	public static int WORLD_SECTOR_WIDTH = 4, WORLD_SECTOR_HEIGHT = 4;
 	public static boolean RENDER_DEBUG = false;
 	
 	//managers

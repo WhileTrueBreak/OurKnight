@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import dev.world.Sector;
 
 public class SaveManager implements Runnable {
-	
+
 
 	private Thread thread;
 	private boolean running;
 
 	ArrayList<Sector>queue;
-	
+
 	public SaveManager(ArrayList<Sector>queue){
 		this.queue = queue;
 	}
@@ -41,30 +41,31 @@ public class SaveManager implements Runnable {
 	public void run() {
 		//create save helpers
 		ArrayList<SaveHelper>saveHelpers = new ArrayList<SaveHelper>();
-		for(int i = 0;i < 20;i++) {
+		for(int i = 0;i < 4;i++) {
 			saveHelpers.add(new SaveHelper("SaveHelper"+i));
-			saveHelpers.get(i).start();
 		}
+		for(SaveHelper helper:saveHelpers) helper.start();
 		//saving
 		int currentIndex = 0;
 		while(queue.size()>currentIndex && running) {
 			for(SaveHelper helper:saveHelpers) {
-				if(helper.isDone()) {
-					if(queue.size()>currentIndex) {
-						helper.setSector(queue.get(currentIndex));
-						currentIndex++;
-					}else {
-						helper.stop();
-					}
+				if(helper.isDone() && queue.size()>currentIndex) {
+					helper.setSector(queue.get(currentIndex));
+					currentIndex++;
+				}else if(helper.isDone()) {
+					break;
 				}
 			}
 		}
+		//stopping all helper threads
 		for(SaveHelper helper:saveHelpers) {
+			System.out.println("[SaveManager]\t"+helper);
+			while(!helper.isDone()) {}
 			helper.stop();
 		}
 		saveHelpers = null;
 		stop();
 	}
 
-	
+
 }
