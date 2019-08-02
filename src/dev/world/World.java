@@ -24,25 +24,25 @@ import dev.world.pathfinding.quadtree.Quadtree;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
+	public static int WORLD_SECTOR_WIDTH = 512, WORLD_SECTOR_HEIGHT = 512;
 	public static boolean RENDER_DEBUG = false;
-	
+
 	//managers
 	EnemyManager enemyManager;
 	SectorManager sectorManager;
 
 	//task flags
 	boolean navmeshUpdateRequired = true;
-	
+
 	//camera
 	private Entity focusEntity;
-	
+
 	//player
 	private Player player;
 
 	//handler
 	private Handler handler;
-	
+
 	//pathfinding and navmesh
 	private Quadtree quadtree;
 	private NavmeshUpdater nmu;
@@ -54,52 +54,52 @@ public class World {
 			return e1.getY()+e1.getHitbox().y < e2.getY()+e2.getHitbox().y ? -1:e1.getY()+e1.getHitbox().y == e2.getY()+e2.getHitbox().y ? 0:1;
 		}	
 	};
-	
+
 	//general world info
 	private long worldSeed;
 
 	public World(Handler handler, boolean loadSave) {
 		this.handler = handler;
 		handler.setWorld(this);
-		
+
 		if(RENDER_DEBUG) System.out.println("[World]\t\tRENDER_DEBUG=True");
-		
+
 		sectorManager = new SectorManager(handler);
 
 		enemyManager = new EnemyManager(handler);
 
 		player = new Player(handler, 500, 400);
 		focusEntity = player;
-		
+
 		enemyManager.addEnemy(new BasicEnemy(handler, 500, 500));
-		
+
 		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
-		
+
 		System.out.println("[World]\t\tLoad new world="+loadSave);
-		
+
 		if(loadSave) loadWorld();
 		else createWorld();
-		
+
 		saveWorld();
-		
+
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
 	}
-	
+
 	//main game loop stuff
 
 	public void update() {
 		sectorManager.update();
 		enemyManager.update();
 		player.update();
-		
+
 		//update camera
 		float mouseXoff = handler.getMouseManager().getMouseX()-handler.getWidth()/2;
 		float mouseYoff = handler.getMouseManager().getMouseY()-handler.getHeight()/2;
 		handler.getCamera().focusOnPoint((int)(focusEntity.getX()+mouseXoff), (int)(focusEntity.getY()+mouseYoff), 100);
 		handler.getCamera().focusOnEntity(focusEntity, 10);
-		
+
 		if(navmeshUpdateRequired && handler.getMain().getTimer()>=1000000000) {
 			updateNavmesh();
 			navmeshUpdateRequired=false;
@@ -118,7 +118,7 @@ public class World {
 			quadtree.renderNavMesh(g);
 		}
 	}
-	
+
 	//rendering
 
 	private void renderEntities(Graphics g) {
@@ -134,15 +134,15 @@ public class World {
 		for(Entity e:entities)
 			e.render(g);
 	}
-	
+
 	//pathfinding
-	
+
 	private void updateNavmesh() {
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
 		quadtree = nmu.getUpdated();
 	}
-	
+
 	private ArrayList<Entity> getPathfindingEntities(float bufferX, float bufferY) {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
 		for(int i = (int)(handler.getCamera().getXoff()-bufferX)/(Sector.SECTOR_PIXEL_WIDTH);
@@ -154,7 +154,7 @@ public class World {
 		}
 		return entities;
 	}
-	
+
 	@SuppressWarnings("unused")
 	private ArrayList<Entity> getAllStaticEntities() {
 		ArrayList<Entity> entities = new ArrayList<Entity>();
@@ -163,15 +163,16 @@ public class World {
 		}
 		return entities;
 	}
-	
+
 	//load world from save
 	private void loadWorld() {
-		
+
 	}
-	
+
 	//save world
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "unused" })
 	private void saveWorld() {
+		long timeStart = System.currentTimeMillis();
 		System.out.println("[World]\t\tSaving world");
 		//save basic info
 		JSONObject basicInfo = new JSONObject();
@@ -180,58 +181,30 @@ public class World {
 		basicInfo.put("worldHeight", World.WORLD_SECTOR_HEIGHT);
 		JSONObject info = new JSONObject();
 		info.put("world", basicInfo);
-		try (FileWriter file = new FileWriter("res/world/info.json")) {
-            file.write(info.toJSONString());
-            file.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try (FileWriter file = new FileWriter("world/info.json")) {
+			file.write(info.toJSONString());
+			file.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		//save world info
 		JSONObject worldInfo = new JSONObject();
 		JSONArray sectorList = new JSONArray();
 		for(Sector sector:sectorManager.getSectors()) {
 			JSONObject sectorInfo = new JSONObject();
-			sectorInfo.put("sectorX", sector.getSectorX());
-			sectorInfo.put("sectorY", sector.getSectorY());
-			JSONArray sectorEntityList = new JSONArray();
-			for(StaticEntity staticEntity:sector.getStaticEntityManager().getStaticEntities()) {
-				JSONObject staticEntityInfo = new JSONObject();
-				staticEntityInfo.put("staticEntityX", staticEntity.getX());
-				staticEntityInfo.put("staticEntityY", staticEntity.getY());
-				staticEntityInfo.put("staticEntityID", staticEntity.getSpriteID());
-				sectorEntityList.add(staticEntityInfo);
-			}
-			sectorInfo.put("staticEntities", sectorEntityList);
-			JSONArray sectorTileInfo = new JSONArray();
-			for(int y = 0;y < sector.getTileMap().length;y++) {
-				for(int x = 0;x < sector.getTileMap()[y].length;x++) {
-					JSONObject tileInfo = new JSONObject();
-					tileInfo.put("tileX", x);
-					tileInfo.put("tileY", y);
-					tileInfo.put("tileID", sector.getTileMap()[y][x]);
-					sectorTileInfo.add(tileInfo);
-				}
-			}
-			sectorInfo.put("tiles", sectorTileInfo);
 			sectorList.add(sectorInfo);
-			worldInfo.put("Sectors", sectorList);
-			JSONArray EntityList = new JSONArray();
-			for(Enemy enemy:enemyManager.getEnemies()) {
-				JSONObject enemyInfo = new JSONObject();
-				enemyInfo.put("enemyX", enemy.getX());
-				enemyInfo.put("enemyY", enemy.getY());
-				EntityList.add(enemyInfo);
-			}
-			worldInfo.put("entity", EntityList);
-			try (FileWriter file = new FileWriter("res/world/world.json")) {
-	            file.write(worldInfo.toJSONString());
-	            file.flush();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
 		}
+		worldInfo.put("Sectors", sectorList);
+		try (FileWriter file = new FileWriter("world/world.json")) {
+			file.write(worldInfo.toJSONString());
+			file.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("[World]\t\tSaving world took: "+(System.currentTimeMillis()-timeStart)+"ms");
 	}
-	
+
 	//world creation
 	private void createWorld() {
 		long startTime = System.currentTimeMillis();
@@ -261,7 +234,7 @@ public class World {
 						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
 						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
 						{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, }, 
-						};
+				};
 				sector.loadSectorTiles(tileMap);
 				sectorManager.addSector(sector);
 			}
@@ -317,15 +290,15 @@ public class World {
 	public Quadtree getQuadtree() {
 		return quadtree;
 	}
-	
+
 	public int getWorldWidth() {
 		return WORLD_SECTOR_WIDTH*Sector.SECTOR_WIDTH*Tile.TILE_WIDTH;
 	}
-	
+
 	public int getWorldHeight() {
 		return WORLD_SECTOR_HEIGHT*Sector.SECTOR_HEIGHT*Tile.TILE_HEIGHT;
 	}
-	
+
 	public void requireNavmeshUpdate() {
 		navmeshUpdateRequired = true;
 	}
