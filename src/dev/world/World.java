@@ -1,19 +1,18 @@
 package dev.world;
 
 import java.awt.Graphics;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dev.Handler;
 import dev.entity.Entity;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
-import dev.entity.creature.enemy.Enemy;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.Wall;
@@ -21,10 +20,11 @@ import dev.tiles.Tile;
 import dev.utils.noise.OpenSimplexNoise;
 import dev.world.pathfinding.NavmeshUpdater;
 import dev.world.pathfinding.quadtree.Quadtree;
+import dev.world.save.SaveManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 32, WORLD_SECTOR_HEIGHT = 32;
+	public static int WORLD_SECTOR_WIDTH = 64, WORLD_SECTOR_HEIGHT = 64;
 	public static boolean RENDER_DEBUG = false;
 	
 	//managers
@@ -81,10 +81,10 @@ public class World {
 		if(loadSave) loadWorld();
 		else createWorld();
 		
-		saveWorld();
-		
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
+
+		saveWorld();
 	}
 	
 	//main game loop stuff
@@ -180,56 +180,18 @@ public class World {
 		basicInfo.put("worldHeight", World.WORLD_SECTOR_HEIGHT);
 		JSONObject info = new JSONObject();
 		info.put("world", basicInfo);
-		try (FileWriter file = new FileWriter("res/world/info.json")) {
+		try (FileWriter file = new FileWriter("world/info.json")) {
             file.write(info.toJSONString());
             file.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
-		//save world info
-		JSONObject worldInfo = new JSONObject();
-		JSONArray sectorList = new JSONArray();
-		for(Sector sector:sectorManager.getSectors()) {
-			JSONObject sectorInfo = new JSONObject();
-			sectorInfo.put("sectorX", sector.getSectorX());
-			sectorInfo.put("sectorY", sector.getSectorY());
-			JSONArray sectorEntityList = new JSONArray();
-			for(StaticEntity staticEntity:sector.getStaticEntityManager().getStaticEntities()) {
-				JSONObject staticEntityInfo = new JSONObject();
-				staticEntityInfo.put("staticEntityX", staticEntity.getX());
-				staticEntityInfo.put("staticEntityY", staticEntity.getY());
-				staticEntityInfo.put("staticEntityID", staticEntity.getSpriteID());
-				sectorEntityList.add(staticEntityInfo);
-			}
-			sectorInfo.put("staticEntities", sectorEntityList);
-			JSONArray sectorTileInfo = new JSONArray();
-			for(int y = 0;y < sector.getTileMap().length;y++) {
-				for(int x = 0;x < sector.getTileMap()[y].length;x++) {
-					JSONObject tileInfo = new JSONObject();
-					tileInfo.put("tileX", x);
-					tileInfo.put("tileY", y);
-					tileInfo.put("tileID", sector.getTileMap()[y][x]);
-					sectorTileInfo.add(tileInfo);
-				}
-			}
-			sectorInfo.put("tiles", sectorTileInfo);
-			sectorList.add(sectorInfo);
-			worldInfo.put("Sectors", sectorList);
-			JSONArray EntityList = new JSONArray();
-			for(Enemy enemy:enemyManager.getEnemies()) {
-				JSONObject enemyInfo = new JSONObject();
-				enemyInfo.put("enemyX", enemy.getX());
-				enemyInfo.put("enemyY", enemy.getY());
-				EntityList.add(enemyInfo);
-			}
-			worldInfo.put("entity", EntityList);
-			try (FileWriter file = new FileWriter("res/world/world.json")) {
-	            file.write(worldInfo.toJSONString());
-	            file.flush();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        }
-		}
+		
+		new File("world/sectors").mkdirs();
+		//creates sector queue
+		ArrayList<Sector>sectorQueue = sectorManager.getSectors();
+		//creates save manager
+		new SaveManager(sectorQueue).start();
 	}
 	
 	//world creation
