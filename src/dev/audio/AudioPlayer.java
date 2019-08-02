@@ -14,7 +14,6 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioPlayer implements Runnable{
 
 	private Thread thread;
-	private boolean running;
 
 	private String musicFile;
 
@@ -46,19 +45,11 @@ public class AudioPlayer implements Runnable{
 	}
 
 	public synchronized void start() {
-		if (running) {
-			return;
-		}
-		running = true;
 		thread = new Thread(this);
 		thread.start();
 	}
 
 	public synchronized void stop() {
-		if (!running) {
-			return;
-		}
-		running = false;
 		try {
 			thread.join();
 		} catch (InterruptedException e) {

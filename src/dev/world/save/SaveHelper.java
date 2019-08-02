@@ -12,10 +12,8 @@ import dev.world.Sector;
 public class SaveHelper implements Runnable {
 
 
-	private Thread thread;
+	private Thread thread = new Thread(this);
 	private boolean running;
-
-	private String name;
 
 	private Sector sector;
 	
@@ -24,7 +22,7 @@ public class SaveHelper implements Runnable {
 	private boolean done = false;
 
 	public SaveHelper(String name){
-		this.name = name;
+		thread.setName(name);
 	}
 
 	public synchronized void start() {
@@ -32,29 +30,23 @@ public class SaveHelper implements Runnable {
 			return;
 		}
 		running = true;
-		thread = new Thread(this);
 		thread.start();
 	}
 
 	public synchronized void stop() {
-		try (FileWriter file = new FileWriter("world/sectors/"+name+".json")) {
+		try (FileWriter file = new FileWriter("world/sectors/"+thread.getName()+".json")) {
 			file.write(sectorList.toJSONString());
 			file.flush();
-			System.out.println("["+name+"]\tSuccessfully saved");
+			System.out.println("["+thread.getName()+"]\tSuccessfully saved");
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.out.println("["+name+"]\tFailed to save");
+			System.out.println("["+thread.getName()+"]\tFailed to save");
 		}
 		if (!running) {
 			return;
 		}
 		running = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		System.out.println("["+name+"]\tTerminated");
+		System.out.println("["+thread.getName()+"]\tTerminated");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,7 +79,7 @@ public class SaveHelper implements Runnable {
 				}
 				sectorInfo.put("tiles", sectorTileInfo);
 				sectorList.add(sectorInfo);
-				System.out.println("["+name+"]\tParsed sector [X:"+sector.getSectorX()+" Y:"+sector.getSectorY()+"]");
+				System.out.println("["+thread.getName()+"]\tParsed sector [X:"+sector.getSectorX()+" Y:"+sector.getSectorY()+"]");
 				done = true;
 			}
 			if(sector == null) done = true;

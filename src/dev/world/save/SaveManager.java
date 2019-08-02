@@ -22,6 +22,7 @@ public class SaveManager implements Runnable {
 		}
 		running = true;
 		thread = new Thread(this);
+		thread.setName("SaveManager");
 		thread.start();
 	}
 
@@ -30,18 +31,14 @@ public class SaveManager implements Runnable {
 			return;
 		}
 		running = false;
-		try {
-			thread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		System.out.println("["+thread.getName()+"]\tTerminated");
 	}
 
 	@Override
 	public void run() {
 		//create save helpers
 		ArrayList<SaveHelper>saveHelpers = new ArrayList<SaveHelper>();
-		for(int i = 0;i < 4;i++) {
+		for(int i = 0;i < 100;i++) {
 			saveHelpers.add(new SaveHelper("SaveHelper"+i));
 		}
 		for(SaveHelper helper:saveHelpers) helper.start();
@@ -59,7 +56,6 @@ public class SaveManager implements Runnable {
 		}
 		//stopping all helper threads
 		for(SaveHelper helper:saveHelpers) {
-			System.out.println("[SaveManager]\t"+helper);
 			while(!helper.isDone()) {}
 			helper.stop();
 		}
