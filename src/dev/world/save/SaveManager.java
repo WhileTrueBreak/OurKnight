@@ -38,7 +38,7 @@ public class SaveManager implements Runnable {
 	public void run() {
 		//create save helpers
 		ArrayList<SaveHelper>saveHelpers = new ArrayList<SaveHelper>();
-		for(int i = 0;i < 100;i++) {
+		for(int i = 0;i < 10;i++) {
 			saveHelpers.add(new SaveHelper("SaveHelper"+i));
 		}
 		for(SaveHelper helper:saveHelpers) helper.start();
@@ -49,14 +49,15 @@ public class SaveManager implements Runnable {
 				if(helper.isDone() && queue.size()>currentIndex) {
 					helper.setSector(queue.get(currentIndex));
 					currentIndex++;
-				}else if(helper.isDone()) {
-					break;
 				}
 			}
+			System.out.println("["+thread.getName()+"]\t" + (queue.size()>currentIndex && running));
 		}
 		//stopping all helper threads
+		System.out.println("["+thread.getName()+"]\tHelper count: "+saveHelpers.size());
 		for(SaveHelper helper:saveHelpers) {
 			while(!helper.isDone()) {}
+			System.out.println("["+thread.getName()+"]\tHelper ID: " + saveHelpers.indexOf(helper));
 			helper.stop();
 		}
 		saveHelpers = null;

@@ -16,7 +16,7 @@ public class SaveHelper implements Runnable {
 	private boolean running;
 
 	private Sector sector;
-	
+
 	private JSONArray sectorList = new JSONArray();
 
 	private boolean done = false;
@@ -34,6 +34,10 @@ public class SaveHelper implements Runnable {
 	}
 
 	public synchronized void stop() {
+		if (!running) {
+			System.out.println("["+thread.getName()+"]\tAlready stopped");
+			return;
+		}
 		try (FileWriter file = new FileWriter("world/sectors/"+thread.getName()+".json")) {
 			file.write(sectorList.toJSONString());
 			file.flush();
@@ -41,9 +45,6 @@ public class SaveHelper implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("["+thread.getName()+"]\tFailed to save");
-		}
-		if (!running) {
-			return;
 		}
 		running = false;
 		System.out.println("["+thread.getName()+"]\tTerminated");
