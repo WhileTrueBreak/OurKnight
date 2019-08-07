@@ -76,7 +76,7 @@ public class World {
 		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
 		
-		System.out.println("[World]\t\tLoad new world="+loadSave);
+		System.out.println("[World]\t\tCreate new world = " + !loadSave);
 		
 		if(loadSave) loadWorld();
 		else createWorld();
