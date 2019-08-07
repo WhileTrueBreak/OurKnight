@@ -35,8 +35,8 @@ public abstract class Enemy extends Creature{
 		}
 		//TODO find a better solution to this fix
 		//fixes enemies getting stuck on edge of blocks
-		if(Math.abs(destX-x) < 0.001f) dx += destX-x;
-		if(Math.abs(destY-y) < 0.001f) dy += destY-y;
+		if(Math.abs(destX-x) < 0.05f) dx += destX-x;
+		if(Math.abs(destY-y) < 0.05f) dy += destY-y;
 		
 		x += dx;
 		Rectangle cHitbox = collided();
