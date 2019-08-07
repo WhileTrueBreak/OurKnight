@@ -35,7 +35,7 @@ public class MenuState extends State{
 			}
 		}));
 		//check is save exists
-		if(new File("world/info.json").exists()) {
+		if(new File("world/info.json").exists() && new File("world/sectors").exists()) {
 			//add continue button
 			uiManager.addUIObject(new UIButtonImpactAnimation(handler, handler.getWidth()/2-100, 470, 200, 50, "Continue", 
 					new Rectangle(handler.getWidth()/2-100, 470, 200, 50), new ClickListener() {
