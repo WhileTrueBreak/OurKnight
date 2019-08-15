@@ -1,19 +1,18 @@
 package dev.world;
 
 import java.awt.Graphics;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import dev.Handler;
 import dev.entity.Entity;
 import dev.entity.creature.Player;
 import dev.entity.creature.enemy.BasicEnemy;
-import dev.entity.creature.enemy.Enemy;
 import dev.entity.creature.enemy.EnemyManager;
 import dev.entity.staticEntity.StaticEntity;
 import dev.entity.staticEntity.Wall;
@@ -21,10 +20,11 @@ import dev.tiles.Tile;
 import dev.utils.noise.OpenSimplexNoise;
 import dev.world.pathfinding.NavmeshUpdater;
 import dev.world.pathfinding.quadtree.Quadtree;
+import dev.world.save.SaveManager;
 
 public class World {
 
-	public static int WORLD_SECTOR_WIDTH = 512, WORLD_SECTOR_HEIGHT = 512;
+	public static int WORLD_SECTOR_WIDTH = 64, WORLD_SECTOR_HEIGHT = 64;
 	public static boolean RENDER_DEBUG = false;
 
 	//managers
@@ -75,16 +75,13 @@ public class World {
 
 		System.out.printf("[World]\t\tDimensions:[W:%d H:%d]\n",getWorldWidth(), getWorldHeight());
 		quadtree = new Quadtree(handler, getWorldWidth(), getWorldHeight());
-
-		System.out.println("[World]\t\tLoad new world="+loadSave);
-
+		System.out.println("[World]\t\tCreate new world = " + !loadSave);
 		if(loadSave) loadWorld();
 		else createWorld();
-
-		saveWorld();
-
 		nmu = new NavmeshUpdater(getPathfindingEntities(handler.getWidth(), handler.getHeight()), (Quadtree) quadtree.clone());
 		nmu.start();
+
+		saveWorld();
 	}
 
 	//main game loop stuff
@@ -182,27 +179,17 @@ public class World {
 		JSONObject info = new JSONObject();
 		info.put("world", basicInfo);
 		try (FileWriter file = new FileWriter("world/info.json")) {
-			file.write(info.toJSONString());
-			file.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		//save world info
-		JSONObject worldInfo = new JSONObject();
-		JSONArray sectorList = new JSONArray();
-		for(Sector sector:sectorManager.getSectors()) {
-			JSONObject sectorInfo = new JSONObject();
-			sectorList.add(sectorInfo);
-		}
-		worldInfo.put("Sectors", sectorList);
-		try (FileWriter file = new FileWriter("world/world.json")) {
-			file.write(worldInfo.toJSONString());
-			file.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		System.out.println("[World]\t\tSaving world took: "+(System.currentTimeMillis()-timeStart)+"ms");
+            file.write(info.toJSONString());
+            file.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+		new File("world/sectors").mkdirs();
+		//creates sector queue
+		ArrayList<Sector>sectorQueue = sectorManager.getSectors();
+		//creates save manager
+		new SaveManager(sectorQueue).start();
 	}
 
 	//world creation
